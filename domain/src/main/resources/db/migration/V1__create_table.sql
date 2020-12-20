@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `book_store`.`sample`;
 CREATE TABLE `book_store`.`sample` (
   `id` BIGINT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -7,6 +8,6 @@ CREATE TABLE `book_store`.`sample` (
   `created_by` VARCHAR(45) NOT NULL,
   `modified_at` DATETIME NOT NULL,
   `modified_by` VARCHAR(45) NOT NULL,
-  `delete` TINYINT(1) NOT NULL DEFAULT 0,
+  `deleted` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`));
 

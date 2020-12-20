@@ -18,4 +18,5 @@ public class Sample {
     private String createdBy;
     private Date modifiedAt;
     private String modifiedBy;
+    private boolean deleted;
 }

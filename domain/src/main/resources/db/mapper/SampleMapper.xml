@@ -11,4 +11,9 @@
     <select id="findOne" resultType="sion.bookstore.domain.sample.repository.Sample">
         SELECT * FROM sample where id=${id};
     </select>
+
+    <insert id="insert" parameterType="sion.bookstore.domain.sample.repository.Sample">
+        INSERT INTO sample (name, email, description, created_at, created_by, modified_at, modified_by, deleted)
+        VALUES (#{name}, #{email}, #{description}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
 </mapper>

@@ -6,7 +6,6 @@ import org.springframework.web.servlet.ModelAndView;
 import sion.bookstore.domain.sample.repository.Sample;
 import sion.bookstore.domain.sample.service.SampleService;
 
-import javax.jws.WebParam;
 import java.util.List;
 
 @Controller
