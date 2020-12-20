@@ -1,39 +1,22 @@
 package sion.bookstore.domain.sample.repository;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import sion.bookstore.domain.ApplicationConfiguration;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
+//@Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest (classes={ApplicationConfiguration.class, SampleRepository.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class SampleRepositoryTest {
     @Autowired
     private SampleRepository sampleRepository;
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Test
-    public void testDataSource() throws Exception{
-        //통신과 같이 열어주는 클래스 생성시 try()에 넣으면 자동으로 try catch 종료시 close한다.
-        try(Connection conn = dataSource.getConnection()){
-            System.out.println(conn);
-        }catch(Exception e){e.printStackTrace();
-        }
-    }
 
     @Test
     public void insert() {
@@ -46,10 +29,11 @@ public class SampleRepositoryTest {
         sample.setModifiedAt(new Date());
         sample.setModifiedBy("me");
 
-        Long id = sampleRepository.insert(sample);
+        sampleRepository.insert(sample);
 
-        Sample result = sampleRepository.findOne(id);
+//        Sample result = sampleRepository.findOne(id);
+        Sample expected = sampleRepository.findOne(sample.getId());
 
-        System.out.println("result : " + id);
+        System.out.println("result : " + expected.getId());
     }
 }

@@ -10,5 +10,5 @@ import java.util.List;
 public interface SampleRepository {
     Sample findOne(Long id);
     List<Sample> findAll();
-    Long insert(Sample sample);
+    void insert(Sample sample);
 }

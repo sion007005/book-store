@@ -3,7 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sion.bookstore.domain.sample.repository.SampleRepository">
-
     <select id="findAll" resultType="sion.bookstore.domain.sample.repository.Sample">
         SELECT * FROM sample;
     </select>
@@ -12,8 +11,8 @@
         SELECT * FROM sample where id=${id};
     </select>
 
-    <insert id="insert" parameterType="sion.bookstore.domain.sample.repository.Sample">
-        INSERT INTO sample (name, email, description, created_at, created_by, modified_at, modified_by, deleted)
-        VALUES (#{name}, #{email}, #{description}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.sample.repository.Sample">
+        INSERT INTO sample (id, name, email, description, created_at, created_by, modified_at, modified_by, deleted)
+        VALUES (null, #{name}, #{email}, #{description}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 </mapper>
