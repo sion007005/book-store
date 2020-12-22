@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.member.repository.MemberRepository">
+
+    <resultMap type="sion.bookstore.domain.member.repository.Member" id="member">
+        <result property="idx" column="idx"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="password" column="name"/>
+        <result property="password_salt" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="profileImgPath" column="profile_img_path"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="modifiedAt" column="modified_at"/>
+        <result property="modifiedBy" column="modified_by"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <insert id="create" parameterType="sion.bookstore.domain.member.repository.Member">
+        INSERT into member (name, email, password, password_salt, phone, profile_img_path, createdAt, createdBy, modifiedAt, modifiedBy)
+        values (#{name}, #{email}, #{password},#{password_salt}, #{phone}, #{profileImgPath}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy})
+    </insert>
+
+    <select id="findAll" resultType="">
+--         SELECT * FROM member;
+    </select>
+
+    <select id="findOne" resultType="member">
+--         SELECT * FROM member where id=${id};
+    </select>
+
+    <update id="" parameterType="member">
+
+    </update>
+
+</mapper>
