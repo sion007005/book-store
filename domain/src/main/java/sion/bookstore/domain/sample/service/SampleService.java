@@ -14,6 +14,11 @@ public class SampleService {
         this.sampleRepository = sampleRepository;
     }
 
+    public Long insert(Sample sample) {
+        sampleRepository.insert(sample);
+        return sample.getId();
+    }
+
     public Sample findOne(Long id) {
         return sampleRepository.findOne(id);
     }
