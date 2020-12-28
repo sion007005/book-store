@@ -1,24 +1,19 @@
 package sion.bookstore.domain.member.repository;
 
-
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 
-
 @Getter
 @Setter
-@EqualsAndHashCode
-public class Member {
+public class Address {
     private Integer id;
+    private Integer memberId;
     private String name;
-    private String email;
-    private String password;
-    private String passwordSalt;
-    private String phone;
-    private String profileImgPath;
+    private String addressBasic;
+    private String addressDetail;
+    private Integer zipCode;
     private Date createdAt;
     private String createdBy;
     private Date modifiedAt;

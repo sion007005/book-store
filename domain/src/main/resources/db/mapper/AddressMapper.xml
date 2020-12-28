@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.member.repository.AddressRepository">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Address">
+        INSERT into address (member_id, name, address_basic, address_detail, zip_code, created_at, created_by, modified_at, modified_by, deleted)
+        values (#{memberId}, #{name}, #{addressBasic}, #{addressDetail},#{zipCode}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
+
+    <select id="findOne" resultType="sion.bookstore.domain.member.repository.Address">
+        SELECT * FROM member where (member_id = #{memberId} and name = #{name});
+    </select>
+
+    <select id="findAllByMemberId" resultType="sion.bookstore.domain.member.repository.Address">
+        SELECT * FROM member where member_id = #{memberId};
+    </select>
+
+</mapper>

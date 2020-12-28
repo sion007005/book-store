@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.category.repository.CategoryRepository">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.category.repository.Category">
+        INSERT into category (parent_id, `name`, `level`, `order`, created_at, created_by, modified_at, modified_by, deleted)
+        values (#{parentId}, #{name}, #{level}, #{order}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
+
+    <!-- TODO * 없애기 -->
+    <select id="findOne" resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT * FROM category WHERE id = #{id};
+    </select>
+
+    <select id="findAll"
+            parameterType="sion.bookstore.domain.category.service.CategorySearchCondition"
+            resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT * FROM category
+        <if test="keyword != null and keyword != ''">
+            where `name` like CONCAT('%', #{keyword}, '%')
+        </if>
+        order by level asc, id asc
+        limit #{zeroBasePage}, #{size}
+    </select>
+    <select id="countAll"
+            parameterType="sion.bookstore.domain.category.service.CategorySearchCondition"
+            resultType="long">
+        SELECT count(*) FROM category
+        <if test="keyword != null and keyword != ''">
+            where `name` like CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <update id="update" parameterType="sion.bookstore.domain.category.repository.Category">
+        UPDATE category set
+            parent_id = #{parentId},
+            `name` = #{name},
+            `level` = #{level},
+            `order` = #{order},
+            created_at = #{createdAt},
+            created_by = #{createdBy},
+            modified_at = #{modifiedAt},
+            modified_by = #{modifiedBy},
+            deleted = #{deleted}
+        WHERE id = #{id};
+    </update>
+
+</mapper>
