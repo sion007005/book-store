@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
+import java.time.Duration;
 
 @Configuration
 @ComponentScan(basePackages = {"sion.bookstore"})
@@ -51,5 +54,15 @@ public class ApplicationConfiguration {
     @Bean
     public DataSourceTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
+    }
+
+    @Bean(name = "externalRestTemplate")
+    public RestTemplate externalRestTemplate(RestTemplateBuilder builder) {
+        builder.setConnectTimeout(Duration.ofSeconds(5));
+        builder.setReadTimeout(Duration.ofSeconds(60));
+        RestTemplate restTemplate = builder.build();
+//        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+//        restTemplate.setInterceptors(Lists.newArrayList(new RestTemplateLoggingInterceptor()));
+        return restTemplate;
     }
 }

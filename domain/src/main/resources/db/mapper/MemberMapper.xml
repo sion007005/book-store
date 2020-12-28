@@ -4,22 +4,6 @@
 
 <mapper namespace="sion.bookstore.domain.member.repository.MemberRepository">
 
-<!--    <resultMap type="sion.bookstore.domain.member.repository.Member" id="member">-->
-<!--        <result property="idx" column="idx"/>-->
-<!--        <result property="name" column="name"/>-->
-<!--        <result property="email" column="email"/>-->
-<!--        <result property="password" column="name"/>-->
-<!--        <result property="password_salt" column="name"/>-->
-<!--        <result property="phone" column="phone"/>-->
-<!--        <result property="profileImgPath" column="profile_img_path"/>-->
-<!--        <result property="createdAt" column="created_at"/>-->
-<!--        <result property="createdBy" column="created_by"/>-->
-<!--        <result property="modifiedAt" column="modified_at"/>-->
-<!--        <result property="modifiedBy" column="modified_by"/>-->
-<!--        <result property="deletedAt" column="deleted_at"/>-->
-<!--        <result property="isDeleted" column="is_deleted"/>-->
-<!--    </resultMap>-->
-
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Member">
         INSERT into member (name, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted)
         values (#{name}, #{email}, #{password},#{passwordSalt}, #{phone}, #{profileImgPath}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
