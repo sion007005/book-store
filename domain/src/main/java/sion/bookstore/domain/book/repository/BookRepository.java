@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface BookRespository {
+public interface BookRepository {
     Integer create(Book book);
     Book findOne(Long bookId);
     void update(Book book);

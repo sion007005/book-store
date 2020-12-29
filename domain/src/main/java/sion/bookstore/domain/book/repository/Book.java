@@ -1,5 +1,6 @@
 package sion.bookstore.domain.book.repository;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Book {
     private Long id;
     private String title;
@@ -16,7 +18,7 @@ public class Book {
     private Date publishedAt;
     private String publisher;
     private Integer price;
-    private Integer sale_price;
+    private Integer salePrice;
     private String thumbnail;
     private String status;
     private Date createdAt;
