@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sion.bookstore.domain.ApplicationConfiguration;
+import sion.bookstore.domain.category.service.CategoryRegisterFacade;
 import sion.bookstore.domain.category.service.CategoryService;
 
 import java.io.IOException;
@@ -16,17 +17,20 @@ import java.io.IOException;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={ApplicationConfiguration.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CategoryParserTest {
+public class Yes24CategoryParserTest {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private CategoryRegisterFacade categoryRegisterFacade;
+
     @Test
     public void parse() throws IOException {
-        String url = "http://www.yes24.com/Mall/Main/Book/001?CategoryNumber=001";
+//        String url = "http://www.yes24.com/Mall/Main/Book/001?CategoryNumber=001";
 //        CategoryParser parser = new CategoryParser();
 //        List<ParsedCategory> list =  parser.parse(url);
 
-        categoryService.parseAndRegister(url);
+        categoryRegisterFacade.register(Yes24CategoryParser.CategoryNumber.KOREA_BOOK);
 
     }
 

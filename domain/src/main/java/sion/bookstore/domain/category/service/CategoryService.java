@@ -6,10 +6,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
-import sion.bookstore.domain.parser.CategoryParser;
 import sion.bookstore.domain.parser.ParsedCategory;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +17,6 @@ import java.util.Map;
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private CategoryParser categoryParser;
 
     public Integer create(Category category) {
         return categoryRepository.create(category);
@@ -37,12 +32,10 @@ public class CategoryService {
         return new PageImpl<>(categoryList, condition.getPageable(), totalElements);
     }
 
-    public void parseAndRegister(String url) throws IOException {
+    public void createAllByParsedList(List<ParsedCategory> list) {
         Map<String, Long> categoryIdMappingList = new HashMap<>();
         categoryIdMappingList.put("001", (long) 2); // 국내도서
         categoryIdMappingList.put("002", (long) 3); // 국외도서
-
-        List<ParsedCategory> list = categoryParser.parse(url);
 
         int levelTwoOrder = 1;
         int levelThreeOrder = 1;

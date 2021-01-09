@@ -1,5 +1,6 @@
 package sion.bookstore.domain.parser;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,25 +16,41 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class CategoryParser {
+public class Yes24CategoryParser {
+    private static final String CATEGORY_PAGE_URL = "http://www.yes24.com/Mall/Main/Book/001?CategoryNumber=";
     List<ParsedCategory> parsedCategoryList = new ArrayList<>();
+
+    @Getter
+    public enum CategoryNumber {
+        KOREA_BOOK("국내도서", "001"),
+        FOREIGN_BOOK("국외도서", "002");
+
+        private String description;
+        private String number;
+
+        CategoryNumber(String description, String number) {
+            this.description = description;
+            this.number = number;
+        }
+
+    }
 
     /**
      * "http://www.yes24.com/Mall/Main/Book/001?CategoryNumber=001"
      */
-    public List<ParsedCategory> parse(String url) throws IOException {
+    public List<ParsedCategory> parse(CategoryNumber categoryNumber) throws IOException {
 
-        Document doc = Jsoup.connect(url).get();
+        Document doc = Jsoup.connect(CATEGORY_PAGE_URL + categoryNumber.getNumber()).get();
         Elements element = doc.select("div#cateLiWrap ul");
         Elements level2LiElements = element.select("li.cate2d");
 
         //1. level2의 li list 가져오기
         for (Element level2Li : level2LiElements) {
             Elements level3LiElements = level2Li.select("div ul li");
-            String categoryNumber = parseAndAddList(level2Li, 2, "001");
+            String number = parseAndAddList(level2Li, 2, categoryNumber.getNumber());
 
             for (Element level3Li : level3LiElements) {
-                parseAndAddList(level3Li, 3, categoryNumber);
+                parseAndAddList(level3Li, 3, number);
             }
         }
 
