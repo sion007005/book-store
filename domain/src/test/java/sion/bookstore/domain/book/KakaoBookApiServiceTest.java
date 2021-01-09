@@ -13,8 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import sion.bookstore.domain.ApplicationConfiguration;
-
-import java.util.Map;
+import sion.bookstore.domain.book.repository.KakaoBook;
 
 /**
  * curl -X GET "https://dapi.kakao.com/v3/search/book?target=isbn&query=9791130631134" -H "Authorization: KakaoAK 67a350f0b04f7b78c3b5b9cc37d0eda6"
@@ -31,7 +30,7 @@ public class KakaoBookApiServiceTest {
     @Test
     public void test() {
         log.info("restTemplate : {}", externalRestTemplate);
-        String url = "https://dapi.kakao.com/v3/search/book?target=isbn&query=9791130631134";
+        String url = "https://dapi.kakao.com/v3/search/book?target=isbn&query=9791136252937";
 
         //Set the headers you need send
         final HttpHeaders headers = new HttpHeaders();
@@ -41,8 +40,13 @@ public class KakaoBookApiServiceTest {
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
         //Execute the method writing your HttpEntity to the request
-        ResponseEntity<Map> response = externalRestTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+        ResponseEntity<KakaoBook> response = externalRestTemplate.exchange(url, HttpMethod.GET, entity, KakaoBook.class);
+
         log.info("response : {}", response.getBody());
+        log.info("response : {}", response.getBody().getDocuments().get(0).getTitle());
+        log.info("response : {}", response.getBody().getDocuments().get(0).getAuthors());
+        log.info("response : {}", response.getBody().getDocuments().get(0).getContents());
+        log.info("response thumbnail : {}", response.getBody().getDocuments().get(0).getThumbnail());
     }
 
 }

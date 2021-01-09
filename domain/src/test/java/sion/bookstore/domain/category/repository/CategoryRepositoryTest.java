@@ -104,4 +104,22 @@ public class CategoryRepositoryTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void findAllByCategoryLevel() {
+        List<Category> categoryList = categoryRepository.findAllByCategoryLevel(3);
+        categoryList.forEach(category -> {
+            log.info("category level name: {} {}", category.getLevel(), category.getName());
+        });
+    }
+
+    @Test
+    public void findAllById() {
+        Long limitId = 264L;
+        List<Category> categoryList = categoryRepository.findAllById(limitId);
+
+        categoryList.forEach(category -> {
+            log.info("category level id name: {} {}", category.getLevel(), category.getId(), category.getName());
+        });
+    }
 }

@@ -1,6 +1,7 @@
 package sion.bookstore.admin;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import sion.bookstore.domain.dispatcher.LoginInterceptor;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @EnableWebMvc
 @Order(0)
 public class WebMvcConfiguration implements WebMvcConfigurer {
+	@Autowired
+	private LoginInterceptor loginInterceptor;
 
 	private final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
@@ -37,7 +41,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(webRequestAuthInterceptor).addPathPatterns("/**");
+		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login");
 //		registry.addInterceptor(webRequestUserTrackingInterceptor).addPathPatterns("/**").excludePathPatterns("/");
 //		registry.addInterceptor(serviceMaintenanceInterceptor).addPathPatterns("/**").excludePathPatterns("/service/**","/static/**");
 	}

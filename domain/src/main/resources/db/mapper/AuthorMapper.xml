@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.book.repository.AuthorRepository">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Author">
+        INSERT into author (book_id, name, created_at, created_by, modified_at, modified_by, deleted)
+        values (#{bookId}, #{name}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
+
+    <update id="update" parameterType="sion.bookstore.domain.book.repository.Author">
+        UPDATE author set
+            book_id = #{bookId},
+            `name` = #{name},
+            created_at = #{createdAt},
+            created_by = #{createdBy},
+            modified_at = #{modifiedAt},
+            modified_by = #{modifiedBy},
+            deleted = #{deleted}
+        WHERE id = #{id};
+    </update>
+
+<!--    <select id="findAll"-->
+<!--            parameterType="sion.bookstore.domain.book.repository.AuthorSearchCondition"-->
+<!--            resultType="sion.bookstore.domain.book.repository.Author">-->
+<!--        SELECT (id, book_id,name, created_at, created_by, modified_at, modified_by, deleted)-->
+<!--        FROM author-->
+<!--        <if test="keyword != null and keyword != ''">-->
+<!--            where `name` like CONCAT('%', #{keyword}, '%') or email like CONCAT('%', #{keyword}, '%')-->
+<!--        </if>-->
+<!--        limit #{zeroBasePage}, #{size}-->
+<!--    </select>-->
+
+</mapper>

@@ -17,6 +17,7 @@ public class Category {
     private String name;
     private Integer level;
     private Integer order;
+    private String link;
     private Date createdAt;
     private String createdBy;
     private Date modifiedAt;

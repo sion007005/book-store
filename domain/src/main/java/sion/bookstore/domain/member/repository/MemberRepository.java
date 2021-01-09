@@ -9,11 +9,11 @@ import java.util.List;
 @Mapper
 @Repository
 public interface MemberRepository {
-    // 하나씩 만들어 나가기
     // null을 받을 수 있으려면, int가 아닌 Integer가 좀 더 적절하다.
     Integer create(Member member);
 
-    Member findOne(Integer id);
+    Member findOneById(Integer id);
+    Member findOneByEmail(String email);
     void update(Member member);
     List<Member> findAll(MemberSearchCondition condition);
     long countAll(MemberSearchCondition condition);

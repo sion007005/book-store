@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.book.repository.BookCategoryRepository">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.BookCategory">
+        INSERT into book_category (id, category_id, book_id, created_at, created_by, modified_at, modified_by, deleted)
+        values(null, #{categoryId}, #{bookId}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
+
+</mapper>

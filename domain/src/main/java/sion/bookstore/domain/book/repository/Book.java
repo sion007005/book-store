@@ -13,8 +13,10 @@ public class Book {
     private Long id;
     private String title;
     private String content;
-    private String isbn;
+    private String isbn10;
     private String isbn13;
+    private String[] authors;
+    private String[] translators;
     private Date publishedAt;
     private String publisher;
     private Integer price;

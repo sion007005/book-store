@@ -5,13 +5,25 @@
 <mapper namespace="sion.bookstore.domain.category.repository.CategoryRepository">
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.category.repository.Category">
-        INSERT into category (parent_id, `name`, `level`, `order`, created_at, created_by, modified_at, modified_by, deleted)
-        values (#{parentId}, #{name}, #{level}, #{order}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        INSERT into category (parent_id, `name`, `level`, `order`, `link`, created_at, created_by, modified_at, modified_by, deleted)
+        values (#{parentId}, #{name}, #{level}, #{order}, #{link}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <!-- TODO * 없애기 -->
     <select id="findOne" resultType="sion.bookstore.domain.category.repository.Category">
         SELECT * FROM category WHERE id = #{id};
+    </select>
+
+    <select id="findAllByCategoryLevel"
+            parameterType="int"
+            resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT * FROM category where level = #{level};
+    </select>
+
+    <select id="findAllById"
+            parameterType="java.lang.Long"
+            resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT * FROM category where id >= #{limitId};
     </select>
 
     <select id="findAll"

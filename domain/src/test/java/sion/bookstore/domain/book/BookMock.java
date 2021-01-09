@@ -9,7 +9,7 @@ public class BookMock {
         Book book = new Book();
         book.setTitle(title);
         book.setContent("test content here..");
-        book.setIsbn(isbn);
+        book.setIsbn10(isbn);
         book.setIsbn13(isbn13);
         book.setPublishedAt(new Date());
         book.setPublisher("좋은출판사");

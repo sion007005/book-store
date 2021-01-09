@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 @Setter
 public class PageCondition {
     private int page;
-    private int size = 50;
+    private int size = 100;
 
     public int getPage() {
         return (page == 0)? 1 : page;

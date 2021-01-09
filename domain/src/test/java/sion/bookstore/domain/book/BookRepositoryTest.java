@@ -10,7 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import sion.bookstore.domain.ApplicationConfiguration;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
+import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,6 +24,9 @@ import static org.junit.Assert.assertEquals;
 public class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Test
     public void findOne() {
@@ -53,5 +59,13 @@ public class BookRepositoryTest {
     @Test
     public void findAll() {
 
+    }
+
+    /**
+     * 카테고리 별 책 목록 1페이지 파싱해오기
+     */
+    @Test
+    public void getPasredBookListByCategory() {
+        List<Category> categoryList = categoryRepository.findAllByCategoryLevel(3);
     }
 }

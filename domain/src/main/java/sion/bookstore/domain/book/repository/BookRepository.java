@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface BookRepository {
-    Integer create(Book book);
+    Long create(Book book);
     Book findOne(Long bookId);
     void update(Book book);
 //    List<Book> findAll(BookSearchCondition bookSearchCondition);

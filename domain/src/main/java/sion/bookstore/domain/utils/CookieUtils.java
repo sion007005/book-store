@@ -1,0 +1,25 @@
+package sion.bookstore.domain.utils;
+
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
+public class CookieUtils {
+    public static String getValue(HttpServletRequest request, String name) {
+        Cookie[] list = request.getCookies();
+
+        if (list == null) {
+            return null;
+        }
+
+        for (Cookie cookie : list) {
+            if (cookie.getName().equals(name)) {
+                return cookie.getValue();
+            }
+        }
+
+        return null;
+    }
+}

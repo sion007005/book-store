@@ -3,11 +3,13 @@ package sion.bookstore.domain.member.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.stereotype.Service;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.repository.MemberRepository;
 
 import java.util.List;
 
+@Service
 public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
@@ -16,8 +18,12 @@ public class MemberService {
         return memberRepository.create(member);
     }
 
-    public Member findOne(Integer id) {
-        return memberRepository.findOne(id);
+    public Member findOneById(Integer id) {
+        return memberRepository.findOneById(id);
+    }
+
+    public Member findOneByEmail(String email) {
+        return memberRepository.findOneByEmail(email);
     }
 
     public Page<Member> findPageByCondition(MemberSearchCondition condition) {
