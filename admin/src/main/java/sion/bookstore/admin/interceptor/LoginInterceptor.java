@@ -1,4 +1,4 @@
-package sion.bookstore.domain.dispatcher;
+package sion.bookstore.admin.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,10 +6,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import sion.bookstore.domain.auth.BookManagementUser;
+import sion.bookstore.admin.Login;
+import sion.bookstore.admin.AdminUser;
 import sion.bookstore.domain.auth.User;
 import sion.bookstore.domain.auth.UserContext;
-import sion.bookstore.domain.exceptions.DispatcherException;
+import sion.bookstore.domain.login.LoginProcessException;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.service.MemberService;
 import sion.bookstore.domain.utils.AES256Util;
@@ -42,7 +43,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         if (Objects.isNull(encryptedSid) || encryptedSid.equals("")) {
             log.info("logout User setting");
-            UserContext.set(BookManagementUser.newLogoutUser(request.getRemoteAddr()));
+            UserContext.set(AdminUser.newLogoutUser(request.getRemoteAddr()));
             return;
         }
 
@@ -52,11 +53,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             Integer memberId = NumberUtils.parseInt(decryptedSid);
 
             Member member = memberService.findOneById(memberId);
-            User loginUser = BookManagementUser.newLoginUser(memberId, member.getEmail(), member.getName(), request.getRemoteAddr());
+            User loginUser = AdminUser.newLoginUser(memberId, member.getEmail(), member.getName(), request.getRemoteAddr());
             UserContext.set(loginUser); // threadLocal에 user 저장
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
-            throw new DispatcherException(e.getMessage(), e); //e도 함께 넘겨야 디버깅 가능
+            throw new LoginProcessException(e.getMessage(), e); //e도 함께 넘겨야 디버깅 가능
         }
     }
 //

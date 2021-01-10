@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sion.bookstore.domain.ApplicationConfiguration;
-import sion.bookstore.domain.book.service.OnePageInsertService;
+import sion.bookstore.domain.book.service.BookRegisterFacade;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
 
@@ -24,7 +24,7 @@ public class AutoBookInsertTest {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private OnePageInsertService onePageInsertService;
+    private BookRegisterFacade bookRegisterFacade;
 
     @Test
     public void autoBookInsert() throws IOException {
@@ -32,7 +32,7 @@ public class AutoBookInsertTest {
 
         for (Category category : categoryList) {
             String categoryPageUrl = category.getLink();
-            onePageInsertService.parseAndcreate(categoryPageUrl, category.getId());
+            bookRegisterFacade.register(categoryPageUrl, category.getId());
         }
     }
 }

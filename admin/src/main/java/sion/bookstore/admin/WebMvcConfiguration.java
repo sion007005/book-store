@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import sion.bookstore.domain.dispatcher.LoginInterceptor;
+import sion.bookstore.admin.interceptor.LoginInterceptor;
 
 import java.util.List;
 

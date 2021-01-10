@@ -1,4 +1,4 @@
-package sion.bookstore.domain.exceptions;
+package sion.bookstore.domain.login;
 
 public class LoginProcessException extends RuntimeException {
 

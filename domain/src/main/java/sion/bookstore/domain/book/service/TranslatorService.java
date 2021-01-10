@@ -2,8 +2,13 @@ package sion.bookstore.domain.book.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.Translator;
 import sion.bookstore.domain.book.repository.TranslatorRepository;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class TranslatorService {
@@ -14,7 +19,25 @@ public class TranslatorService {
         return translatorRepository.create(translator);
     }
 
+    public void create(Book book) {
+        List<String> translators = Arrays.asList(book.getTranslators());
+
+        for (String name : translators) {
+            Translator translator = new Translator();
+            translator.setBookId(book.getId());
+            translator.setName(name);
+            translator.setCreatedAt(new Date());
+            translator.setCreatedBy("sion");
+            translator.setModifiedAt(new Date());
+            translator.setModifiedBy("sion");
+            translator.setDeleted(false);
+
+            create(translator);
+        }
+    }
+
     public void update(Translator translator) {
         translatorRepository.update(translator);
     }
+
 }

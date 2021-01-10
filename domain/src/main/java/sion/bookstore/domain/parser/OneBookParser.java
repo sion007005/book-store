@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.book.service.BookService;
-import sion.bookstore.domain.book.service.KaKaoBookService;
+import sion.bookstore.domain.book.service.KaKaoBookMaker;
 import sion.bookstore.domain.category.repository.CategoryRepository;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class OneBookParser {
     private OnePageParser onePageParser;
 
     @Autowired
-    private KaKaoBookService kaKaoBookService;
+    private KaKaoBookMaker kaKaoBookMaker;
 
     @Autowired
     private BookService bookService;

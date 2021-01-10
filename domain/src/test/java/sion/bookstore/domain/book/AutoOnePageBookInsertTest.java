@@ -8,12 +8,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.util.StopWatch;
 import sion.bookstore.domain.ApplicationConfiguration;
 import sion.bookstore.domain.book.repository.*;
-import sion.bookstore.domain.book.service.BookCategoryService;
-import sion.bookstore.domain.book.service.BookService;
-import sion.bookstore.domain.book.service.KaKaoBookService;
-import sion.bookstore.domain.parser.OnePageParser;
+import sion.bookstore.domain.book.service.BookRegisterFacade;
 import sion.bookstore.domain.parser.ParsedBook;
 
 import javax.imageio.ImageIO;
@@ -22,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -33,59 +30,24 @@ import java.util.Objects;
 public class AutoOnePageBookInsertTest {
 
     @Autowired
-    private OnePageParser onePageParser;
-
-    @Autowired
-    private KaKaoBookService kaKaoBookService;
-
-    @Autowired
-    private BookService bookService;
-
-    @Autowired
-    private BookCategoryService bookCategoryService;
-
-    @Autowired
     private AuthorRepository authorRepository;
 
     @Autowired
     private TranslatorRepository translatorRepository;
 
+    @Autowired
+    private BookRegisterFacade bookRegisterFacade;
+
 
     @Test
     public void test() throws IOException {
-            Long categoryId = 8L;
-            String url = "http://www.yes24.com/24/Category/Display/001001001012";
-            List<ParsedBook> parsedBookList = onePageParser.parse(url);
-
-            for (ParsedBook parsedBook : parsedBookList) {
-                if (Objects.isNull(parsedBook)) continue;
-
-                Book book = kaKaoBookService.requestBookInfo(parsedBook.getIsbn13());
-
-                if (Objects.isNull(book)) {
-                    book = kaKaoBookService.requestBookInfo(parsedBook.getIsbn10());
-                }
-
-                if (Objects.isNull(book)) {
-                    //TODO kakao api에서 아무정보도 오지 않으면, yes24 정보로 넣어주기
-                    log.info("Kakao api에서 정보를 가져오지 못하는 책 패스(isbn13) : {}", parsedBook.getIsbn13());
-                    continue;
-                }
-
-                book.setIsbn10(parsedBook.getIsbn10());
-                book.setIsbn13(parsedBook.getIsbn13());
-                book.setThumbnail(uploadImageFile(parsedBook));
-                book.setCreatedAt(new Date());
-                book.setCreatedBy("sion");
-                book.setModifiedAt(new Date());
-                book.setModifiedBy("sion");
-                book.setDeleted(false);
-
-                bookService.create(book);
-                bookCategoryService.create(categoryId, book.getId());
-                createAuthor(book);
-                createTranslator(book);
-            }
+        StopWatch stopWatch = new StopWatch("book_parse");
+        stopWatch.start();
+        Long categoryId = 5L;
+        String url = "http://www.yes24.com/24/Category/Display/001001022005";
+        bookRegisterFacade.register(url, categoryId);
+        stopWatch.stop();
+        System.out.println(stopWatch.getTotalTimeMillis());
     }
 
     private void createAuthor(Book book) {

@@ -26,7 +26,7 @@ public class OnePageParser {
         List<ParsedBook> parsedBooks = new ArrayList<>();
 
         Elements elements = doc.select("ul.clearfix li div.cCont_goodsSet");
-        log.info("elements size : {}", elements.size());
+        log.info("=>elements size : {}", elements.size());
 
         for (Element element : elements) {
             ParsedBook parsedBook = new ParsedBook();
@@ -41,7 +41,10 @@ public class OnePageParser {
             String detailPath = linkEl.attr("href");
             parsedBook = oneBookParser.parse(yes24Domain + detailPath);
 
-            parsedBooks.add(parsedBook);
+            if (Objects.nonNull(parsedBook)) {
+                parsedBooks.add(parsedBook);
+            }
+            log.info("\t=>elements element : {}", element.tagName());
         }
 
         return parsedBooks;

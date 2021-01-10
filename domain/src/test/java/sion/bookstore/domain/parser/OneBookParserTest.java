@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sion.bookstore.domain.ApplicationConfiguration;
 import sion.bookstore.domain.book.service.BookService;
-import sion.bookstore.domain.book.service.KaKaoBookService;
+import sion.bookstore.domain.book.service.KaKaoBookMaker;
 import sion.bookstore.domain.category.repository.CategoryRepository;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class OneBookParserTest {
     private OnePageParser onePageParser;
 
     @Autowired
-    private KaKaoBookService kaKaoBookService;
+    private KaKaoBookMaker kaKaoBookMaker;
 
     @Autowired
     private BookService bookService;

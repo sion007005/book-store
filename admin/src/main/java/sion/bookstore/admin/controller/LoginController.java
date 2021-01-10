@@ -1,36 +1,27 @@
 package sion.bookstore.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.login.LoginService;
-import sion.bookstore.domain.member.service.MemberService;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Controller
 public class LoginController {
-
-    @Autowired
-    private MemberService memberService;
     @Autowired
     private LoginService loginService;
 
-    public ModelAndView command(HttpServletRequest request, HttpServletResponse response) {
-        String email = (String)request.getParameter("email");
-        String plainPassword = request.getParameter("password");
-        String returnUrl = request.getParameter("returnUrl");
-
-        ModelAndView mav = loginService.check(email, plainPassword);
-        Object loginSuccess = mav.getModel().get("login");
-
-        if (loginSuccess.equals("success")) {
-            String encryptedSid = (String) mav.getModel().get("encryptedSid");
-            response.addCookie(getCookie(encryptedSid));
-            mav.addObject("returnUrl", returnUrl);
-        }
-
-        return mav;
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseData login(String email, String password, HttpServletResponse response) {
+        String encryptedSid = loginService.check(email, password);
+        Cookie cookie = getCookie(encryptedSid);
+        response.addCookie(cookie);
+        return ResponseData.success("success");
     }
 
     private Cookie getCookie(String encryptedSid) {
