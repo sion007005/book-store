@@ -1,5 +1,6 @@
 package sion.bookstore.domain.book.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -9,9 +10,12 @@ import java.net.URL;
 
 @Service
 public class ImageUploadService {
+    @Value("${image.root.path}")
+    private String thumbnailRootPath;
+
     public String upload(String imageUrl, String fileName, String fileType) {
 //        String fileType = "jpeg";
-        String thumbnailPath = "D:/book-store/thumbnail/"  + fileName + "." + fileType;
+        String thumbnailPath = thumbnailRootPath  + fileName + "." + fileType;
 
         try {
             URL url = new URL(imageUrl);
