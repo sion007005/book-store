@@ -10,7 +10,7 @@ public class PageCondition {
     private int size = 100;
 
     public int getPage() {
-        return (page == 0)? 1 : page;
+        return (page == 0) ? 1 : page;
     }
 
     public int getZeroBasePage() {

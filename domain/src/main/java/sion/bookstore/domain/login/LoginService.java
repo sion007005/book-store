@@ -17,7 +17,6 @@ public class LoginService {
     @Autowired
     private MemberService memberService;
 
-    //TODO Exception 처리
     public String check(String email, String plainPassword) {
 
         Member member = memberService.findOneByEmail(email);
@@ -40,7 +39,6 @@ public class LoginService {
         throw new LoginProcessException("회원 정보에 없는 이메일 주소이거나, 비밀번호가 올바르지 않습니다.");
     }
 
-    //TODO Exception 처리
     private String getEncryptedSid(int memberId) {
 
         try {

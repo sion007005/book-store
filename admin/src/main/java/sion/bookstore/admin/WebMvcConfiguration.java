@@ -1,7 +1,7 @@
 package sion.bookstore.admin;
 
+import lombok.RequiredArgsConstructor;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,18 +15,15 @@ import sion.bookstore.admin.interceptor.LoginInterceptor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebMvc
 @Order(0)
 public class WebMvcConfiguration implements WebMvcConfigurer {
-	@Autowired
-	private LoginInterceptor loginInterceptor;
+
+	private final LoginInterceptor loginInterceptor;
 
 	private final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-	public WebMvcConfiguration(MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter) {
-		this.mappingJackson2HttpMessageConverter = mappingJackson2HttpMessageConverter;
-	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

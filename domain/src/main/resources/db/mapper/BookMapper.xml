@@ -9,9 +9,9 @@
         values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <!-- TODO * 없애기 -->
     <select id="findOne" resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT * FROM book WHERE id = #{id};
+        SELECT id, title, content, isbn10, isbn13, authors, translators, publishedAt, publisher, price, salePrice, thumbnail, status, createdAt, createdBy, modifiedAt, modifiedBy, deleted
+        FROM book WHERE id = #{id};
     </select>
 
     <update id="update" parameterType="sion.bookstore.domain.book.repository.Book">
@@ -37,13 +37,15 @@
     <select id="findAll"
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
             resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT * FROM book
+        SELECT id, title, content, isbn10, isbn13, authors, translators, publishedAt, publisher, price, salePrice, thumbnail, status, createdAt, createdBy, modifiedAt, modifiedBy, deleted
+        FROM book
         <if test="keyword != null and keyword != ''">
             where title like CONCAT('%', #{keyword}, '%')
         </if>
         order by level asc, id asc
         limit #{zeroBasePage}, #{size}
     </select>
+
     <select id="countAll"
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
             resultType="long">
@@ -52,4 +54,5 @@
             where title like CONCAT('%', #{keyword}, '%')
         </if>
     </select>
+
 </mapper>
