@@ -60,7 +60,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             throw new LoginProcessException(e.getMessage(), e); //e도 함께 넘겨야 디버깅 가능
         }
     }
-//
+
 //    private void loginCheck(Controller controller) {
 //        //로그인 체크 -> 필요한가(=@Login이 있는가)?
 //        // 1) 필요하다면,

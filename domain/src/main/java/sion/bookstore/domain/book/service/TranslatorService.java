@@ -1,6 +1,6 @@
 package sion.bookstore.domain.book.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.Translator;
@@ -11,9 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TranslatorService {
-    @Autowired
-    private TranslatorRepository translatorRepository;
+    private final TranslatorRepository translatorRepository;
 
     public Long create(Translator translator) {
         return translatorRepository.create(translator);

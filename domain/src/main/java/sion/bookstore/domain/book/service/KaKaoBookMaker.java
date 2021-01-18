@@ -1,7 +1,7 @@
 package sion.bookstore.domain.book.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.KakaoBook;
@@ -15,13 +15,10 @@ import java.util.Objects;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class KaKaoBookMaker {
-
-    @Autowired
-    private KakaoBookApiRepository kakaoBookApiRepository;
-
-    @Autowired
-    private ImageUploadService imageUploadService;
+    private final KakaoBookApiRepository kakaoBookApiRepository;
+    private final ImageUploadService imageUploadService;
 
     public List<Book> requestBookList(List<ParsedBook> list) {
         List<Book> bookList = new ArrayList<>();

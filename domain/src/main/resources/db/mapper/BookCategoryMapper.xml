@@ -9,4 +9,16 @@
         values(null, #{categoryId}, #{bookId}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
+    <select id="findBooksByCategoryId"
+            parameterType="sion.bookstore.domain.book.service.BookCategorySearchCondition"
+            resultType="sion.bookstore.domain.book.repository.BookCategory">
+        SELECT id, category_id, book_id, created_at, created_by, modified_at, modified_by, deleted
+        FROM book_category
+        <if test="categoryId != null">
+            where category_id = #{categoryId}
+        </if>
+        order by book_id asc
+        limit #{searchStartIndex}, #{size}
+    </select>
+
 </mapper>

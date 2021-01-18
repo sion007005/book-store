@@ -1,6 +1,6 @@
 package sion.bookstore.domain.member.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -10,9 +10,9 @@ import sion.bookstore.domain.member.repository.MemberRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public Integer create(Member member) {
         return memberRepository.create(member);

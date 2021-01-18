@@ -1,16 +1,17 @@
 package sion.bookstore.domain.book.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.book.repository.BookCategory;
 import sion.bookstore.domain.book.repository.BookCategoryRepository;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookCategoryService {
-    @Autowired
-    private BookCategoryRepository bookCategoryRepository;
+    private final BookCategoryRepository bookCategoryRepository;
 
     public Long create(long categoryId, long bookId) {
         BookCategory mapping = new BookCategory();
@@ -23,5 +24,9 @@ public class BookCategoryService {
         mapping.setDeleted(false);
 
         return bookCategoryRepository.create(mapping);
+    }
+
+    public List<BookCategory> findBooksByCategoryId(BookCategorySearchCondition condition) {
+        return bookCategoryRepository.findBooksByCategoryId(condition);
     }
 }

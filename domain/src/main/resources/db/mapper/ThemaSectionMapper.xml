@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.book.thema.repository.ThemaSectionRepository">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.thema.repository.ThemaSection">
+        INSERT into thema_section (order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted)
+        values (#{orderNo}, #{type}, #{title}, #{description}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
+
+    <select id="findOne" resultType="sion.bookstore.domain.book.thema.repository.ThemaSection">
+        SELECT id, order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted
+        FROM thema_section WHERE id = #{id};
+    </select>
+
+
+    <update id="update" parameterType="sion.bookstore.domain.book.thema.repository.ThemaSection">
+        UPDATE book set
+            order_no = #{orderNo},
+            type = #{type},
+            title = #{title},
+            description = #{description},
+            created_at = #{createdAt},
+            created_by = #{createdBy},
+            modified_at = #{modifiedAt},
+            modified_by = #{modifiedBy},
+            deleted = #{deleted}
+        WHERE id = #{id};
+    </update>
+
+    <select id="findAll"
+            parameterType="sion.bookstore.domain.book.thema.service.ThemaSectionSearchCondition"
+            resultType="sion.bookstore.domain.book.thema.repository.ThemaSection">
+        SELECT id, order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted
+        FROM thema_section
+        <if test="keyword != null and keyword != ''">
+            where type like CONCAT('%', #{keyword}, '%')
+        </if>
+        order by order_no asc
+        limit #{searchStartIndex}, #{size}
+    </select>
+
+    <select id="countAll"
+            parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
+            resultType="long">
+        SELECT count(*) FROM book
+        <if test="keyword != null and keyword != ''">
+            where type like CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+</mapper>

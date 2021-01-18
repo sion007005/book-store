@@ -1,15 +1,15 @@
-package sion.bookstore.domain.best_seller.repository;
+package sion.bookstore.domain.book.thema.repository;
 
 import lombok.Getter;
-import org.springframework.stereotype.Service;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
-@Service
-public class BestSeller {
+@Setter
+public class ThemaBook {
     private Long id;
-    private Long categoryId;
+    private Long themaSectionId;
     private Long bookId;
     private Date createdAt;
     private String createdBy;

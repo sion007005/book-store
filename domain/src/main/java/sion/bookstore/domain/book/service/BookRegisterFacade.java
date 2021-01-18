@@ -1,6 +1,6 @@
 package sion.bookstore.domain.book.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.parser.OnePageParser;
@@ -10,16 +10,11 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookRegisterFacade {
-    @Autowired
-    private OnePageParser onePageParser;
-
-    @Autowired
-    private KaKaoBookMaker kaKaoBookMaker;
-
-    @Autowired
-    private BookService bookService;
-
+    private final OnePageParser onePageParser;
+    private final KaKaoBookMaker kaKaoBookMaker;
+    private final BookService bookService;
 
     public void register(String url, Long categoryId) throws IOException {
         List<ParsedBook> parsedBookList = onePageParser.parse(url);

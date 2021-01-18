@@ -1,7 +1,7 @@
 package sion.bookstore.domain.login;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.service.MemberService;
@@ -12,10 +12,9 @@ import java.util.Objects;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LoginService {
-
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
 
     public String check(String email, String plainPassword) {
 

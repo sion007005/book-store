@@ -1,32 +1,19 @@
 package sion.bookstore.domain.parser;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sion.bookstore.domain.book.service.BookService;
-import sion.bookstore.domain.book.service.KaKaoBookMaker;
-import sion.bookstore.domain.category.repository.CategoryRepository;
 
 import java.io.IOException;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class OneBookParser {
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private OnePageParser onePageParser;
-
-    @Autowired
-    private KaKaoBookMaker kaKaoBookMaker;
-
-    @Autowired
-    private BookService bookService;
 
     public ParsedBook parse(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();

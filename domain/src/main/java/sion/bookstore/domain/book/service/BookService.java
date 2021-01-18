@@ -1,34 +1,21 @@
 package sion.bookstore.domain.book.service;
 
-import io.micrometer.core.instrument.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sion.bookstore.domain.book.repository.Author;
-import sion.bookstore.domain.book.repository.AuthorRepository;
-import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.repository.BookRepository;
-import sion.bookstore.domain.parser.OnePageParser;
+import sion.bookstore.domain.book.repository.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
-    private AuthorRepository authorRepository;
-
-    @Autowired
-    private OnePageParser onePageParser;
-
-    @Autowired
-    private TranslatorService translatorService;
-
-    @Autowired
-    private BookCategoryService bookCategoryService;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final TranslatorService translatorService;
+    private final BookCategoryService bookCategoryService;
 
     public Long create(Book book) {
         return bookRepository.create(book);
@@ -40,6 +27,23 @@ public class BookService {
 
     public void update(Book book) {
         bookRepository.update(book);
+    }
+
+    public List<Book> findCategoryBooks(BookCategorySearchCondition condition) {
+//  추후 생성 할 컨트롤러에서 아래 서치 정보Bo를 담아서 서비스로 넘겨야 한다.
+//        BookCategorySearchCondition condition = new BookCategorySearchCondition();
+//        condition.setCategoryId(찾을 카테고리 아이디 번호);
+//        condition.setPage(현재 페이지);
+        List<Book> bookList = new ArrayList<>();
+        List<BookCategory> bookCategoryList = bookCategoryService.findBooksByCategoryId(condition);
+
+        for (BookCategory bookCategory : bookCategoryList) {
+            Long bookId = bookCategory.getBookId();
+            Book book = bookRepository.findOne(bookId);
+            bookList.add(book);
+        }
+
+        return bookList;
     }
 
     public void createAll(Long categoryId, List<Book> bookList) {

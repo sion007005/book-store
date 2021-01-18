@@ -1,18 +1,17 @@
-package sion.bookstore.domain.sample.repository;
+package sion.bookstore.domain.book.thema.repository;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Sample {
+public class ThemaSection {
     private Long id;
-    private String name;
-    private String email;
+    private Integer orderNo;
+    private String type;
+    private String title;
     private String description;
     private Date createdAt;
     private String createdBy;

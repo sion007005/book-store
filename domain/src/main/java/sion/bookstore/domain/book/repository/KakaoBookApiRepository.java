@@ -1,6 +1,6 @@
 package sion.bookstore.domain.book.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 public class KakaoBookApiRepository {
-    @Autowired
     // http 요청을 날리는 데 사용
-    private RestTemplate externalRestTemplate;
+    private final RestTemplate externalRestTemplate;
     
     public KakaoBook.Document getKakaoResponse(String isbn) {
         String url = "https://dapi.kakao.com/v3/search/book?target=isbn&query=" + isbn;

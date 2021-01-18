@@ -1,11 +1,13 @@
 package sion.bookstore.domain.parser;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,11 +17,13 @@ import java.util.Objects;
 
 @Slf4j
 @Service
+@PropertySource("classpath:application-domain.properties")
+@RequiredArgsConstructor
 public class OnePageParser {
-    private final String yes24Domain = "http://www.yes24.com/";
+    @Value("${yes24.domain.url}")
+    private String yes24Domain;
 
-    @Autowired
-    private OneBookParser oneBookParser;
+    private final OneBookParser oneBookParser;
 
     public List<ParsedBook> parse(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
