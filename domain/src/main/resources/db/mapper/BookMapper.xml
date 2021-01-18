@@ -10,7 +10,7 @@
     </insert>
 
     <select id="findOne" resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT id, title, content, isbn10, isbn13, authors, translators, publishedAt, publisher, price, salePrice, thumbnail, status, createdAt, createdBy, modifiedAt, modifiedBy, deleted
+        SELECT id, title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
         FROM book WHERE id = #{id};
     </select>
 
@@ -37,13 +37,13 @@
     <select id="findAll"
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
             resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT id, title, content, isbn10, isbn13, authors, translators, publishedAt, publisher, price, salePrice, thumbnail, status, createdAt, createdBy, modifiedAt, modifiedBy, deleted
+        SELECT id, title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
         FROM book
         <if test="keyword != null and keyword != ''">
             where title like CONCAT('%', #{keyword}, '%')
         </if>
         order by level asc, id asc
-        limit #{zeroBasePage}, #{size}
+        limit #{searchStartIndex}, #{size}
     </select>
 
     <select id="countAll"
