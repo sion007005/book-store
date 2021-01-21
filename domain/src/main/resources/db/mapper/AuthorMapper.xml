@@ -21,15 +21,15 @@
         WHERE id = #{id};
     </update>
 
-<!--    <select id="findAll"-->
-<!--            parameterType="sion.bookstore.domain.book.repository.AuthorSearchCondition"-->
-<!--            resultType="sion.bookstore.domain.book.repository.Author">-->
-<!--        SELECT (id, book_id,name, created_at, created_by, modified_at, modified_by, deleted)-->
-<!--        FROM author-->
-<!--        <if test="keyword != null and keyword != ''">-->
-<!--            where `name` like CONCAT('%', #{keyword}, '%') or email like CONCAT('%', #{keyword}, '%')-->
-<!--        </if>-->
-<!--        limit #{zeroBasePage}, #{size}-->
-<!--    </select>-->
+    <select id="findAllByName"
+            parameterType="sion.bookstore.domain.book.service.AuthorSearchCondition"
+            resultType="sion.bookstore.domain.book.repository.Author">
+        SELECT id, book_id, `name`, created_at, created_by, modified_at, modified_by, deleted
+        FROM author
+        <if test="name != null and name != ''">
+            where `name` like CONCAT('%', #{name}, '%')
+        </if>
+        limit #{searchStartIndex}, #{size}
+    </select>
 
 </mapper>
