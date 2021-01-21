@@ -11,13 +11,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import sion.bookstore.domain.ApplicationConfiguration;
 import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.repository.BookCategory;
 import sion.bookstore.domain.book.repository.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -36,22 +33,22 @@ public class BookServiceTest {
 
     @Test
     public void test() {
-        BookCategorySearchCondition condition = new BookCategorySearchCondition();
-        condition.setCategoryId(6L);
-        condition.setPage(2);
-
-        List<Book> bookList = new ArrayList<>();
-        List<BookCategory> bookCategoryList = bookCategoryService.findBooksByCategoryId(condition);
-
-        for (BookCategory bookCategory : bookCategoryList) {
-            Long bookId = bookCategory.getBookId();
-            Book book = bookRepository.findOne(bookId);
-            log.info("책 제목: {}",book.getTitle());
-
-            bookList.add(book);
-        }
-
-        assertEquals(20, bookList.size());
+//        BookCategorySearchCondition condition = new BookCategorySearchCondition();
+//        condition.setCategoryId(6L);
+//        condition.setPage(2);
+//
+//        List<Book> bookList = new ArrayList<>();
+//        List<BookCategory> bookCategoryList = bookCategoryService.findBooksByCategoryId(condition);
+//
+//        for (BookCategory bookCategory : bookCategoryList) {
+//            Long bookId = bookCategory.getBookId();
+//            Book book = bookRepository.findOne(bookId);
+//            log.info("책 제목: {}",book.getTitle());
+//
+//            bookList.add(book);
+//        }
+//
+//        assertEquals(20, bookList.size());
     }
 
     @Test

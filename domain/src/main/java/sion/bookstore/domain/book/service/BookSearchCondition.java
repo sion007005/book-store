@@ -9,8 +9,9 @@ import sion.bookstore.domain.PageCondition;
 @Setter
 @EqualsAndHashCode
 public class BookSearchCondition extends PageCondition {
-    private String keyword; // title
+    private String title;
     private Long categoryId;
-    private String authorName;
+    private String name;
     private String isbn; // isbn10, isbn13 둘 다 지원
+    private String orderType;
 }

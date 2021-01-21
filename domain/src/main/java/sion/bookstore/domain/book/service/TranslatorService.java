@@ -6,7 +6,6 @@ import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.Translator;
 import sion.bookstore.domain.book.repository.TranslatorRepository;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,19 +19,18 @@ public class TranslatorService {
     }
 
     public void create(Book book) {
-        List<String> translators = Arrays.asList(book.getTranslators());
+        List<Translator> translators = book.getTranslators();
 
-        for (String name : translators) {
-            Translator translator = new Translator();
+        for (Translator translator : translators) {
             translator.setBookId(book.getId());
-            translator.setName(name);
+            translator.setName(translator.getName());
             translator.setCreatedAt(new Date());
             translator.setCreatedBy("sion");
             translator.setModifiedAt(new Date());
             translator.setModifiedBy("sion");
             translator.setDeleted(false);
 
-            create(translator);
+            translatorRepository.create(translator);
         }
     }
 

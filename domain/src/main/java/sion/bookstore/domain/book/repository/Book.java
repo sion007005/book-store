@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,8 +16,8 @@ public class Book {
     private String content;
     private String isbn10;
     private String isbn13;
-    private String[] authors;
-    private String[] translators;
+    private List<Author> authors;
+    private List<Translator> translators;
     private Date publishedAt;
     private String publisher;
     private Integer price;

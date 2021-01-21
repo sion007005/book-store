@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -51,12 +51,11 @@ public class AutoOnePageBookInsertTest {
     }
 
     private void createAuthor(Book book) {
-        String[] authors = book.getAuthors();
+        List<Author> authors = book.getAuthors();
 
-        for (String name : authors) {
-            Author author = new Author();
+        for (Author author : authors) {
             author.setBookId(book.getId());
-            author.setName(name);
+            author.setName(author.getName());
             author.setCreatedAt(new Date());
             author.setCreatedBy("sion");
             author.setModifiedAt(new Date());
@@ -68,16 +67,15 @@ public class AutoOnePageBookInsertTest {
     }
 
     private void createTranslator(Book book) {
-        String[] translators = book.getTranslators();
+        List<Translator> translators = book.getTranslators();
 
-        if (Objects.isNull(translators)) {
+        if (translators.size() == 0) {
             return;
         }
 
-        for (String name : translators) {
-            Translator translator = new Translator();
+        for (Translator translator : translators) {
             translator.setBookId(book.getId());
-            translator.setName(name);
+            translator.setName(translator.getName());
             translator.setCreatedAt(new Date());
             translator.setCreatedBy("sion");
             translator.setModifiedAt(new Date());

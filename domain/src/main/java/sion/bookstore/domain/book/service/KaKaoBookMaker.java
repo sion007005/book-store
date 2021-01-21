@@ -3,9 +3,7 @@ package sion.bookstore.domain.book.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.repository.KakaoBook;
-import sion.bookstore.domain.book.repository.KakaoBookApiRepository;
+import sion.bookstore.domain.book.repository.*;
 import sion.bookstore.domain.parser.ParsedBook;
 
 import java.util.ArrayList;
@@ -36,6 +34,9 @@ public class KaKaoBookMaker {
             }
 
             Book book = makeBook(parsedBook, kakaoBookDocument);
+            addAuthor(book, kakaoBookDocument);
+            addTranslator(book, kakaoBookDocument);
+
             bookList.add(book);
         }
 
@@ -55,8 +56,8 @@ public class KaKaoBookMaker {
 
         book.setTitle(kakaoBookDocument.getTitle());
         book.setContent(kakaoBookDocument.getContents());
-        book.setAuthors(kakaoBookDocument.getAuthors());
-        book.setTranslators(kakaoBookDocument.getTranslators());
+//        book.setAuthors(kakaoBookDocument.getAuthors());
+//        book.setTranslators(kakaoBookDocument.getTranslators());
         book.setPublishedAt(kakaoBookDocument.getDatetime());
         book.setPublisher(kakaoBookDocument.getPublisher());
         book.setPrice(kakaoBookDocument.getPrice());
@@ -70,4 +71,43 @@ public class KaKaoBookMaker {
         return imageUploadService.upload(book.getImageUrl(), book.getIsbn13(), "jpeg");
     }
 
+    private void addAuthor(Book book, KakaoBook.Document kakaoBookDocument) {
+        List<Author> authorList = new ArrayList<>();
+        String[] authors = kakaoBookDocument.getAuthors();
+
+        for (String name : authors) {
+            Author author = new Author();
+            author.setName(name);
+            author.setBookId(book.getId());
+            author.setCreatedAt(new Date());
+            author.setCreatedBy("sion");
+            author.setModifiedAt(new Date());
+            author.setModifiedBy("sion");
+            author.setDeleted(false);
+
+            authorList.add(author);
+        }
+
+        book.setAuthors(authorList);
+    }
+
+    private void addTranslator(Book book, KakaoBook.Document kakaoBookDocument) {
+        List<Translator> translatorList = new ArrayList<>();
+        String[] translators = kakaoBookDocument.getTranslators();
+
+        for (String name : translators) {
+            Translator translator = new Translator();
+            translator.setName(name);
+            translator.setBookId(book.getId());
+            translator.setCreatedAt(new Date());
+            translator.setCreatedBy("sion");
+            translator.setModifiedAt(new Date());
+            translator.setModifiedBy("sion");
+            translator.setDeleted(false);
+
+            translatorList.add(translator);
+        }
+
+        book.setTranslators(translatorList);
+    }
 }

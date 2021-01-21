@@ -13,7 +13,7 @@ public class PageCondition {
     public int getPage() {
         return (page == 0) ? 1 : page;
     }
-    //현재 페이지 구하기
+
     public int getZeroBasePage() {
         return getPage() - 1;
     }

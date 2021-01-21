@@ -6,7 +6,6 @@ import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.AuthorRepository;
 import sion.bookstore.domain.book.repository.Book;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +19,10 @@ public class AuthorService {
     }
 
     public void create(Book book) {
-        List<String> authors = Arrays.asList(book.getAuthors());
-
-        for (String name : authors) {
-            Author author = new Author();
+        List<Author> authors = book.getAuthors();
+        for (Author author : authors) {
             author.setBookId(book.getId());
-            author.setName(name);
+            author.setName(author.getName());
             author.setCreatedAt(new Date());
             author.setCreatedBy("sion");
             author.setModifiedAt(new Date());

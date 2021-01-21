@@ -4,6 +4,34 @@
 
 <mapper namespace="sion.bookstore.domain.book.repository.BookRepository">
 
+    <resultMap id="book" type="sion.bookstore.domain.book.repository.Book">
+        <result column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="isbn10" property="isbn10" />
+        <result column="isbn13" property="isbn13" />
+        <result column="published_at" property="publishedAt" />
+        <result column="publisher" property="publisher" />
+        <result column="price" property="price" />
+        <result column="sale_price" property="salePrice" />
+        <result column="thumbnail" property="thumbnail" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="created_by" property="createdBy" />
+        <result column="modified_at" property="modifiedAt" />
+        <result column="modified_by" property="modifiedBy" />
+        <result column="deleted" property="deleted" />
+        <collection property="authors" column = "id"  select="getAuthorList" javaType="java.util.List" ofType="sion.bookstore.domain.book.repository.Author"></collection>
+        <collection property="translators" column = "id"  select="getTranslatorList" javaType="java.util.List" ofType="sion.bookstore.domain.book.repository.Translator"></collection>
+    </resultMap>
+
+    <select id="getAuthorList" resultType="sion.bookstore.domain.book.repository.Author">
+        SELECT name FROM author WHERE book_id = #{id}
+    </select>
+
+    <select id="getTranslatorList" resultType="sion.bookstore.domain.book.repository.Translator">
+        SELECT name FROM translator WHERE book_id = #{id}
+    </select>
+
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Book">
         INSERT into book (title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted)
         values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
@@ -36,23 +64,77 @@
 
     <select id="findAll"
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
-            resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT id, title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
-        FROM book
-        <if test="keyword != null and keyword != ''">
-            where title like CONCAT('%', #{keyword}, '%')
-        </if>
-        order by level asc, id asc
+            resultMap = "book" >
+            SELECT b.*
+            FROM book b, author a, translator t, book_category bc
+            WHERE b.id = a.book_id
+            AND bc.book_id = a.book_id
+            AND bc.book_id = t.book_id
+
+            <if test="categoryId != null and categoryId != ''">
+                AND bc.category_id = #{categoryId}
+            </if>
+            <if test="title != null and title != ''">
+                AND b.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                AND (a.name LIKE CONCAT('%', #{name}, '%') or t.name LIKE CONCAT('%', #{name}, '%'))
+            </if>
+            <if test="isbn != null and isbn != ''">
+                AND (b.isbn10 = #{isbn} or b.isbn13 = #{isbn})
+            </if>
+
+            <choose>
+                <when test="orderType == 'title'">
+                ORDER BY b.title
+                </when>
+                <when test="orderType == 'year'">
+                ORDER BY b.published_at desc
+                </when>
+                <when test="orderType == 'price'">
+                ORDER BY b.sale_price asc
+                </when>
+                <otherwise>
+                ORDER BY b.id asc
+                </otherwise>
+            </choose>
+
         limit #{searchStartIndex}, #{size}
     </select>
 
     <select id="countAll"
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
             resultType="long">
-        SELECT count(*) FROM book
-        <if test="keyword != null and keyword != ''">
-            where title like CONCAT('%', #{keyword}, '%')
-        </if>
+            SELECT count(*)
+            FROM book b, author a, translator t, book_category bc
+            WHERE b.id = a.book_id
+            AND bc.book_id = a.book_id
+            AND bc.book_id = t.book_id
+
+            <if test="categoryId != null and categoryId != ''">
+                    AND bc.category_id = #{categoryId}
+            </if>
+            <if test="title != null and title != ''">
+                AND b.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                AND (a.name LIKE CONCAT('%', #{name}, '%') or t.name LIKE CONCAT('%', #{name}, '%'))
+            </if>
+            <if test="isbn != null and isbn != ''">
+                AND (b.isbn10 = #{isbn} or b.isbn13 = #{isbn})
+            </if>
+
+            <choose>
+                <when test="orderType == 'title'">
+                ORDER BY b.title
+                </when>
+                <when test="orderType == 'year'">
+                ORDER BY b.published_at
+                </when>
+                <otherwise>
+                ORDER BY b.id asc
+                </otherwise>
+            </choose>
     </select>
 
 </mapper>
