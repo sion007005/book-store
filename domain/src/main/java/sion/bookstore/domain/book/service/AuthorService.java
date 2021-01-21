@@ -35,4 +35,8 @@ public class AuthorService {
             authorRepository.create(author);
         }
     }
+
+    public List<Author> findAllByName(AuthorSearchCondition condition) {
+        return authorRepository.findAllByName(condition);
+    }
 }

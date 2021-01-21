@@ -35,7 +35,7 @@ public class OnePageParser {
         for (Element element : elements) {
             ParsedBook parsedBook = new ParsedBook();
             Element linkEl = element.selectFirst("span.imgBdr a");
-            String imageUrl = linkEl.selectFirst("img").attr("src");
+//            String imageUrl = linkEl.selectFirst("img").attr("src");
 
             if (Objects.isNull(linkEl)) {
                 log.info("파싱되지 않고 패스 된 책 element : {}", element);

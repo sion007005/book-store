@@ -8,6 +8,6 @@ import sion.bookstore.domain.PageCondition;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class BookCategorySearchCondition extends PageCondition {
-    private Long categoryId;
+public class AuthorSearchCondition extends PageCondition {
+    private String name;
 }

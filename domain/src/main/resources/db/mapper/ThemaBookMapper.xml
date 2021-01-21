@@ -13,9 +13,14 @@
             resultType="sion.bookstore.domain.book.thema.repository.ThemaBook">
         SELECT id, thema_section_id, book_id, created_at, created_by, modified_at, modified_by, deleted
         FROM thema_book
-        <if test="themaSectionId != null">
-            where thema_section_id = #{themaSectionId}
-        </if>
+        <choose>
+            <when test="themaSectionId != null">
+                where thema_section_id = #{themaSectionId} and deleted == false
+            </when>
+            <otherwise>
+                where deleted == false
+            </otherwise>
+        </choose>
         order by book_id asc
         limit #{searchStartIndex}, #{size}
     </select>
