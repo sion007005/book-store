@@ -1,0 +1,9 @@
+CREATE INDEX idx_title ON book (title);
+CREATE INDEX idx_isbn10 ON book (isbn10);
+CREATE INDEX idx_isbn13 ON book (isbn13);
+CREATE INDEX idx_book_id ON book_category (book_id);
+CREATE INDEX idx_category_id ON book_category (category_id);
+CREATE INDEX idx_author_name ON author (name);
+CREATE INDEX idx_book_id ON author (book_id);
+CREATE INDEX idx_translator_name ON translator (name);
+CREATE INDEX idx_book_id ON translator (book_id);
