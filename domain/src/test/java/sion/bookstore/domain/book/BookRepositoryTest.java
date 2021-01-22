@@ -64,12 +64,12 @@ public class BookRepositoryTest {
     @Test
     public void findAll() {
         BookSearchCondition condition = new BookSearchCondition();
-//        condition.setTitle("마음");
+        condition.setTitle("행복");
         condition.setSize(100);
-        condition.setName("이건");
+//        condition.setName("이건");
 //        condition.setCategoryId(9L);
 //        condition.setIsbn("9788983711892");
-        condition.setOrderType("price");
+//        condition.setOrderType("price");
 
         List<Book> bookList = bookRepository.findAll(condition);
 

@@ -63,12 +63,12 @@ public class ThemaSectionService {
     }
 
     private List<Book> getBookListBySectionId(Long id) {
-        List<Book> bookList = new ArrayList<>();
-
         ThemaBookSearchCondition condition = new ThemaBookSearchCondition();
         condition.setThemaSectionId(id);
         List<ThemaBook> themaBookList = themaBookRepository.findBooksByThemaSectionId(condition);
 
+        // TODO join 쿼리 이용해서 for문 돌지않게끔 하기
+        List<Book> bookList = new ArrayList<>();
         for (ThemaBook themaBook : themaBookList) {
             Book book = bookRepository.findOne(themaBook.getBookId());
             bookList.add(book);
@@ -90,14 +90,14 @@ public class ThemaSectionService {
         List<ThemaBook> themaBookMappingList = themaBookRepository.findBooksByThemaSectionId(condition);
 
         for (ThemaBook themaBook : themaBookMappingList) {
+            // TODO db 값도 바꿔야지!
             themaBook.setDeleted(true);
         }
 
         doMappingBooks(themaSection.getId(), bookList);
     }
-
-    public void doMappingBooks(Long themaSectionId, List<Book> bookList) {
-
+    // 데이터를 바꾸는 로직이므로, 공개 범위 고민!
+    private void doMappingBooks(Long themaSectionId, List<Book> bookList) {
         for (Book book : bookList) {
             ThemaBook mapping = new ThemaBook();
             mapping.setThemaSectionId(themaSectionId);
@@ -110,7 +110,6 @@ public class ThemaSectionService {
 
             themaBookRepository.create(mapping);
         }
-
     }
 
 }

@@ -64,25 +64,30 @@
 
     <select id="findAll"
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
-            resultMap = "book" >
-            SELECT b.*
-            FROM book b, author a, translator t, book_category bc
-            WHERE b.id = a.book_id
-            AND bc.book_id = a.book_id
-            AND bc.book_id = t.book_id
+            resultMap = "book">
+            <!-- TODO * 없애기[DONE], join 표준 쿼리로 쓰기[DONE], where절에 속한 것들은 다 indexing 할 것!-->
+            <!-- TODO[DONE] 버그 지금 상태면 공동저자가 있는 책을 검색하면 두 개의 로우가 나옴-->
+            SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.published_at, b.publisher, b.price, b.sale_price, b.thumbnail, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
+            FROM book b
+            INNER JOIN author a ON b.id = a.book_id
+            INNER JOIN book_category bc ON bc.book_id = b.id
+		    LEFT OUTER JOIN translator t ON b.id = t.book_id
+		    WHERE 1=1
 
             <if test="categoryId != null and categoryId != ''">
                 AND bc.category_id = #{categoryId}
             </if>
             <if test="title != null and title != ''">
-                AND b.title LIKE CONCAT('%', #{title}, '%')
+                AND b.title LIKE CONCAT(#{title}, '%')
             </if>
             <if test="name != null and name != ''">
-                AND (a.name LIKE CONCAT('%', #{name}, '%') or t.name LIKE CONCAT('%', #{name}, '%'))
+                AND (a.name LIKE CONCAT(#{name}, '%') or t.name LIKE CONCAT(#{name}, '%'))
             </if>
             <if test="isbn != null and isbn != ''">
                 AND (b.isbn10 = #{isbn} or b.isbn13 = #{isbn})
             </if>
+
+            GROUP BY b.id
 
             <choose>
                 <when test="orderType == 'title'">
