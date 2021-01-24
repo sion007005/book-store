@@ -8,12 +8,12 @@ public class ResponseData {
     private String errorMessage;
     private Object data;
 
-    public ResponseData(boolean status, Object data) {
+    private ResponseData(boolean status, Object data) {
         this.status = status;
         this.data = data;
     }
 
-    public ResponseData(boolean status, String errorMessage) {
+    private ResponseData(boolean status, String errorMessage) {
         this.status = status;
         this.errorMessage = errorMessage;
     }

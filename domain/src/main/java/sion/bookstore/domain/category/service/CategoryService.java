@@ -66,4 +66,12 @@ public class CategoryService {
             categoryIdMappingList.put(parsedCategory.getNumber(), category.getId());
         }
     }
+
+    public CategoryNode findCategoryNode() {
+        List<Category> categories = categoryRepository.findAll(new CategorySearchCondition());
+        CategoryNodeBuilder builder = new CategoryNodeBuilder();
+        CategoryNode node = builder.build(categories);
+
+        return node;
+    }
 }

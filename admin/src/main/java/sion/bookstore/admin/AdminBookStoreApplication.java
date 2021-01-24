@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 public class AdminBookStoreApplication {
 
     public static void main(String[] args) {
+        System.setProperty("spring.profiles.default", "local");
         SpringApplication.run(AdminBookStoreApplication.class, args);
     }
 
