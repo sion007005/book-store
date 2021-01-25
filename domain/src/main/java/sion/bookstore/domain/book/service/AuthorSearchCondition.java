@@ -7,7 +7,7 @@ import sion.bookstore.domain.PageCondition;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class AuthorSearchCondition extends PageCondition {
     private String name;
 }

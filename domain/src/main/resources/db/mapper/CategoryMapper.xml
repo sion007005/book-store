@@ -33,7 +33,7 @@
         <if test="keyword != null and keyword != ''">
             where `name` like CONCAT('%', #{keyword}, '%')
         </if>
-        order by level asc, id asc
+        order by id asc
         limit #{zeroBasePage}, #{size}
     </select>
     <select id="countAll"

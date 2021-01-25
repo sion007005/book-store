@@ -15,15 +15,17 @@ public class CategoryNode {
     private String name;
     private Integer level;
     private Integer order;
-    private CategoryNode parent;
+//    private CategoryNode parent;
+    private Long parentId;
     private List<CategoryNode> children = new ArrayList<>();
 
-    public CategoryNode(Category category, CategoryNode parent) {
+    public CategoryNode(Category category) {
         this.id = category.getId();
         this.name = category.getName();
         this.level = category.getLevel();
         this.order = category.getOrder();
-        this.parent = parent;
+//        this.parent = parent;
+        this.parentId = category.getParentId();
     }
     public boolean getHasChild() {
         return !CollectionUtils.isEmpty(children);

@@ -68,7 +68,10 @@ public class CategoryService {
     }
 
     public CategoryNode findCategoryNode() {
-        List<Category> categories = categoryRepository.findAll(new CategorySearchCondition());
+        CategorySearchCondition condition = new CategorySearchCondition();
+        condition.setSize(1000);
+        List<Category> categories = categoryRepository.findAll(condition);
+
         CategoryNodeBuilder builder = new CategoryNodeBuilder();
         CategoryNode node = builder.build(categories);
 

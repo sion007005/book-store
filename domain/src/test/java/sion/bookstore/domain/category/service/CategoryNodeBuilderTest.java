@@ -24,7 +24,10 @@ public class CategoryNodeBuilderTest {
 
     @Test
     public void build() {
-        List<Category> categories = categoryRepository.findAll(new CategorySearchCondition());
+        CategorySearchCondition condition = new CategorySearchCondition();
+        condition.setSize(1000);
+        List<Category> categories = categoryRepository.findAll(condition);
+
         CategoryNodeBuilder builder = new CategoryNodeBuilder();
         CategoryNode node = builder.build(categories);
 
@@ -38,7 +41,7 @@ public class CategoryNodeBuilderTest {
 
         log.info("id : {}", node.getId());
         log.info("name : {}", node.getName());
-        log.info("parent Name: {}", (Objects.nonNull(node.getParent())? node.getParent().getName() : null));
+        log.info("parent id: {}", (node.getParentId() != 0 ? node.getParentId() : null));
         log.info("children count : {}", node.getChildren().size());
 
         List<CategoryNode> childrenNodeList = node.getChildren();

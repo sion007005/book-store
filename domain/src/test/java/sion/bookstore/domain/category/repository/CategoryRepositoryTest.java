@@ -119,7 +119,7 @@ public class CategoryRepositoryTest {
         List<Category> categoryList = categoryRepository.findAllById(limitId);
 
         categoryList.forEach(category -> {
-            log.info("category level id name: {} {}", category.getLevel(), category.getId(), category.getName());
+            log.info("category level id name: {} {}, {}", category.getLevel(), category.getId(), category.getName());
         });
     }
 }
