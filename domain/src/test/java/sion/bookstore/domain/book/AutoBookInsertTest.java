@@ -31,6 +31,10 @@ public class AutoBookInsertTest {
         List<Category> categoryList = categoryRepository.findAllByCategoryLevel(3);
 
         for (Category category : categoryList) {
+            if (category.getId() == 20) {
+                return;
+            }
+
             String categoryPageUrl = category.getLink();
             bookRegisterFacade.register(categoryPageUrl, category.getId());
         }
