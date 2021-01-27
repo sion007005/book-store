@@ -11,6 +11,7 @@ import sion.bookstore.domain.ApplicationConfiguration;
 import sion.bookstore.domain.book.service.BookRegisterFacade;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
+import sion.bookstore.domain.category.service.CategoryService;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,10 +32,6 @@ public class AutoBookInsertTest {
         List<Category> categoryList = categoryRepository.findAllByCategoryLevel(3);
 
         for (Category category : categoryList) {
-            if (category.getId() == 20) {
-                return;
-            }
-
             String categoryPageUrl = category.getLink();
             bookRegisterFacade.register(categoryPageUrl, category.getId());
         }

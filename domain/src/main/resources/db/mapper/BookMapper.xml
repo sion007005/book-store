@@ -111,35 +111,27 @@
             parameterType="sion.bookstore.domain.book.service.BookSearchCondition"
             resultType="long">
             SELECT count(*)
-            FROM book b, author a, translator t, book_category bc
-            WHERE b.id = a.book_id
-            AND bc.book_id = a.book_id
-            AND bc.book_id = t.book_id
+            FROM(SELECT b.id
+            FROM book b
+            INNER JOIN author a ON b.id = a.book_id
+            INNER JOIN book_category bc ON bc.book_id = b.id
+            LEFT OUTER JOIN translator t ON b.id = t.book_id
+            WHERE 1=1
 
             <if test="categoryId != null and categoryId != ''">
-                    AND bc.category_id = #{categoryId}
+                AND bc.category_id = #{categoryId}
             </if>
             <if test="title != null and title != ''">
-                AND b.title LIKE CONCAT('%', #{title}, '%')
+                AND b.title LIKE CONCAT(#{title}, '%')
             </if>
             <if test="name != null and name != ''">
-                AND (a.name LIKE CONCAT('%', #{name}, '%') or t.name LIKE CONCAT('%', #{name}, '%'))
+                AND (a.name LIKE CONCAT(#{name}, '%') or t.name LIKE CONCAT(#{name}, '%'))
             </if>
             <if test="isbn != null and isbn != ''">
                 AND (b.isbn10 = #{isbn} or b.isbn13 = #{isbn})
             </if>
 
-            <choose>
-                <when test="orderType == 'title'">
-                ORDER BY b.title
-                </when>
-                <when test="orderType == 'year'">
-                ORDER BY b.published_at
-                </when>
-                <otherwise>
-                ORDER BY b.id asc
-                </otherwise>
-            </choose>
+            GROUP BY b.id) count
     </select>
 
 </mapper>

@@ -64,7 +64,7 @@ public class BookRepositoryTest {
     @Test
     public void findAll() {
         BookSearchCondition condition = new BookSearchCondition();
-        condition.setTitle("행복");
+        condition.setTitle("엄마");
         condition.setSize(100);
 //        condition.setName("이건");
 //        condition.setCategoryId(9L);
