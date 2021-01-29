@@ -1,0 +1,33 @@
+package sion.bookstore.admin.controller.book;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import sion.bookstore.admin.ResponseData;
+import sion.bookstore.admin.controller.util.FileUploadUtil;
+import sion.bookstore.admin.controller.util.validator.BookValidator;
+import sion.bookstore.domain.book.repository.Book;
+import sion.bookstore.domain.book.service.BookService;
+
+@Controller
+@RequiredArgsConstructor
+public class BookCreateController {
+    private final BookService bookService;
+    private final BookValidator bookValidator;
+    private final FileUploadUtil fileUploadUtil;
+
+    @Value("${image.root.path}")
+    private String imagePath;
+
+    @PostMapping("/book/create")
+    @ResponseBody
+    public ResponseData create(Book book, Long categoryId) {
+        bookValidator.validate(book);
+        book.setThumbnail(fileUploadUtil.uploadFiles(book.getCoverImageFile()));
+        bookService.createAndCategoryMapping(categoryId, book);
+
+        return ResponseData.success(book.getId());
+    }
+}

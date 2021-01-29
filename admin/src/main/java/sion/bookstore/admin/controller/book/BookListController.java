@@ -25,56 +25,11 @@ public class BookListController {
 
     @GetMapping("/book/list")
     @ResponseBody
-    public ResponseData getList(
-//            @PageableDefault(size=5, sort="id") Pageable pageable,
-            @RequestParam HashMap<String, String> searchCondition) {
-        BookSearchCondition condition = setSearchCondition(searchCondition);
-//        if (pageable.getPageSize() != 5 || pageable.getPageNumber() != 1) {
-//            condition.setSize(pageable.getPageSize());
-//            condition.setPage(pageable.getPageNumber());
-//        }
+    public ResponseData getList(BookSearchCondition searchCondition) {
+        // TODO 파라미터 받을 때는 절대 map이 아닌 Model 객체
 
-        Page<Book> bookList = bookService.findAll(condition);
-        return ResponseData.success(bookList);
-    }
-
-    public BookSearchCondition setSearchCondition(HashMap condition) {
-        // TODO 이렇게 하는건... OCP에 어긋남
-        BookSearchCondition bookSearchCondition = new BookSearchCondition();
-
-        // 검색정보
-        if (Objects.nonNull(condition.get("title"))) {
-            bookSearchCondition.setTitle((String) condition.get("title"));
-        }
-
-        if (Objects.nonNull(condition.get("categoryId"))) {
-            bookSearchCondition.setCategoryId((Long) (condition.get("categoryId")));
-        }
-
-        if (Objects.nonNull(condition.get("name"))) {
-            bookSearchCondition.setName((String) (condition.get("name")));
-        }
-
-        if (Objects.nonNull(condition.get("isbn"))) {
-            bookSearchCondition.setIsbn((String) (condition.get("isbn")));
-        }
-
-        // 정렬 정보
-        if (Objects.nonNull(condition.get("orderType"))) {
-            bookSearchCondition.setOrderType((String) (condition.get("orderType")));
-        }
-
-        // 페이지 정보
-        if (Objects.nonNull(condition.get("page"))) {
-            bookSearchCondition.setPage(Integer.parseInt((String) (condition.get("page"))));
-        }
-
-        if (Objects.nonNull(condition.get("size"))) {
-            bookSearchCondition.setSize(Integer.parseInt((String) (condition.get("size"))));
-        }
-
-
-        return bookSearchCondition;
+        Page<Book> pageBook = bookService.findAll(searchCondition);
+        return ResponseData.success(pageBook);
     }
 
 }

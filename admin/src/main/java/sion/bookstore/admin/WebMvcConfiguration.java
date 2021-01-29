@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.dialect.IDialect;
@@ -65,6 +66,14 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Bean
 	public MappingJackson2JsonView jsonView(){
 		return new MappingJackson2JsonView();
+	}
+
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setDefaultEncoding("UTF-8"); // 파일 인코딩 설정
+		multipartResolver.setMaxUploadSizePerFile(1024 * 1024 * 10); // 파일당 업로드 크기 제한 (5MB)
+		return multipartResolver;
 	}
 }
 

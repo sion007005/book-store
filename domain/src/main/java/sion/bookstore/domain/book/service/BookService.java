@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,12 +25,23 @@ public class BookService {
         return bookRepository.create(book);
     }
 
-    public void createAll(Long categoryId, List<Book> bookList) {
+    public void createAndCategoryMapping(Long categoryId, Book book) {
+        book.setCreatedAt(new Date());
+        // TODO 로그인한 관리자 아이디로 등록하기
+        book.setCreatedBy("tester");
+        book.setModifiedAt(new Date());
+        book.setModifiedBy("tester");
+        book.setDeleted(false);
+
+        create(book);
+        authorService.create(book);
+        translatorService.create(book);
+        bookCategoryService.create(categoryId, book.getId());
+    }
+
+    public void createAllByBookList(Long categoryId, List<Book> bookList) {
         for (Book book : bookList) {
-            create(book);
-            authorService.create(book);
-            translatorService.create(book);
-            bookCategoryService.create(categoryId, book.getId());
+            createAndCategoryMapping(categoryId, book);
         }
     }
 

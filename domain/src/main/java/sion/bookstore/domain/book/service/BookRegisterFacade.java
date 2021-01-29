@@ -19,6 +19,6 @@ public class BookRegisterFacade {
     public void register(String url, Long categoryId) throws IOException {
         List<ParsedBook> parsedBookList = onePageParser.parse(url);
         List<Book> bookList = kaKaoBookMaker.requestBookList(parsedBookList);
-        bookService.createAll(categoryId, bookList);
+        bookService.createAllByBookList(categoryId, bookList);
     }
 }
