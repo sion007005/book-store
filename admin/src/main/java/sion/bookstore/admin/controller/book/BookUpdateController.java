@@ -1,7 +1,6 @@
 package sion.bookstore.admin.controller.book;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,21 +12,21 @@ import sion.bookstore.domain.book.service.BookService;
 
 @Controller
 @RequiredArgsConstructor
-public class BookCreateController {
+public class BookUpdateController {
     private final BookService bookService;
     private final BookValidator bookValidator;
-    private final FileUploadUtil fileUploadUtil;
+    private  final FileUploadUtil fileUploadUtil;
 
-    @Value("${image.root.path}")
-    private String imagePath;
-
-    @PostMapping("/book/create")
+    @PostMapping("/book/{id}")
     @ResponseBody
-    public ResponseData create(Book book, Long categoryId) {
+    public ResponseData update(Book book) {
         bookValidator.validate(book);
+        // TODO update form view에서 기존의 이미지 thumbnail값을 hidden으로 보내줘야 함
+        fileUploadUtil.deleteExistingFile(book.getThumbnail());
         book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile()));
-        bookService.createAndCategoryMapping(categoryId, book);
+        bookService.update(book);
 
         return ResponseData.success(book.getId());
     }
+
 }

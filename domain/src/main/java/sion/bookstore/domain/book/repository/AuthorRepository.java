@@ -12,4 +12,5 @@ public interface AuthorRepository {
     Long create(Author author);
     void update(Author author);
     List<Author> findAllByName(AuthorSearchCondition condition);
+    List<Author> findAllByBookId(Long bookId);
 }

@@ -21,4 +21,10 @@
         WHERE id = #{id};
     </update>
 
+    <select id="findAllByBookId"
+            resultType="sion.bookstore.domain.book.repository.Translator">
+        SELECT id, book_id, `name`, created_at, created_by, modified_at, modified_by, deleted
+        FROM translator
+        WHERE  book_id = #{bookId}
+    </select>
 </mapper>

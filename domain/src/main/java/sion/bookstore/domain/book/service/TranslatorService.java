@@ -34,8 +34,22 @@ public class TranslatorService {
         }
     }
 
-    public void update(Translator translator) {
-        translatorRepository.update(translator);
+    public void update(Book book) {
+        List<Translator> translators = book.getTranslators();
+        for (Translator translator : translators) {
+            translator.setBookId(book.getId());
+            translator.setCreatedAt(book.getCreatedAt());
+            translator.setCreatedBy(book.getCreatedBy());
+            translator.setModifiedAt(new Date());
+            translator.setModifiedBy("sion");
+            translator.setDeleted(false);
+
+            translatorRepository.update(translator);
+        }
+    }
+
+    public List<Translator> findAllByBookId(Long bookId) {
+        return translatorRepository.findAllByBookId(bookId);
     }
 
 }

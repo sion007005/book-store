@@ -32,4 +32,11 @@
         limit #{searchStartIndex}, #{size}
     </select>
 
+    <select id="findAllByBookId"
+            resultType="sion.bookstore.domain.book.repository.Author">
+        SELECT id, book_id, `name`, created_at, created_by, modified_at, modified_by, deleted
+        FROM author
+        WHERE  book_id = #{bookId}
+    </select>
+
 </mapper>

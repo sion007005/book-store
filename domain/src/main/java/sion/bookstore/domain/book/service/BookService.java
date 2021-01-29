@@ -3,12 +3,12 @@ package sion.bookstore.domain.book.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sion.bookstore.domain.auth.UserContext;
+import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
+import sion.bookstore.domain.book.repository.Translator;
 
 import java.util.Date;
 import java.util.List;
@@ -46,7 +46,14 @@ public class BookService {
     }
 
     public Book findOne(Long bookId) {
-        return bookRepository.findOne(bookId);
+        Book book = bookRepository.findOne(bookId);
+        List<Author> authors = authorService.findAllByBookId(bookId);
+        List<Translator> translators = translatorService.findAllByBookId(bookId);
+
+        book.setAuthors(authors);
+        book.setTranslators(translators);
+
+        return book;
     }
 
     //TODO
@@ -67,7 +74,16 @@ public class BookService {
         return bookPage;
     }
 
-    public void update(Book book) {
+    public Long update(Book book) {
+        // TODO 수정한 사람 : 현재 로그인한 관리자 아이디로 등록하기
+        book.setModifiedAt(new Date());
+        book.setModifiedBy("tester");
+        book.setDeleted(false);
+
         bookRepository.update(book);
+        authorService.update(book);
+        translatorService.update(book);
+
+        return book.getId();
     }
 }

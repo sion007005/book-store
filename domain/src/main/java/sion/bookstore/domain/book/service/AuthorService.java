@@ -33,6 +33,28 @@ public class AuthorService {
         }
     }
 
+    // TODO CHECK
+    // author와 translator를 update 할 때,
+    // createdAt과 createdBy를 hidden으로 넘겨주지 않고
+    // book의 createdAt과 createdBy를 따라간다.
+    public void update(Book book) {
+        List<Author> authors = book.getAuthors();
+        for (Author author : authors) {
+            author.setBookId(book.getId());
+            author.setCreatedAt(book.getCreatedAt());
+            author.setCreatedBy(book.getCreatedBy());
+            author.setModifiedAt(new Date());
+            author.setModifiedBy("sion");
+            author.setDeleted(false);
+
+            authorRepository.update(author);
+        }
+    }
+
+    public List<Author> findAllByBookId(Long bookId) {
+        return authorRepository.findAllByBookId(bookId);
+    }
+
     public List<Author> findAllByName(AuthorSearchCondition condition) {
         return authorRepository.findAllByName(condition);
     }

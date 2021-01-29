@@ -34,7 +34,7 @@ public class FileUploadUtil {
      * @param file - 파일
      * @return 이미지 저장 경로 / 실패 시 failed
      */
-    public String uploadFiles(MultipartFile file) {
+    public String uploadFile(MultipartFile file) {
 
         /* 파일이 없으면 failed 문자열을 반환 */
         if (Objects.isNull(file)) {
@@ -63,6 +63,13 @@ public class FileUploadUtil {
 
         } catch (Exception e) {
             throw new FileUploadException("failed to save file...");
+        }
+    }
+
+    public void deleteExistingFile(String originalImagePath) {
+        File file = new File(originalImagePath);
+        if (file.exists()) {
+            file.delete();
         }
     }
 }

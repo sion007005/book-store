@@ -27,6 +27,7 @@ public class Book {
     private Integer salePrice;
     private String thumbnail;
     private String status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
     private String createdBy;
     private Date modifiedAt;
