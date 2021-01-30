@@ -23,7 +23,7 @@ public class IsbnValidator implements Validator<List<String>> {
         Boolean isbn10Validated = checkNumberAndLength(isbns.get(0), 10);
         Boolean isbn13Validated = checkNumberAndLength(isbns.get(1), 13);
 
-        if (isbn10Validated == false & isbn13Validated == false) {
+        if (isbn10Validated == false && isbn13Validated == false) {
             throw new ValidationException("isbn 번호가 유효하지 않습니다.");
         }
     }
