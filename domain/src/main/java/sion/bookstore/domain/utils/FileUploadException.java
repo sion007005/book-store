@@ -1,4 +1,4 @@
-package sion.bookstore.admin.controller.exception;
+package sion.bookstore.domain.utils;
 
 public class FileUploadException extends RuntimeException {
     public FileUploadException(Throwable e) {

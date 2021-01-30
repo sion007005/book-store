@@ -7,8 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(ignoreResourceNotFound = true,
 	value = {
 		"classpath:application-domain.properties",
-		"classpath:application-domain-${spring.profiles.active}.properties",
-		"classpath:application-domain-override-${override.properties}.properties"
+		"classpath:application-domain-${spring.profiles.active}.properties"
 	})
 public class PropertiesConfiguration {
 }

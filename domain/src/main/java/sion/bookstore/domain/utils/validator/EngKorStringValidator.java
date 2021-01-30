@@ -1,4 +1,4 @@
-package sion.bookstore.admin.controller.util.validator;
+package sion.bookstore.domain.utils.validator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Component
-public class NameValidator {
+public class EngKorStringValidator {
     private final HasValueValidator hasValueValidator;
 
     public void validate(String content, String nameType) {

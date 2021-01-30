@@ -1,11 +1,11 @@
-package sion.bookstore.admin.controller.util.validator;
+package sion.bookstore.domain.utils.validator;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class NumberValidator implements Validator<String> {
     @Override
-    public void validate(String content) {
+    public void validate(String content, String type) {
         for (int i = 0; i < content.length(); i++) {
             try {
                 if (!Character.isDigit(content.charAt(i))) {

@@ -1,10 +1,9 @@
-package sion.bookstore.admin.controller.util;
+package sion.bookstore.domain.utils;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import sion.bookstore.admin.controller.exception.FileUploadException;
 
 import java.io.File;
 import java.io.IOException;

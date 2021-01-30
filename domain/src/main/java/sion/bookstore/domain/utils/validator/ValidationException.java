@@ -1,4 +1,4 @@
-package sion.bookstore.admin.controller.util.validator;
+package sion.bookstore.domain.utils.validator;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(Throwable e) {

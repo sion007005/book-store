@@ -1,4 +1,4 @@
-package sion.bookstore.admin.controller.util.validator;
+package sion.bookstore.domain.utils.validator;
 
 import org.springframework.stereotype.Component;
 
