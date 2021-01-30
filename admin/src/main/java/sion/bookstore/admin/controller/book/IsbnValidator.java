@@ -15,32 +15,32 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @Component
-//TODO 완성하기
 public class IsbnValidator implements Validator<List<String>> {
     private final NumberValidator numberValidator;
     private final StringLengthValidator stringLengthValidator;
-    private int exceptionCount;
 
     public void validate(List<String> isbns, String type) {
-        checkNumberAndLength(isbns.get(0), 10);
-        checkNumberAndLength(isbns.get(1), 13);
+        Boolean isbn10Validated = checkNumberAndLength(isbns.get(0), 10);
+        Boolean isbn13Validated = checkNumberAndLength(isbns.get(1), 13);
 
-        if (exceptionCount > 3) {
+        if (isbn10Validated == false & isbn13Validated == false) {
             throw new ValidationException("isbn 번호가 유효하지 않습니다.");
         }
     }
 
-    private void checkNumberAndLength(String isbn, int length) {
+    private Boolean checkNumberAndLength(String isbn, int length) {
         try {
             numberValidator.validate(isbn, "isbn" + length);
         } catch (Exception e) {
-            exceptionCount++;
+            return false;
         }
 
         try {
             stringLengthValidator.validate(isbn, length);
         } catch (Exception e) {
-            exceptionCount++;
+            return false;
         }
+
+        return true;
     }
 }
