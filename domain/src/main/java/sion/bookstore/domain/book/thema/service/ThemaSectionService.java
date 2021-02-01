@@ -13,6 +13,7 @@ import sion.bookstore.domain.book.thema.repository.ThemaSectionRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +46,11 @@ public class ThemaSectionService {
     //TODO[DONE] 테마 섹션 한개 + 속한 책들 가져오기
     public ThemaSection findOneWithBooks(Long id) {
         ThemaSection themaSection = themaSectionRepository.findOne(id);
-        List<Book> bookList = getBookListBySectionId(id);
-        themaSection.setBooks(bookList);
+
+        if (Objects.nonNull(themaSection)) {
+            List<Book> bookList = getBookListBySectionId(id);
+            themaSection.setBooks(bookList);
+        }
 
         return themaSection;
     }

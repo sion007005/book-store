@@ -10,7 +10,7 @@
 
     <select id="findOne" resultType="sion.bookstore.domain.book.thema.repository.ThemaSection">
         SELECT id, order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted
-        FROM thema_section WHERE id = #{id};
+        FROM thema_section WHERE id = #{id} and deleted = false;
     </select>
 
 
