@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.repository.BookRepository;
+import sion.bookstore.domain.book.service.BookService;
 import sion.bookstore.domain.book.thema.repository.ThemaBook;
 import sion.bookstore.domain.book.thema.repository.ThemaBookRepository;
 import sion.bookstore.domain.book.thema.repository.ThemaSection;
@@ -19,15 +19,21 @@ import java.util.List;
 public class ThemaSectionService {
     private final ThemaSectionRepository themaSectionRepository;
     private final ThemaBookRepository themaBookRepository;
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
     // TODO[DONE] 아래 두 역할을 다 해줘야 함
     //  1. 테마 섹션 저장
-    //  2. ThemaBook 매핑 (* bookList보다는 bookIdList를 받아오는게 더 나은가?)
+    //  2. ThemaBook 매핑
     @Transactional(readOnly = false)
-    public Long create(ThemaSection themaSection, List<Book> bookList) {
+    public Long createAndBookMapping(ThemaSection themaSection) {
+        themaSection.setCreatedAt(new Date());
+        themaSection.setCreatedBy("tester");
+        themaSection.setModifiedAt(new Date());
+        themaSection.setModifiedBy("tester");
+        themaSection.setDeleted(false);
+
         themaSectionRepository.create(themaSection);
-        doMappingBooks(themaSection.getId(), bookList);
+        doMappingBooks(themaSection);
 
         return themaSection.getId();
     }
@@ -65,16 +71,17 @@ public class ThemaSectionService {
     private List<Book> getBookListBySectionId(Long id) {
         ThemaBookSearchCondition condition = new ThemaBookSearchCondition();
         condition.setThemaSectionId(id);
-        List<ThemaBook> themaBookList = themaBookRepository.findBooksByThemaSectionId(condition);
+        // TODO[DONE] join 쿼리 이용해서 for문 돌지않게끔 하기
+        List<Book> bookList = themaBookRepository.findBooksByThemaSectionId(condition);
 
-        // TODO join 쿼리 이용해서 for문 돌지않게끔 하기
-        List<Book> bookList = new ArrayList<>();
-        for (ThemaBook themaBook : themaBookList) {
-            Book book = bookRepository.findOne(themaBook.getBookId());
-            bookList.add(book);
+        // TODO CHECK 80번라인 만으로는 author정보 못 받아와서, 아래에서 author 정보를 담은 책으로 새로 받아옴
+        List<Book> bookListWithAuthors = new ArrayList<>();
+        for (Book book : bookList) {
+            Book bookWithAuthor = bookService.findOne(book.getId());
+            bookListWithAuthors.add(bookWithAuthor);
         }
 
-        return bookList;
+        return bookListWithAuthors;
     }
 
     //TODO[DONE]
@@ -82,25 +89,22 @@ public class ThemaSectionService {
     // 2. ThemaBook 삭제(deleted -> true)
     // 3. 신규 ThemaBook(새로 등록시켜준 책들) 등록
     @Transactional
-    public void update(ThemaSection themaSection, List<Book> bookList) {
+    public void update(ThemaSection themaSection) {
+        themaSection.setModifiedAt(new Date());
+        themaSection.setModifiedBy("tester");
+        themaSection.setDeleted(false);
         themaSectionRepository.update(themaSection);
 
-        ThemaBookSearchCondition condition = new ThemaBookSearchCondition();
-        condition.setThemaSectionId(themaSection.getId());
-        List<ThemaBook> themaBookMappingList = themaBookRepository.findBooksByThemaSectionId(condition);
+        deleteBooksMappedByThema(themaSection.getId());
 
-        for (ThemaBook themaBook : themaBookMappingList) {
-            // TODO db 값도 바꿔야지!
-            themaBook.setDeleted(true);
-        }
-
-        doMappingBooks(themaSection.getId(), bookList);
+        doMappingBooks(themaSection);
     }
     // 데이터를 바꾸는 로직이므로, 공개 범위 고민!
-    private void doMappingBooks(Long themaSectionId, List<Book> bookList) {
+    private void doMappingBooks(ThemaSection themaSection) {
+        List<Book> bookList = themaSection.getBooks();
         for (Book book : bookList) {
             ThemaBook mapping = new ThemaBook();
-            mapping.setThemaSectionId(themaSectionId);
+            mapping.setThemaSectionId(themaSection.getId());
             mapping.setBookId(book.getId());
             mapping.setCreatedAt(new Date());
             mapping.setCreatedBy("sion");
@@ -110,6 +114,30 @@ public class ThemaSectionService {
 
             themaBookRepository.create(mapping);
         }
+    }
+
+    private void deleteBooksMappedByThema(Long themaSectionId) {
+        ThemaBookSearchCondition condition = new ThemaBookSearchCondition();
+        condition.setThemaSectionId(themaSectionId);
+        List<ThemaBook> themaBookMappingList = themaBookRepository.findThemaBooksByThemaSectionId(condition);
+
+        for (ThemaBook themaBook : themaBookMappingList) {
+            themaBook.setModifiedAt(new Date());
+            themaBook.setModifiedBy("tester");
+            themaBook.setDeleted(true);
+
+            themaBookRepository.update(themaBook);
+        }
+    }
+
+    public void delete(Long id) {
+        ThemaSection themaSection = themaSectionRepository.findOne(id);
+        themaSection.setModifiedAt(new Date());
+        themaSection.setModifiedBy("tester");
+        themaSection.setDeleted(true);
+        themaSectionRepository.update(themaSection);
+        // TODO CHECK 굳이 끊어줄 필요가 없나? 지난 테마를 불러올 수도 있으니까..?
+        deleteBooksMappedByThema(id);
     }
 
 }

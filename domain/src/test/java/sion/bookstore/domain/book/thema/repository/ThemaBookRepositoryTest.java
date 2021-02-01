@@ -39,7 +39,7 @@ public class ThemaBookRepositoryTest {
         ThemaBookSearchCondition condition = new ThemaBookSearchCondition();
         condition.setThemaSectionId(1L);
 
-        List<ThemaBook> books = themaBookRepository.findBooksByThemaSectionId(condition);
+        List<ThemaBook> books = themaBookRepository.findThemaBooksByThemaSectionId(condition);
 
         assertEquals(2, books.size());
     }

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 public class FileUploadUtil {
     /** 업로드 경로 */
-    @Value("${img.root.path}")
+    @Value("${image.root.path}")
     private String uploadPath;
 
     @Value("${basic.img.root.path}")

@@ -15,7 +15,7 @@
 
 
     <update id="update" parameterType="sion.bookstore.domain.book.thema.repository.ThemaSection">
-        UPDATE book set
+        UPDATE thema_section set
             order_no = #{orderNo},
             type = #{type},
             title = #{title},
@@ -33,8 +33,9 @@
             resultType="sion.bookstore.domain.book.thema.repository.ThemaSection">
         SELECT id, order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted
         FROM thema_section
+        WHERE deleted = false
         <if test="keyword != null and keyword != ''">
-            where type like CONCAT('%', #{keyword}, '%')
+            and type like CONCAT('%', #{keyword}, '%')
         </if>
         order by order_no asc
         limit #{searchStartIndex}, #{size}

@@ -8,21 +8,52 @@
         values(#{themaSectionId}, #{bookId}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <select id="findBooksByThemaSectionId"
+    <update id="update" parameterType="sion.bookstore.domain.book.thema.repository.ThemaBook">
+        UPDATE thema_book SET
+            thema_section_id = #{themaSectionId},
+            book_id = #{bookId},
+            created_at = #{createdAt},
+            created_by = #{createdBy},
+            modified_at = #{modifiedAt},
+            modified_by = #{modifiedBy},
+            deleted = #{deleted}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findThemaBooksByThemaSectionId"
             parameterType="sion.bookstore.domain.book.thema.service.ThemaBookSearchCondition"
             resultType="sion.bookstore.domain.book.thema.repository.ThemaBook">
         SELECT id, thema_section_id, book_id, created_at, created_by, modified_at, modified_by, deleted
         FROM thema_book
         <choose>
             <when test="themaSectionId != null">
-                where thema_section_id = #{themaSectionId} and deleted == false
+                where thema_section_id = #{themaSectionId} and deleted = false
             </when>
             <otherwise>
-                where deleted == false
+                where deleted = false
             </otherwise>
         </choose>
         order by book_id asc
         limit #{searchStartIndex}, #{size}
     </select>
 
+    <select id="findBooksByThemaSectionId"
+            parameterType="sion.bookstore.domain.book.thema.service.ThemaBookSearchCondition"
+            resultType="sion.bookstore.domain.book.repository.Book">
+        SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.published_at, b.publisher, b.price, b.sale_price, b.thumbnail, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
+        FROM book b
+        INNER JOIN thema_book tb ON tb.book_id = b.id
+
+        <choose>
+            <when test="themaSectionId != null">
+                WHERE tb.thema_section_id = #{themaSectionId} and tb.deleted = false
+            </when>
+            <otherwise>
+                where tb.deleted = false
+            </otherwise>
+        </choose>
+
+        order by tb.id asc
+        limit #{searchStartIndex}, #{size}
+    </select>
 </mapper>

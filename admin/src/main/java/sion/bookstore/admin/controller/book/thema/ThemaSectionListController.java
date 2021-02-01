@@ -1,13 +1,13 @@
-package sion.bookstore.front.book.thema.controller;
+package sion.bookstore.admin.controller.book.thema;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.book.thema.repository.ThemaSection;
 import sion.bookstore.domain.book.thema.service.ThemaSectionSearchCondition;
 import sion.bookstore.domain.book.thema.service.ThemaSectionService;
-import sion.bookstore.front.ResponseData;
 
 import java.util.List;
 
