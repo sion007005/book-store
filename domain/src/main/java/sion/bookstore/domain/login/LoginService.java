@@ -30,22 +30,22 @@ public class LoginService {
                     String encryptedSid = getEncryptedSid(member.getId());
                     return encryptedSid;
                 } catch (Exception e) {
-                    throw new LoginProcessException(e.getMessage(), e);
+                    throw new AuthenticationException(e.getMessage(), e);
                 }
             }
         }
 
-        throw new LoginProcessException("회원 정보에 없는 이메일 주소이거나, 비밀번호가 올바르지 않습니다.");
+        throw new AuthenticationException("회원 정보에 없는 이메일 주소이거나, 비밀번호가 올바르지 않습니다.");
     }
 
-    private String getEncryptedSid(int memberId) {
+    private String getEncryptedSid(Long memberId) {
 
         try {
             AES256Util encryptUtil = new AES256Util();
             return encryptUtil.encrypt(String.valueOf(memberId));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new LoginProcessException(e.getMessage(), e);
+            throw new AuthenticationException(e.getMessage(), e);
         }
     }
 }

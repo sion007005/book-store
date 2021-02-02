@@ -10,7 +10,7 @@ import java.net.URL;
 
 @Service
 public class ImageUploadService {
-    @Value("${image.root.path}")
+    @Value("${book.image.path}")
     private String thumbnailRootPath;
 
     public String upload(String imageUrl, String fileName, String fileType) {

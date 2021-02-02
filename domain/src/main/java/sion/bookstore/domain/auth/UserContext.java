@@ -19,14 +19,13 @@ public class UserContext {
         THREAD_LOCAL.remove();
     }
 
-    public static boolean isLogin() {
+    public static boolean authenticated() {
         User user = get();
-
-        return user.isLogin();
+        return user.authenticated();
     }
 
-    public static boolean isNotLogin() {
-        return !isLogin();
+    public static boolean unauthenticated() {
+        return !authenticated();
     }
 
 }

@@ -17,14 +17,14 @@ public class BookCreateController {
     private final BookValidator bookValidator;
     private final FileUploadUtil fileUploadUtil;
 
-    @Value("${image.root.path}")
+    @Value("${book.image.path}")
     private String imagePath;
 
     @PostMapping("/book/create")
     @ResponseBody
     public ResponseData create(Book book, Long categoryId) {
         bookValidator.validate(book, "book");
-        book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile()));
+        book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
         bookService.createAndCategoryMapping(categoryId, book);
 
         return ResponseData.success(book.getId());

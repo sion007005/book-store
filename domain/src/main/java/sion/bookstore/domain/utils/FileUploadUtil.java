@@ -1,7 +1,6 @@
 package sion.bookstore.domain.utils;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,12 +11,6 @@ import java.util.UUID;
 
 @Component
 public class FileUploadUtil {
-    /** 업로드 경로 */
-    @Value("${image.root.path}")
-    private String uploadPath;
-
-    @Value("${basic.img.root.path}")
-    private String basicImagePath;
 
     /**
      * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
@@ -28,12 +21,11 @@ public class FileUploadUtil {
     }
 
     /**
-     * 서버에 첨부 파일을 생성 후 업로드 성공 시 이미지가 저장된 경로를,
-     * 업로드 할 파일이 없을 경우 기본 이미지 경로를 반환한다.
+     * 서버에 첨부 파일을 생성 후 업로드 성공 시 이미지가 저장된 경로를 반환한다.
      * @param file - 파일
      * @return 이미지 저장 경로 / 실패 시 failed
      */
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String uploadPath) {
 
         /* 파일이 없으면 failed 문자열을 반환 */
         if (Objects.isNull(file)) {
@@ -46,7 +38,6 @@ public class FileUploadUtil {
             dir.mkdirs();
         }
 
-        /* 파일 개수만큼 forEach 실행 */
         try {
             /* 파일 확장자 */
             final String extension = FilenameUtils.getExtension(file.getOriginalFilename());

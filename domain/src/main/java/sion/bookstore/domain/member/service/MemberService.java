@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.repository.MemberRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,11 +15,26 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public Integer create(Member member) {
+    public Long create(Member member) {
+        member.setCreatedAt(new Date());
+        // TODO 멤버 가입시 createdBy & modifiedBy는 누구로? (admin User / general User)
+        member.setCreatedBy(member.getEmail());
+        member.setModifiedAt(new Date());
+        member.setModifiedBy(member.getEmail());
+        member.setDeleted(false);
+
         return memberRepository.create(member);
     }
 
-    public Member findOneById(Integer id) {
+    public Long update(Member member) {
+        member.setModifiedAt(new Date());
+        member.setModifiedBy(member.getEmail());
+        member.setDeleted(false);
+
+        return memberRepository.update(member);
+    }
+
+    public Member findOneById(Long id) {
         return memberRepository.findOneById(id);
     }
 

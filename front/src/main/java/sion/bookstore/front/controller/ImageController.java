@@ -1,4 +1,4 @@
-package sion.bookstore.front.book.thema.controller;
+package sion.bookstore.front.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;

@@ -39,7 +39,7 @@
         </if>
     </select>
 
-    <update id="update" parameterType="sion.bookstore.domain.member.repository.Member">
+    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Member">
         UPDATE member set
             `name` = #{name},
             email = #{email},

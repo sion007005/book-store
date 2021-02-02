@@ -42,7 +42,7 @@
         FROM book WHERE id = #{id};
     </select>
 
-    <update id="update" parameterType="sion.bookstore.domain.book.repository.Book">
+    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Book">
         UPDATE book set
             title = #{title},
             content = #{content},

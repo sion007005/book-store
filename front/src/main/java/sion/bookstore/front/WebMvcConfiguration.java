@@ -1,5 +1,6 @@
 package sion.bookstore.front;
 
+import lombok.RequiredArgsConstructor;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,19 +11,18 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import sion.bookstore.front.interceptor.LoginInterceptor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebMvc
 @Order(0)
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	private final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-	public WebMvcConfiguration(MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter) {
-		this.mappingJackson2HttpMessageConverter = mappingJackson2HttpMessageConverter;
-	}
+	private final LoginInterceptor loginInterceptor;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -37,6 +37,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login");
 //		registry.addInterceptor(webRequestAuthInterceptor).addPathPatterns("/**");
 //		registry.addInterceptor(webRequestUserTrackingInterceptor).addPathPatterns("/**").excludePathPatterns("/");
 //		registry.addInterceptor(serviceMaintenanceInterceptor).addPathPatterns("/**").excludePathPatterns("/service/**","/static/**");

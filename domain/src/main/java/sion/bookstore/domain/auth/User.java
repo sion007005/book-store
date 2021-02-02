@@ -1,7 +1,7 @@
 package sion.bookstore.domain.auth;
 
 public interface User {
-    boolean isLogin();
+    boolean authenticated();
     Integer getMemberId();
     String getUserEmail();
     String getUserName();

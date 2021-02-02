@@ -1,41 +1,33 @@
-package sion.bookstore.admin;
+package sion.bookstore.front.login;
 
 import sion.bookstore.domain.auth.User;
 
 import java.util.Objects;
 
-public class AdminUser implements User {
-
+public class GeneralUser implements User {
     private final Long memberId;
     private final String userEmail;
     private final String userName;
     private final String accessIp;
 
-    private AdminUser(Long memberId, String userEmail, String userName, String accessIp) {
+    private GeneralUser(Long memberId, String userEmail, String userName, String accessIp) {
         this.memberId = memberId;
         this.userEmail = userEmail;
         this.userName = userName;
         this.accessIp = accessIp;
     }
 
-    public static AdminUser authenticatedUser(Long memberId, String userEmail, String userName, String accessIp) {
-        return new AdminUser(memberId, userEmail, userName, accessIp);
+    public static GeneralUser authenticatedUser(Long memberId, String userEmail, String userName, String accessIp) {
+        return new GeneralUser(memberId, userEmail, userName, accessIp);
     }
 
-    public static AdminUser unauthenticatedUser(String accessIp) {
-        return new AdminUser(null, null, null, accessIp);
+    public static GeneralUser unauthenticatedUser(String accessIp) {
+        return new GeneralUser(null, null, null, accessIp);
     }
 
     @Override
-    //TODO CHECK 어드민 유저임을 이메일 주소로 한번 더 확인
     public boolean authenticated() {
-        if (Objects.isNull(userEmail)) {
-            return false;
-        }
-
-        int index = userEmail.indexOf("@");
-        String emailAddress = userEmail.substring(index + 1);
-        if (emailAddress == "sionstore.com") {
+        if (Objects.nonNull(userEmail)) {
             return true;
         }
 
@@ -61,4 +53,5 @@ public class AdminUser implements User {
     public String getAccessIp() {
         return null;
     }
+
 }

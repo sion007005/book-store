@@ -24,7 +24,7 @@ public class MemberRepositoryTest {
     public void findOneById() {
         Member expected = MemberMock.getMember("test", "test1@naver.com");
         memberRepository.create(expected);
-        Integer id = expected.getId();
+        Long id = expected.getId();
 
         Member actual = memberRepository.findOneById(id);
 

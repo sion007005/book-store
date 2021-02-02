@@ -1,11 +1,11 @@
-package sion.bookstore.admin.controller;
+package sion.bookstore.front.controller.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.login.LoginService;
+import sion.bookstore.front.ResponseData;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -32,5 +32,4 @@ public class LoginController {
 
         return cookie;
     }
-
 }
