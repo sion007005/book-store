@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
+/**
+ * 한글이나 영어로만 이루어진 문자열(한글 + 영어 X, 한글만 혹은 영어만)
+ */
 @RequiredArgsConstructor
 @Component
 public class EngKorStringValidator {

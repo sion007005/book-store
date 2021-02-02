@@ -27,9 +27,9 @@ public class FileUploadUtil {
      */
     public String uploadFile(MultipartFile file, String uploadPath) {
 
-        /* 파일이 없으면 failed 문자열을 반환 */
+        /* 파일이 없으면 null을 반환 */
         if (Objects.isNull(file)) {
-            return "failed";
+            return null;
         }
 
         /* uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리를 생성 */

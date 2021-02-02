@@ -18,6 +18,8 @@ import sion.bookstore.front.ResponseData;
 public class MemberUpdateController {
     private final MemberService memberService;
     private final FileUploadUtil fileUploadUtil;
+    private final MemberValidator memberValidator;
+
     @Value("${profile.image.path}")
     private String imagePath;
 
@@ -26,9 +28,10 @@ public class MemberUpdateController {
     @PostMapping("/member/update")
     @ResponseBody
     public ResponseData update(Member member, String originalPassword) {
-        // TODO memberValidator.validate(member);
         // TODO hidden으로 넘어와야 하는 값 : 원래 패스워드(key: originalPassword),
         //  Member 모델에 매핑되도록 : email, salt(key: passwordSalt),  기존 프로필이미지 path(key: profileImgPath), cratedAt, createdBy
+
+        memberValidator.validate(member, "member");
 
         compareAndSetNewPassword(member, originalPassword);
         fileUploadUtil.deleteExistingFile(member.getProfileImgPath());

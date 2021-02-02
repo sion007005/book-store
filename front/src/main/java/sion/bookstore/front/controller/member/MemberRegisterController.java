@@ -16,13 +16,15 @@ import sion.bookstore.front.ResponseData;
 public class MemberRegisterController {
     private final MemberService memberService;
     private final FileUploadUtil fileUploadUtil;
+    private final MemberValidator memberValidator;
+
     @Value("${profile.image.path}")
     private String imagePath;
 
     @PostMapping("/member/register")
     @ResponseBody
     public ResponseData register(Member member) {
-        // TODO memberValidator.validate(member);
+        memberValidator.validate(member, "member");
 
         String password = member.getPassword();
         String salt  = SHA256Util.generateSalt();
