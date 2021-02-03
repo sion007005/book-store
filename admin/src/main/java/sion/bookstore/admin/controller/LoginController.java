@@ -18,7 +18,7 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseData login(String email, String password, HttpServletResponse response) {
-        String encryptedSid = loginService.check(email, password);
+        String encryptedSid = loginService.checkAndGetSid(email, password);
         Cookie cookie = getCookie(encryptedSid);
         response.addCookie(cookie);
 

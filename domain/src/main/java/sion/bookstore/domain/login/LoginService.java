@@ -16,7 +16,7 @@ import java.util.Objects;
 public class LoginService {
     private final MemberService memberService;
 
-    public String check(String email, String plainPassword) {
+    public String checkAndGetSid(String email, String plainPassword) {
 
         Member member = memberService.findOneByEmail(email);
 
