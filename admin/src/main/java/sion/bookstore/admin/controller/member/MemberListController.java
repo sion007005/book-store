@@ -18,6 +18,7 @@ public class MemberListController {
     @GetMapping("/member/list")
     @AdminOnly
     public ModelAndView getMemberList(MemberSearchCondition condition) {
+        // CHECK 관리자를 포함한 모든 회원을 불러옴
         Page<Member> memberPage = memberService.findAll(condition);
 
         ModelAndView mav = new ModelAndView("jsonView");

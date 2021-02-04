@@ -54,7 +54,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             Long memberId = NumberUtils.parseLong(decryptedSid);
 
             Member member = memberService.findOneById(memberId);
-            User user = AdminUser.authenticatedUser(memberId, member.getEmail(), member.getName(), request.getRemoteAddr());
+            User user = AdminUser.authenticatedUser(member, request.getRemoteAddr());
             UserContext.set(user); // threadLocal에 인증된 admin user 저장
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
@@ -63,11 +63,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
     private void loginCheck(Object handler) {
-        //로그인 체크 -> 필요한가(=@AdminOnly 어노테이션이 있는가)?
-        // 1) 필요하다면,
-        //   1-1) 로그인이 되었는가? 확인 후
-        //   1-1) 로그인이 안 된 상태면, (프론트 단에서) 로그인 페이지로 redirection
-
         if (handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
             User user = UserContext.get();
@@ -75,15 +70,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             if(hm.hasMethodAnnotation(AdminOnly.class) && !user.authenticated()) {
                 throw new AuthenticationException("관리자만 접근 가능한 페이지입니다.");
             }
-
-//            if (hm.hasMethodAnnotation(LoginRequired.class) && user.getUserEmail() == null) {
-//                throw new AuthenticationException("권한이 없는 페이지입니다.");
-//            }
-
-//            if(hm.hasMethodAnnotation(AdminOnly.class) && user.getAuthority() != "ADMIN") {
-//                throw new AuthenticationException();
-//            }
         }
-
     }
 }

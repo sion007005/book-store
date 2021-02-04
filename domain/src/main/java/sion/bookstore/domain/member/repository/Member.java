@@ -28,5 +28,5 @@ public class Member {
     private Date modifiedAt;
     private String modifiedBy;
     private boolean deleted;
-    private boolean isAdmin;
+    private boolean admin;
 }
