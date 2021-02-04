@@ -35,7 +35,7 @@ public class GeneralUser implements User {
     }
 
     @Override
-    public Integer getMemberId() {
+    public Long getMemberId() {
         return null;
     }
 

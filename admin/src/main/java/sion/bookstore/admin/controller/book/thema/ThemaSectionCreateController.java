@@ -17,7 +17,7 @@ public class ThemaSectionCreateController {
     @PostMapping("/thema/create")
     @ResponseBody
     public ResponseData create(ThemaSection themaSection) {
-        themaSectionValidator.validate(themaSection, "thema section");
+//        themaSectionValidator.validate(themaSection, "thema section");
         themaSectionService.createAndBookMapping(themaSection);
 
         return ResponseData.success(themaSection.getId());

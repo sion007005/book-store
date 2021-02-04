@@ -38,6 +38,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            @Nullable ModelAndView modelAndView) throws Exception {
+        log.info("ModelAndView: {}", modelAndView);
+        // 모든 요청에 대해 _USER 키로 user를 담아준다.
+
+        if (Objects.nonNull(modelAndView)) {
+            modelAndView.addObject("_USER", UserContext.get());
+        }
     }
 
     private void userSetting(HttpServletRequest request) {

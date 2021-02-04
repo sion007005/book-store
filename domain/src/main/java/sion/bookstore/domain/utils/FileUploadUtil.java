@@ -28,7 +28,7 @@ public class FileUploadUtil {
     public String uploadFile(MultipartFile file, String uploadPath) {
 
         /* 파일이 없으면 null을 반환 */
-        if (Objects.isNull(file)) {
+        if (Objects.isNull(file) || file.isEmpty()) {
             return null;
         }
 
