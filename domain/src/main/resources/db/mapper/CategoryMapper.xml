@@ -36,6 +36,7 @@
         order by id asc
         limit #{zeroBasePage}, #{size}
     </select>
+
     <select id="countAll"
             parameterType="sion.bookstore.domain.category.service.CategorySearchCondition"
             resultType="long">
