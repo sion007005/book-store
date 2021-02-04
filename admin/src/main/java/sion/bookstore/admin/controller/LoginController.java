@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.login.LoginService;
+import sion.bookstore.domain.member.repository.Member;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
-    private final LoginService loginService;
+    private final LoginService adminLoginService;
 
     @PostMapping("/login")
     @ResponseBody
     public ResponseData login(String email, String password, HttpServletResponse response) {
-        String encryptedSid = loginService.checkAndGetSid(email, password);
+        Member member = adminLoginService.findExistingMember(email);
+        adminLoginService.comparePassword(member, password);
+        String encryptedSid = adminLoginService.getEncryptedSid(member.getId());
+
         Cookie cookie = getCookie(encryptedSid);
         response.addCookie(cookie);
 

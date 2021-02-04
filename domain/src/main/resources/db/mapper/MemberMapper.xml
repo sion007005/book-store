@@ -5,24 +5,24 @@
 <mapper namespace="sion.bookstore.domain.member.repository.MemberRepository">
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Member">
-        INSERT into member (name, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted)
-        values (#{name}, #{email}, #{password},#{passwordSalt}, #{phone}, #{profileImgPath}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        INSERT into member (name, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted, is_admin)
+        values (#{name}, #{email}, #{password},#{passwordSalt}, #{phone}, #{profileImgPath}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted}, #{isAdmin})
     </insert>
 
     <select id="findOneById" resultType="sion.bookstore.domain.member.repository.Member">
-        SELECT id, `name`, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted
+        SELECT id, `name`, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted, is_admin
         FROM member WHERE id = #{id}
     </select>
 
     <select id="findOneByEmail" resultType="sion.bookstore.domain.member.repository.Member">
-        SELECT id, `name`, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted
+        SELECT id, `name`, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted, is_admin
         FROM member WHERE email = #{email}
     </select>
 
     <select id="findAll"
             parameterType="sion.bookstore.domain.member.service.MemberSearchCondition"
             resultType="sion.bookstore.domain.member.repository.Member">
-        SELECT (id, name, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted)
+        SELECT (id, name, email, password, password_salt, phone, profile_img_path, created_at, created_by, modified_at, modified_by, deleted, is_admin)
         FROM member
         <if test="keyword != null and keyword != ''">
             where `name` like CONCAT('%', #{keyword}, '%') or email like CONCAT('%', #{keyword}, '%')
@@ -51,7 +51,8 @@
             created_by = #{createdBy},
             modified_at = #{modifiedAt},
             modified_by = #{modifiedBy},
-            deleted = #{deleted}
+            deleted = #{deleted},
+            is_admin = #{isAdmin}
         WHERE id = #{id};
     </update>
 
