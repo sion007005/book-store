@@ -15,6 +15,4 @@ public interface MemberRepository {
     Long update(Member member);
     List<Member> findAll(MemberSearchCondition condition);
     long countAll(MemberSearchCondition condition);
-//    Optional<Member> findByEmail(String email);
-//    Optional<Member> findById(Long id);
 }

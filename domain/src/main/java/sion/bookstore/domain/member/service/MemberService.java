@@ -47,4 +47,12 @@ public class MemberService {
         long totalElements = memberRepository.countAll(condition);
         return new PageImpl<>(memberList, condition.getPageable(), totalElements);
     }
+
+    public Page<Member> findAll(MemberSearchCondition condition) {
+        List<Member> memberList = memberRepository.findAll(condition);
+        Long totalCount = memberRepository.countAll(condition);
+        Page<Member> memberPage = new PageImpl<>(memberList, condition.getPageable(), totalCount);
+
+        return memberPage;
+    }
 }

@@ -18,11 +18,8 @@ public class BookListController {
     @GetMapping("/book/list")
     @ResponseBody
     public ResponseData getList(BookSearchCondition searchCondition) {
-        // TODO 파라미터 받을 때는 절대 map이 아닌 Model 객체
-
         Page<Book> pageBook = bookService.findAll(searchCondition);
         return ResponseData.success(pageBook);
-//        throw new RuntimeException("test exception");
     }
 
 }
