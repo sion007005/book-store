@@ -20,7 +20,7 @@ public class BookUpdateController {
     @Value("${book.image.path}")
     private String imagePath;
 
-    @PostMapping("/book/{id}")
+    @PostMapping("/book/update")
     @ResponseBody
     @AdminOnly
     public ResponseData update(Book book) {
