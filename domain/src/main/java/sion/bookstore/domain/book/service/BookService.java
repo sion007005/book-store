@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
@@ -75,9 +76,9 @@ public class BookService {
     }
 
     public Long update(Book book) {
-        // TODO 수정한 사람 : 현재 로그인한 관리자 아이디로 등록하기
+        // TODO[DONE] 수정한 사람 : 현재 로그인한 관리자 아이디로 등록하기
         book.setModifiedAt(new Date());
-        book.setModifiedBy("tester");
+        book.setModifiedBy(UserContext.get().getUserEmail());
         book.setDeleted(false);
 
         bookRepository.update(book);

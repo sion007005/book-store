@@ -21,4 +21,13 @@
         limit #{searchStartIndex}, #{size}
     </select>
 
+    <select id="findCategoriesByBookId"
+            parameterType="java.lang.Long"
+            resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT c.id, c.name
+        FROM book_category bc
+        INNER JOIN category c ON bc.category_id = c.id
+        WHERE bc.book_id = #{bookId}
+    </select>
+
 </mapper>

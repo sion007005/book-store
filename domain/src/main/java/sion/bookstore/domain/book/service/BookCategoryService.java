@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.book.repository.BookCategory;
 import sion.bookstore.domain.book.repository.BookCategoryRepository;
+import sion.bookstore.domain.category.repository.Category;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,8 @@ public class BookCategoryService {
         return bookCategoryRepository.create(mapping);
     }
 
-//    public List<BookCategory> findBooksByCategoryId(BookCategorySearchCondition condition) {
-//        return bookCategoryRepository.findBooksByCategoryId(condition);
-//    }
+    public List<Category> findCategoriesByBookId(Long bookId) {
+        return bookCategoryRepository.findCategoriesByBookId(bookId);
+    }
+
 }

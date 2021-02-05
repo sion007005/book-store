@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sion.bookstore.admin.AdminOnly;
 import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.utils.FileUploadUtil;
 import sion.bookstore.domain.book.repository.Book;
@@ -22,6 +23,7 @@ public class BookCreateController {
 
     @PostMapping("/book/create")
     @ResponseBody
+    @AdminOnly
     public ResponseData create(Book book, Long categoryId) {
         bookValidator.validate(book, "book");
         book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
