@@ -14,7 +14,7 @@
         <result column="modified_at" property="modifiedAt" />
         <result column="modified_by" property="modifiedBy" />
         <result column="deleted" property="deleted" />
-        <association property="book" resultMap="bookResultMap"/>
+        <collection property="book" resultMap="bookResultMap"/>
     </resultMap>
     
     <resultMap id="bookResultMap" type="sion.bookstore.domain.book.repository.Book">
@@ -25,8 +25,8 @@
     </resultMap>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.cart.repository.CartItem">
-        INSERT into cart user_id, book_id, quantity, created_at, created_by, modified_at, modified_by, deleted
-        values #{userId}, #{bookId}, #{quantity}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted}
+        INSERT into cart (user_id, book_id, quantity, created_at, created_by, modified_at, modified_by, deleted)
+        values (#{userId}, #{bookId}, #{quantity}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.cart.repository.CartItem">
@@ -39,12 +39,12 @@
             modified_at = #{modifiedAt},
             modified_by = #{modifiedBy},
             deleted = #{deleted}
-        WHERE id = #{id};
+        WHERE id = #{id} AND book_id = #{bookId};
     </update>
 
     <select id = "getCartItems"
             parameterType = "java.lang.Long"
-            resultMap = "CartItem">
+            resultMap = "cartItem">
         SELECT c.id, c.user_id, c.book_id, c.quantity, c.created_at, c.created_by, c.modified_at, c.modified_by, c.deleted,
                b.title, b.price, b.sale_price, b.thumbnail
         FROM cart c
