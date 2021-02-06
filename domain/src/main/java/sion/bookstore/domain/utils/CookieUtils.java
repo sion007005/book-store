@@ -22,4 +22,8 @@ public class CookieUtils {
 
         return null;
     }
+
+    public static String makeCookieName(String profile, String baseName) {
+        return profile + "_" + baseName;
+    }
 }

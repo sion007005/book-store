@@ -18,10 +18,8 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseData login(String email, String password, HttpServletResponse response) {
-        Member member = adminLoginService.findExistingMember(email);
-        adminLoginService.comparePassword(member, password);
-        String encryptedSid = adminLoginService.getEncryptedSid(member.getId());
+    public ResponseData login(String email, String inputPassword, HttpServletResponse response) {
+        String encryptedSid = adminLoginService.checkLoginMember(email, inputPassword);
 
         Cookie cookie = getCookie(encryptedSid);
         response.addCookie(cookie);

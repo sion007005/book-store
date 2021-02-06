@@ -5,7 +5,7 @@ import sion.bookstore.domain.utils.AES256Util;
 import sion.bookstore.domain.utils.SHA256Util;
 
 public interface LoginService {
-    Member findExistingMember(String email);
+     String checkLoginMember(String email, String inputPassword);
 
     default void comparePassword(Member member, String inputPassword) {
         String encryptedPassword = SHA256Util.getEncrypt(inputPassword, member.getPasswordSalt());

@@ -14,13 +14,15 @@ import java.util.Objects;
 public class AdminLoginService implements LoginService {
     private final MemberService memberService;
 
-    public Member findExistingMember(String email) {
+    public String checkLoginMember(String email, String inputPassword) {
         Member member = memberService.findOneByEmail(email);
 
         if (Objects.isNull(member) || !member.isAdmin()) {
             throw new AuthenticationException("가입되지 않은 않았거나 관리자 권한이 없습니다.");
         }
 
-        return member;
+        comparePassword(member, inputPassword);
+        String encryptedSid = getEncryptedSid(member.getId());
+        return encryptedSid;
     }
 }

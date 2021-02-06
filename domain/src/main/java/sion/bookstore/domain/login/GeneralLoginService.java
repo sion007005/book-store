@@ -14,13 +14,15 @@ import java.util.Objects;
 public class GeneralLoginService implements LoginService {
     private final MemberService memberService;
 
-    public Member findExistingMember(String email) {
+    public String checkLoginMember(String email, String inputPassword) {
         Member member = memberService.findOneByEmail(email);
 
         if (Objects.isNull(member)) {
             throw new AuthenticationException("가입되지 않은 사용자입니다.");
         }
 
-        return member;
+        comparePassword(member, inputPassword);
+        String encryptedSid = getEncryptedSid(member.getId());
+        return encryptedSid;
     }
 }

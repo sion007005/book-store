@@ -22,7 +22,7 @@ public class MemberListController {
         Page<Member> memberPage = memberService.findAll(condition);
 
         ModelAndView mav = new ModelAndView("jsonView");
-        mav.addObject("memberList", memberPage);
+        mav.addObject("memberPage", memberPage);
 
         return mav;
     }
