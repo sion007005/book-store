@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sion.bookstore.domain.login.LoginService;
 import sion.bookstore.domain.utils.CookieUtils;
-import sion.bookstore.front.AdminConstants;
+import sion.bookstore.front.FrontConstants;
 import sion.bookstore.front.ResponseData;
 
 import javax.servlet.http.Cookie;
@@ -32,7 +32,7 @@ public class LoginController {
     }
 
     private Cookie getCookie(String encryptedSid) {
-        Cookie cookie = new Cookie(CookieUtils.makeCookieName(findActiveProfile(), AdminConstants.COOKIE_SID), encryptedSid);
+        Cookie cookie = new Cookie(CookieUtils.makeCookieName(findActiveProfile(), FrontConstants.COOKIE_SID), encryptedSid);
         cookie.setPath("/");
         cookie.setMaxAge(-1);
 
@@ -43,14 +43,13 @@ public class LoginController {
         if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
                 env -> (env.equalsIgnoreCase("local")))) {
             return "local";
-        } else if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
-                env -> (env.equalsIgnoreCase("prod")) )) {
-            return "prod";
-        } else if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
+        }
+
+        if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
                 env -> (env.equalsIgnoreCase("dev")) )) {
             return "dev";
         }
 
-        return "local";
+        return "";
     }
 }
