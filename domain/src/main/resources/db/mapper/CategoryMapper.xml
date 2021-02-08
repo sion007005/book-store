@@ -3,33 +3,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sion.bookstore.domain.category.repository.CategoryRepository">
+    <sql id="categoryColumns">
+        parent_id, `name`, `level`, `order`, `link`, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.category.repository.Category">
-        INSERT into category (parent_id, `name`, `level`, `order`, `link`, created_at, created_by, modified_at, modified_by, deleted)
+        INSERT into category (<include refid="categoryColumns" />)
         values (#{parentId}, #{name}, #{level}, #{order}, #{link}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <!-- TODO * 없애기 -->
     <select id="findOne" resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT * FROM category WHERE id = #{id};
+        SELECT id, <include refid="categoryColumns" />
+        FROM category WHERE id = #{id};
     </select>
 
     <select id="findAllByCategoryLevel"
             parameterType="int"
             resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT * FROM category where level = #{level};
+        SELECT  id, <include refid="categoryColumns" />)
+        FROM category where level = #{level};
     </select>
 
     <select id="findAllById"
             parameterType="java.lang.Long"
             resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT * FROM category where id >= #{limitId};
+        SELECT id, <include refid="categoryColumns" />)
+        FROM category where id >= #{limitId};
     </select>
 
     <select id="findAll"
             parameterType="sion.bookstore.domain.category.service.CategorySearchCondition"
             resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT * FROM category
+        SELECT id, <include refid="categoryColumns" />)
+        FROM category
         <if test="keyword != null and keyword != ''">
             where `name` like CONCAT('%', #{keyword}, '%')
         </if>

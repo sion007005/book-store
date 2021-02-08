@@ -3,6 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sion.bookstore.domain.cart.repository.CartRepository">
+    <sql id="cartColumns">
+        user_id, book_id, quantity, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
 
     <resultMap id="cartItem" type="sion.bookstore.domain.cart.repository.CartItem">
         <result column="id" property="id" />
@@ -25,7 +28,7 @@
     </resultMap>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.cart.repository.CartItem">
-        INSERT into cart (user_id, book_id, quantity, created_at, created_by, modified_at, modified_by, deleted)
+        INSERT into cart (<include refid="cartColumns" />)
         values (#{userId}, #{bookId}, #{quantity}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 

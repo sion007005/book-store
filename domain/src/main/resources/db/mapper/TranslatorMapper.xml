@@ -3,9 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sion.bookstore.domain.book.repository.TranslatorRepository">
+    <sql id="translatorColumns">
+        book_id, name, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Translator">
-        INSERT into translator (book_id, name, created_at, created_by, modified_at, modified_by, deleted)
+        INSERT into translator (<include refid="translatorColumns" />)
         values (#{bookId}, #{name}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
@@ -23,7 +26,7 @@
 
     <select id="findAllByBookId"
             resultType="sion.bookstore.domain.book.repository.Translator">
-        SELECT id, book_id, `name`, created_at, created_by, modified_at, modified_by, deleted
+        SELECT id, <include refid="translatorColumns" />
         FROM translator
         WHERE  book_id = #{bookId}
     </select>

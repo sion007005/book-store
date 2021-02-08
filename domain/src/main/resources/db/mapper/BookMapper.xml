@@ -3,10 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sion.bookstore.domain.book.repository.BookRepository">
+    <sql id="bookColumns">
+        title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
 
     <resultMap id="book" type="sion.bookstore.domain.book.repository.Book">
         <result column="id" property="id" />
         <result column="title" property="title" />
+        <result column="content" property="content" />
         <result column="isbn10" property="isbn10" />
         <result column="isbn13" property="isbn13" />
         <result column="published_at" property="publishedAt" />
@@ -33,12 +37,12 @@
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Book">
-        INSERT into book (title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted)
+        INSERT into book (<include refid="bookColumns" />)
         values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findOne" resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT id, title, content, isbn10, isbn13, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
+        SELECT id, <include refid="bookColumns" />
         FROM book WHERE id = #{id};
     </select>
 

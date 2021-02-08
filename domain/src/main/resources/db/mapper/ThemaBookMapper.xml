@@ -2,9 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sion.bookstore.domain.book.thema.repository.ThemaBookRepository">
+    <sql id="themaBookColumns">
+        thema_section_id, book_id, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.thema.repository.ThemaBook">
-        INSERT into thema_book (thema_section_id, book_id, created_at, created_by, modified_at, modified_by, deleted)
+        INSERT into thema_book (<include refid="themaBookColumns" />)
         values(#{themaSectionId}, #{bookId}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
@@ -23,7 +26,7 @@
     <select id="findThemaBooksByThemaSectionId"
             parameterType="sion.bookstore.domain.book.thema.service.ThemaBookSearchCondition"
             resultType="sion.bookstore.domain.book.thema.repository.ThemaBook">
-        SELECT id, thema_section_id, book_id, created_at, created_by, modified_at, modified_by, deleted
+        SELECT id, <include refid="themaBookColumns" />
         FROM thema_book
         <choose>
             <when test="themaSectionId != null">
