@@ -25,16 +25,15 @@ public class AuthorService {
             author.setBookId(book.getId());
             author.setName(author.getName());
             author.setCreatedAt(new Date());
-            author.setCreatedBy("sion");
+            author.setCreatedBy(UserContext.get().getUserEmail());
             author.setModifiedAt(new Date());
-            author.setModifiedBy("sion");
+            author.setModifiedBy(UserContext.get().getUserEmail());
             author.setDeleted(false);
 
             authorRepository.create(author);
         }
     }
 
-    // TODO CHECK 책 정보 수정할 때 작가 정보는 수정을 할 수도 있고 안 할 수도 있는데, modifiedAt을 어떻게 처리하지?
     // 책 정보를 등록할 때 작가도 함께 등록하므로
     // createdAt과 createdBy를 hidden으로 넘겨주지 않고
     // book의 createdAt과 createdBy를 따라간다.
@@ -47,6 +46,22 @@ public class AuthorService {
             author.setModifiedAt(new Date());
             author.setModifiedBy(UserContext.get().getUserEmail());
             author.setDeleted(false);
+
+            authorRepository.update(author);
+        }
+    }
+
+    public void updateNewMapping(Book book) {
+        delete(book.getId());
+        create(book);
+    }
+
+    public void delete(Long bookId) {
+        List<Author> authors = findAllByBookId(bookId);
+        for (Author author : authors) {
+            author.setModifiedAt(new Date());
+            author.setModifiedBy(UserContext.get().getUserEmail());
+            author.setDeleted(true);
 
             authorRepository.update(author);
         }

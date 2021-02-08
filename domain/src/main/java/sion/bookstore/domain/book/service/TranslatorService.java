@@ -2,6 +2,7 @@ package sion.bookstore.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.Translator;
 import sion.bookstore.domain.book.repository.TranslatorRepository;
@@ -25,9 +26,9 @@ public class TranslatorService {
             translator.setBookId(book.getId());
             translator.setName(translator.getName());
             translator.setCreatedAt(new Date());
-            translator.setCreatedBy("sion");
+            translator.setCreatedBy(UserContext.get().getUserEmail());
             translator.setModifiedAt(new Date());
-            translator.setModifiedBy("sion");
+            translator.setModifiedBy(UserContext.get().getUserEmail());
             translator.setDeleted(false);
 
             translatorRepository.create(translator);
@@ -41,8 +42,24 @@ public class TranslatorService {
             translator.setCreatedAt(book.getCreatedAt());
             translator.setCreatedBy(book.getCreatedBy());
             translator.setModifiedAt(new Date());
-            translator.setModifiedBy("sion");
+            translator.setModifiedBy(UserContext.get().getUserEmail());
             translator.setDeleted(false);
+
+            translatorRepository.update(translator);
+        }
+    }
+
+    public void updateNewMapping(Book book) {
+        delete(book.getId());
+        create(book);
+    }
+
+    public void delete(Long bookId) {
+        List<Translator> translators = findAllByBookId(bookId);
+        for (Translator translator : translators) {
+            translator.setModifiedAt(new Date());
+            translator.setModifiedBy(UserContext.get().getUserEmail());
+            translator.setDeleted(true);
 
             translatorRepository.update(translator);
         }

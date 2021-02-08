@@ -12,9 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import sion.bookstore.admin.AdminOnly;
 import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.service.BookCategoryService;
-import sion.bookstore.domain.book.service.BookSearchCondition;
-import sion.bookstore.domain.book.service.BookService;
+import sion.bookstore.domain.book.service.*;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.utils.FileUploadUtil;
 
@@ -24,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
+    private final AuthorService authorService;
+    private final TranslatorService translatorService;
     private final BookValidator bookValidator;
     private final FileUploadUtil fileUploadUtil;
     private final BookCategoryService bookCategoryService;
@@ -65,12 +65,17 @@ public class BookController {
     @PostMapping("/book/update")
     @ResponseBody
     @AdminOnly
-    public ResponseData update(Book book) {
+    public ResponseData update(Book book, Long newCategoryId) {
         bookValidator.validate(book, "book");
+
         // update form view에서 기존의 이미지 thumbnail값을 hidden으로 보내줘야 함
         fileUploadUtil.deleteExistingFile(book.getThumbnail());
         book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
+
         bookService.update(book);
+        bookCategoryService.updateNewMapping(book.getId(), newCategoryId);
+        authorService.updateNewMapping(book);
+        translatorService.updateNewMapping(book);
 
         return ResponseData.success(book.getId());
     }

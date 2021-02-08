@@ -11,4 +11,6 @@ import java.util.List;
 public interface BookCategoryRepository {
     Long create(BookCategory mapping);
     List<Category> findCategoriesByBookId(Long bookId);
+    BookCategory findMappingByBookId(Long bookId);
+    void update(BookCategory mapping);
 }

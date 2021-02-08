@@ -33,4 +33,22 @@
         WHERE bc.book_id = #{bookId}
     </select>
 
+    <select id="findMappingByBookId" parameterType="java.lang.Long" resultType="sion.bookstore.domain.book.repository.BookCategory">
+        SELECT id, <include refid="bookCategoryColumns" />
+        FROM book_category
+        WHERE book_id = #{bookId}
+    </select>
+
+    <update id="update" parameterType="sion.bookstore.domain.book.repository.BookCategory">
+        UPDATE book_category set
+            category_id = #{categoryId},
+            book_id = #{bookId},
+            created_at = #{createdAt},
+            created_by = #{createdBy},
+            modified_at = #{modifiedAt},
+            modified_by = #{modifiedBy},
+            deleted = #{deleted}
+        WHERE id = #{id};
+    </update>
+
 </mapper>
