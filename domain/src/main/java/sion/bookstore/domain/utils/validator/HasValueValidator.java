@@ -2,7 +2,7 @@ package sion.bookstore.domain.utils.validator;
 
 import org.springframework.stereotype.Component;
 
-import java.util.regex.Pattern;
+import java.util.Objects;
 
 /**
  * 맨 앞글자가 공백이 아닌 문자로 시작하면
@@ -11,14 +11,18 @@ import java.util.regex.Pattern;
 @Component
 public class HasValueValidator {
     public boolean validate(String content, String type) {
-        try {
-            String trimedContent = content.trim();
-            if(!Pattern.matches("^\\S+", trimedContent)) {
-				throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
-            }
-        } catch (Exception e) {
-            throw new ValidationException(e.getMessage(), e);
+        if (Objects.isNull(content)) {
+            throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
         }
+
+        if (content.equals("") || content.equals(" ")) {
+            throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
+        }
+
+        if (content.startsWith(" ")) {
+            throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
+        }
+
         return true;
     }
 }
