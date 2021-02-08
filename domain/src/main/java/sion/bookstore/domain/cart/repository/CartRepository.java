@@ -10,5 +10,6 @@ import java.util.List;
 public interface CartRepository {
     Long add(CartItem cart);
     Long update(CartItem cart);
+    CartItem findOneByBookId(Long bookId);
     List<CartItem> getCartItems(Long userId);
 }

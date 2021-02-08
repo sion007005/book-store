@@ -9,6 +9,7 @@ import sion.bookstore.domain.cart.repository.CartRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -17,7 +18,12 @@ public class CartService {
     private final CartRepository cartRepository;
 
     public Long add(CartItem cart) {
-        log.info("user : {}", UserContext.get());
+        CartItem existingItem = findOneByBookId(cart.getBookId());
+        if (Objects.nonNull(existingItem)) {
+            existingItem.setDeleted(true);
+            update(existingItem);
+        }
+
         cart.setUserId(UserContext.get().getMemberId());
         cart.setCreatedAt(new Date());
         cart.setCreatedBy(UserContext.get().getUserEmail());
@@ -27,6 +33,10 @@ public class CartService {
 
         cartRepository.add(cart);
         return cart.getId();
+    }
+
+    public CartItem findOneByBookId(Long bookId) {
+        return cartRepository.findOneByBookId(bookId);
     }
 
     public Long update(CartItem cart) {

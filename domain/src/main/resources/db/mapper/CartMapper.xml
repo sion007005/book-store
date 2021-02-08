@@ -55,4 +55,10 @@
         WHERE c.user_id = #{userId}
         AND c.deleted = false
     </select>
+
+    <select id = "findOneByBookId" parameterType="java.lang.Long" resultMap="cartItem">
+        SELECT id, <include refid="cartColumns" />
+        FROM cart
+        WHERE book_id = #{bookId}
+    </select>
 </mapper>
