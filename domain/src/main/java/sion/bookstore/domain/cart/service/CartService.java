@@ -1,24 +1,28 @@
 package sion.bookstore.domain.cart.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.cart.repository.CartItem;
 import sion.bookstore.domain.cart.repository.CartRepository;
 
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
 
     public Long add(CartItem cart) {
-        //TODO user 정보 넣기
+        log.info("user : {}", UserContext.get());
+        cart.setUserId(UserContext.get().getMemberId());
         cart.setCreatedAt(new Date());
-        cart.setCreatedBy("tester");
+        cart.setCreatedBy(UserContext.get().getUserEmail());
         cart.setModifiedAt(new Date());
-        cart.setModifiedBy("tester");
+        cart.setModifiedBy(UserContext.get().getUserEmail());
         cart.setDeleted(false);
 
         cartRepository.add(cart);
@@ -27,8 +31,7 @@ public class CartService {
 
     public Long update(CartItem cart) {
         cart.setModifiedAt(new Date());
-        //TODO user 정보 넣기
-        cart.setModifiedBy("tester");
+        cart.setModifiedBy(UserContext.get().getUserEmail());
 
         cartRepository.update(cart);
         return cart.getId();

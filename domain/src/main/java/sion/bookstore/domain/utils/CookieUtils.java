@@ -15,7 +15,7 @@ public class CookieUtils {
         }
 
         for (Cookie cookie : list) {
-            if (cookie.getName().equals(name)) {
+            if (cookie.getName().contains(name)) {
                 return cookie.getValue();
             }
         }

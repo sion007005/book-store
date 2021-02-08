@@ -41,17 +41,17 @@ public class GeneralUser implements User {
 
     @Override
     public String getUserEmail() {
-        return null;
+        return userEmail;
     }
 
     @Override
     public String getUserName() {
-        return null;
+        return userName;
     }
 
     @Override
     public String getAccessIp() {
-        return null;
+        return accessIp;
     }
 
 }

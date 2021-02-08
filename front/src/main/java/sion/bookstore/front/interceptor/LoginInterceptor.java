@@ -16,6 +16,7 @@ import sion.bookstore.domain.member.service.MemberService;
 import sion.bookstore.domain.utils.AES256Util;
 import sion.bookstore.domain.utils.CookieUtils;
 import sion.bookstore.domain.utils.NumberUtils;
+import sion.bookstore.front.FrontConstants;
 import sion.bookstore.front.login.GeneralUser;
 import sion.bookstore.front.login.LoginRequired;
 
@@ -47,7 +48,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
     private void userSetting(HttpServletRequest request) {
-        String encryptedSid = CookieUtils.getValue(request, "sid");
+        String encryptedSid = CookieUtils.getValue(request, FrontConstants.COOKIE_SID);
 
         if (Objects.isNull(encryptedSid) || encryptedSid.equals("")) {
             log.info("Unauthenticated User Setting");
