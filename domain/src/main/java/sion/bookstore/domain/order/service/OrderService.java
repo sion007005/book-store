@@ -21,6 +21,7 @@ public class OrderService {
 
     public Long create(Order order) {
         // TODO CHECK 'orderStatus 값' : 프론트 단에서, (카드 등) 결제가 완료 되었으면 '결제완료'로 보내고, 아니면 '결제대기'로 보내야 함..!
+        order.setUserId(UserContext.get().getMemberId());
         order.setCreatedAt(new Date());
         order.setCreatedBy(UserContext.get().getUserEmail());
         order.setModifiedAt(new Date());

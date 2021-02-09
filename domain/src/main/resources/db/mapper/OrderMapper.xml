@@ -9,6 +9,6 @@
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
         INSERT into `order` (<include refid="orderColumns" />)
-        values (#{userId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted}, #{isAdmin})
+        values (#{userId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 </mapper>

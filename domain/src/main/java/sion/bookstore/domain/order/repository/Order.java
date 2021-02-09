@@ -20,6 +20,8 @@ public class Order {
     private String addressBasic;
     private String addressDetail;
     private Integer zipCode;
+    private String phone;
+    private String message;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;

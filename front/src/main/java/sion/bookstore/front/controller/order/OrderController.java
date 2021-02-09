@@ -11,9 +11,9 @@ import sion.bookstore.front.login.LoginRequired;
 @Controller
 @RequiredArgsConstructor
 public class OrderController {
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @PostMapping("/order/page")
+    @PostMapping("/orderPage")
     @LoginRequired
     public ModelAndView getOrderPage(Order order) {
         ModelAndView mav = new ModelAndView("jsonView");
