@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.order.repository.OrderRepository">
+    <sql id="orderColumns">
+        user_id, total_price, payment_type, order_status, address_basic, address_detail, zip_code, phone, message, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
+        INSERT into `order` (<include refid="orderColumns" />)
+        values (#{userId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted}, #{isAdmin})
+    </insert>
+</mapper>
