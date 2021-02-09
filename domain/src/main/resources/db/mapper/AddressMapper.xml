@@ -4,7 +4,7 @@
 
 <mapper namespace="sion.bookstore.domain.member.repository.AddressRepository">
     <sql id="addressColumns">
-        member_id, name, address_basic, address_detail, zip_code, created_at, created_by, modified_at, modified_by, deleted
+        member_id, `name`, address_basic, address_detail, zip_code, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Address">
@@ -12,9 +12,22 @@
         values (#{memberId}, #{name}, #{addressBasic}, #{addressDetail},#{zipCode}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
+    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Address">
+        UPDATE address set
+          member_id = #{memberId},
+          `name` = #{name},
+          created_at = #{createdAt},
+          created_by = #{createdBy},
+          modified_at = #{modifiedAt},
+          modified_by = #{modifiedBy},
+          deleted = #{deleted},
+          admin = #{admin}
+        WHERE id = #{id};
+    </update>
+
     <select id="findOne" resultType="sion.bookstore.domain.member.repository.Address">
         SELECT id, <include refid="addressColumns" />
-        FROM member where (member_id = #{memberId} and name = #{name});
+        FROM member where (member_id = #{memberId} and `name` = #{name});
     </select>
 
     <select id="findAllByMemberId" resultType="sion.bookstore.domain.member.repository.Address">
