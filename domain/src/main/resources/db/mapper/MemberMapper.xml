@@ -30,7 +30,7 @@
         <if test="keyword != null and keyword != ''">
             WHERE `name` like CONCAT('%', #{keyword}, '%') or email like CONCAT('%', #{keyword}, '%')
         </if>
-        limit #{zeroBasePage}, #{size}
+        limit #{searchStartIndex}, #{size}
     </select>
 
     <select id="countAll"

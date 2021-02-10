@@ -19,7 +19,7 @@ import sion.bookstore.domain.utils.SHA256Util;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-    private MemberService memberService;
+    private final MemberService memberService;
     private final FileUploadUtil fileUploadUtil;
 //    private final MemberValidator memberValidator;
 
