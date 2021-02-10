@@ -41,8 +41,37 @@ public class OrderService {
             product.setOrderId(orderId);
             product.setBookId(item.getBookId());
             product.setQuantity(item.getQuantity());
-            //TODO CHECK 바로 repository를 호출하는게 나은가?
+
             orderProductService.create(product);
         }
+    }
+
+    public Order findOneById(Long memberId) {
+        return orderRepository.findOneById(memberId);
+    }
+
+    public List<Order> findAllByMemberId(Long memberId) {
+        return orderRepository.findAllByMemberId(memberId);
+    }
+
+    public Long update(Order order) {
+        order.setModifiedAt(new Date());
+        order.setModifiedBy(UserContext.get().getUserEmail());
+
+        return orderRepository.update(order);
+    }
+
+    /**
+     * 주문 취소 시 order와 order_product 모두 삭제(deleted -> true 변경)
+     * @param orderId
+     */
+    public void cancel(Long orderId) {
+        Order order = findOneById(orderId);
+        order.setModifiedAt(new Date());
+        order.setModifiedBy(UserContext.get().getUserEmail());
+        order.setDeleted(true);
+
+        orderRepository.update(order);
+        orderProductService.delete(orderId);
     }
 }

@@ -11,4 +11,33 @@
         INSERT into `order` (<include refid="orderColumns" />)
         values (#{userId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
+
+    <select id="findOneById" resultType="sion.bookstore.domain.order.repository.Order">
+        SELECT id, <include refid="orderColumns" />
+        FROM `order` WHERE id = #{id}
+    </select>
+
+    <select id="findAllByMemberId" resultType="sion.bookstore.domain.order.repository.Order">
+        SELECT id, <include refid="orderColumns" />
+        FROM `order` WHERE user_id = #{userId};
+    </select>
+
+    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
+        UPDATE `order` set
+            user_id = #{userId},
+            total_price = #{totalPrice},
+            payment_type = #{paymentType},
+            order_status = #{orderStatus},
+            address_basic = #{addressBasic},
+            address_detail = #{addressDetail},
+            zip_code = #{zipCode},
+            phone = #{phone},
+            message = #{message},
+            created_at = #{createdAt},
+            created_by = #{createdBy},
+            modified_at = #{modifiedAt},
+            modified_by = #{modifiedBy},
+            deleted = #{deleted}
+        WHERE id = #{id};
+    </update>
 </mapper>

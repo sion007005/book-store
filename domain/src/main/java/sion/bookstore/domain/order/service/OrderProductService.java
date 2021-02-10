@@ -8,6 +8,7 @@ import sion.bookstore.domain.order.repository.OrderProduct;
 import sion.bookstore.domain.order.repository.OrderProductRepository;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,6 +24,21 @@ public class OrderProductService {
         orderProduct.setDeleted(false);
 
         orderProductRepository.create(orderProduct);
+    }
+
+    public Long update(OrderProduct orderProduct) {
+        orderProduct.setModifiedAt(new Date());
+        orderProduct.setModifiedBy(UserContext.get().getUserEmail());
+
+        return orderProductRepository.update(orderProduct);
+    }
+
+    public void delete(Long orderId) {
+        List<OrderProduct> productList = orderProductRepository.findAllByOrderId(orderId);
+        for (OrderProduct product : productList) {
+            product.setDeleted(true);
+            update(product);
+        }
     }
 }
 
