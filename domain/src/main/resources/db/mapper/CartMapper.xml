@@ -59,6 +59,6 @@
     <select id = "findOneByBookId" parameterType="java.lang.Long" resultMap="cartItem">
         SELECT id, <include refid="cartColumns" />
         FROM cart
-        WHERE book_id = #{bookId}
+        WHERE book_id = #{bookId} and deleted = false;
     </select>
 </mapper>

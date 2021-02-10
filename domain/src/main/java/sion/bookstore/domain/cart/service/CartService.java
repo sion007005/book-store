@@ -51,4 +51,12 @@ public class CartService {
         List<CartItem> itemList = cartRepository.getCartItems(userId);
         return itemList;
     }
+
+    public void removeAllItems(Long memberId) {
+        List<CartItem> cartItems = cartRepository.getCartItems(memberId);
+        for (CartItem cartItem : cartItems) {
+            cartItem.setDeleted(true);
+            update(cartItem);
+        }
+    }
 }

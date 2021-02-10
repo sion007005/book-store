@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.cart.repository.CartItem;
+import sion.bookstore.domain.cart.service.CartService;
 import sion.bookstore.domain.order.repository.Order;
 import sion.bookstore.domain.order.repository.OrderProduct;
 import sion.bookstore.domain.order.repository.OrderRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductService orderProductService;
+    private final CartService cartService;
 
     public Long create(Order order) {
         // TODO CHECK 'orderStatus 값' : 프론트 단에서, (카드 등) 결제가 완료 되었으면 '결제완료'로 보내고, 아니면 '결제대기'로 보내야 함..!
@@ -29,8 +31,8 @@ public class OrderService {
         order.setDeleted(false);
 
         Long createdOrderId = orderRepository.create(order);
-        List<CartItem> items = order.getItems();
-        mappingOrderProduct(createdOrderId, items);
+        mappingOrderProduct(createdOrderId, order.getItems());
+        cartService.removeAllItems(order.getUserId());
 
         return createdOrderId;
     }
