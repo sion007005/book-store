@@ -20,19 +20,19 @@
           created_by = #{createdBy},
           modified_at = #{modifiedAt},
           modified_by = #{modifiedBy},
-          deleted = #{deleted},
-          admin = #{admin}
+          deleted = #{deleted}
         WHERE id = #{id};
     </update>
 
     <select id="findOne" resultType="sion.bookstore.domain.member.repository.Address">
         SELECT id, <include refid="addressColumns" />
-        FROM member where (member_id = #{memberId} and `name` = #{name});
+        FROM address where (member_id = #{memberId} and `name` = #{name});
     </select>
 
     <select id="findAllByMemberId" resultType="sion.bookstore.domain.member.repository.Address">
         SELECT id, <include refid="addressColumns" />
-        FROM member where member_id = #{memberId};
+        FROM address
+        WHERE member_id = #{memberId} and deleted = 0;
     </select>
 
 </mapper>

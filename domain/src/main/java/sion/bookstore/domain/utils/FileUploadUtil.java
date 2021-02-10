@@ -57,6 +57,10 @@ public class FileUploadUtil {
     }
 
     public void deleteExistingFile(String originalImagePath) {
+        if (Objects.isNull(originalImagePath)) {
+            return;
+        }
+
         File file = new File(originalImagePath);
         if (file.exists()) {
             file.delete();

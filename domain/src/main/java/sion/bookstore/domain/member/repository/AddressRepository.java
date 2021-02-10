@@ -10,6 +10,6 @@ import java.util.List;
 public interface AddressRepository {
     Long create(Address address);
     Long update(Address address);
-    Address findOne(Integer memberId, String name);
+    Address findOne(Long memberId, String name);
     List<Address> findAllByMemberId(Long memberId);
 }

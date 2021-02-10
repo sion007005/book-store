@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -21,8 +22,9 @@ public class Member {
     private String passwordSalt;
     private String phone;
     private String profileImgPath;
-    private MultipartFile profileImageFile;
     private boolean admin;
+    private MultipartFile profileImageFile;
+    private List<Address> addressList;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;

@@ -8,8 +8,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class Address {
-    private Integer id;
-    private Integer memberId;
+    private Long id;
+    private Long memberId;
     private String name;
     private String addressBasic;
     private String addressDetail;

@@ -1,12 +1,16 @@
 package sion.bookstore.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.repository.MemberRepository;
+import sion.bookstore.domain.utils.FileUploadUtil;
+import sion.bookstore.domain.utils.SHA256Util;
 
 import java.util.Date;
 import java.util.List;
@@ -16,24 +20,59 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final AddressService addressService;
+    private final FileUploadUtil fileUploadUtil;
+    @Value("${profile.image.path}")
+    private String imagePath;
 
     public Long create(Member member) {
+        setDefaultInfo(member);
+        Long createdMemberId = memberRepository.create(member);
+        addressService.create(member);
+        return createdMemberId;
+    }
+
+    private void setDefaultInfo(Member member) {
         member.setCreatedAt(new Date());
-        // TODO 멤버 가입시 createdBy & modifiedBy는 누구로? (admin User / general User)
         member.setCreatedBy(member.getEmail());
         member.setModifiedAt(new Date());
         member.setModifiedBy(member.getEmail());
         member.setDeleted(false);
-
-        return memberRepository.create(member);
     }
 
     public Long update(Member member) {
-        member.setModifiedAt(new Date());
-        member.setModifiedBy(member.getEmail());
-        member.setDeleted(false);
+        Member existingMember = findOneById(UserContext.get().getMemberId());
+        setNotChangedInfo(member, existingMember);
 
-        return memberRepository.update(member);
+        compareAndSetNewPassword(member, existingMember);
+        fileUploadUtil.deleteExistingFile(existingMember.getProfileImgPath());
+        member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
+
+        Long updatedMemberId = memberRepository.update(member);
+        addressService.update(member);
+
+        return updatedMemberId;
+    }
+
+    private void compareAndSetNewPassword(Member member, Member existingMember) {
+        String salt = existingMember.getPasswordSalt();
+        String newPassword = SHA256Util.getEncrypt(member.getPassword(), salt);
+
+        if (!newPassword.equals(existingMember.getPassword())) {
+            member.setPassword(newPassword);
+        }
+    }
+
+    private void setNotChangedInfo(Member newMember, Member existingMember) {
+        newMember.setId(existingMember.getId());
+        newMember.setEmail(existingMember.getEmail());
+        newMember.setPasswordSalt(existingMember.getPasswordSalt());
+        newMember.setAdmin(existingMember.isAdmin());
+        newMember.setCreatedAt(existingMember.getCreatedAt());
+        newMember.setCreatedBy(existingMember.getEmail());
+        newMember.setModifiedAt(new Date());
+        newMember.setModifiedBy(UserContext.get().getUserEmail());
+        newMember.setDeleted(false);
     }
 
     @Transactional(readOnly = true)
