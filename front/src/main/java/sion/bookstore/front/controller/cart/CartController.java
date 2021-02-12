@@ -38,20 +38,37 @@ public class CartController {
     @LoginRequired
     public ResponseData getCartItems() {
         User user = UserContext.get();
-        List<CartItem> cartItems = cartService.getCartItems(user.getMemberId());
+        List<CartItem> cartItems = cartService.findAllByMemberId(user.getMemberId());
 
         return ResponseData.success(cartItems);
     }
 
-    //TODO 삭제/ 수량변경  액션에 따른 url을 명확히 따로 두기
-    @PostMapping("/cart/update")
+    /**
+     * 장바구니 페이지에서 ajax 요청으로 수량 변경 시 사용는 메소드
+     */
+    @PostMapping("/item/change")
     @LoginRequired
-    public ModelAndView update(CartItem cartItem) {
-        Long cartItemId = cartService.update(cartItem);
+    public ModelAndView changeQuantity(CartItem cartItem) {
+        Long cartItemId = cartService.changeItemQuantity(cartItem);
 
         ModelAndView mav = new ModelAndView("jsonView");
         mav.addObject("cartItemId", cartItemId);
 
         return mav;
     }
+
+    /**
+     * 장바구니 페이지에서 ajax 요청으로 상품 삭제 시 사용하는 메소드
+     */
+    @PostMapping("/item/delete")
+    @LoginRequired
+    public ModelAndView deleteCartItem(CartItem cartItem) {
+        Long cartItemId = cartService.deleteCartItem(cartItem);
+
+        ModelAndView mav = new ModelAndView("jsonView");
+        mav.addObject("cartItemId", cartItemId);
+
+        return mav;
+    }
+
 }

@@ -32,7 +32,7 @@ public class OrderController {
             throw new IllegalOperationException("잘못된 요청입니다.");
         }
 
-        List<CartItem> cartItemList = cartService.changeItemQuantity(items);
+        List<CartItem> cartItemList = cartService.changeQuantityByItemList(items);
         Address defaultAddress = addressService.findDefaultAddress(UserContext.get().getMemberId());
 
         ModelAndView mav = new ModelAndView("jsonView");

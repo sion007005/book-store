@@ -22,7 +22,7 @@ public class OrderService {
     private final CartService cartService;
 
     public Long create(Order order) {
-        // TODO CHECK 'orderStatus 값' : 프론트 단에서, (카드 등) 결제가 완료 되었으면 '결제완료'로 보내고, 아니면 '결제대기'로 보내야 함..!
+        // CHECK 'orderStatus 값' : 프론트 단에서, (카드 등) 결제가 완료 되었으면 '결제완료'로 보내고, 아니면 '결제대기'로 보내야 함..!
         order.setUserId(UserContext.get().getMemberId());
         order.setCreatedAt(new Date());
         order.setCreatedBy(UserContext.get().getUserEmail());
@@ -32,7 +32,7 @@ public class OrderService {
 
         Long createdOrderId = orderRepository.create(order);
         mappingOrderProduct(createdOrderId, order.getItems());
-        cartService.removeAllItems(order.getUserId());
+        cartService.removeAllByMemberId(order.getUserId());
 
         return createdOrderId;
     }

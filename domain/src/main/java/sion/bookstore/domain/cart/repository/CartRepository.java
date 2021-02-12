@@ -9,7 +9,8 @@ import java.util.List;
 @Repository
 public interface CartRepository {
     Long add(CartItem cart);
-    Long update(CartItem cart);
+    CartItem update(CartItem cart);
     CartItem findOneByBookId(Long bookId);
-    List<CartItem> getCartItems(Long userId);
+    CartItem findOneByCartId(Long id);
+    List<CartItem> findAllByMemberId(Long userId);
 }

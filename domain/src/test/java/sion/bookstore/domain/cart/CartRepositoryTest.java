@@ -44,7 +44,7 @@ public class CartRepositoryTest {
 
     @Test
     public void 특정회원의_장바구니_상품목록_가져오기() {
-        List<CartItem> cartItems = cartRepository.getCartItems(1L);
+        List<CartItem> cartItems = cartRepository.findAllByMemberId(1L);
         for (CartItem cartItem : cartItems) {
             log.info("장바구니에 넣은 책 제목:{}", cartItem.getBook().getTitle());
             log.info("선택한 수량: {}", cartItem.getQuantity());
