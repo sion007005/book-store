@@ -14,6 +14,8 @@ public class Address {
     private String addressBasic;
     private String addressDetail;
     private Integer zipCode;
+    private boolean defaultAddress;
+
     private Date createdAt;
     private String createdBy;
     private Date modifiedAt;

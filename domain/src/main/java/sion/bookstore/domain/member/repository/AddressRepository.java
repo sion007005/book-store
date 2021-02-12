@@ -12,4 +12,5 @@ public interface AddressRepository {
     Long update(Address address);
     Address findOne(Long memberId, String name);
     List<Address> findAllByMemberId(Long memberId);
+    Address findDefaultAddress(Long memberId);
 }

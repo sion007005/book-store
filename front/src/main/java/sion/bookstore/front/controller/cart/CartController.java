@@ -43,6 +43,7 @@ public class CartController {
         return ResponseData.success(cartItems);
     }
 
+    //TODO 삭제/ 수량변경  액션에 따른 url을 명확히 따로 두기
     @PostMapping("/cart/update")
     @LoginRequired
     public ModelAndView update(CartItem cartItem) {

@@ -65,4 +65,8 @@ public class AddressService {
     public List<Address> findAllByMemberId(Long memberId) {
         return addressRepository.findAllByMemberId(memberId);
     }
+
+    public Address findDefaultAddress(Long memberId) {
+        return addressRepository.findDefaultAddress(memberId);
+    }
 }

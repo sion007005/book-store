@@ -11,7 +11,6 @@ import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.service.MemberService;
 import sion.bookstore.domain.utils.FileUploadUtil;
-import sion.bookstore.domain.utils.SHA256Util;
 import sion.bookstore.front.ResponseData;
 import sion.bookstore.front.login.LoginRequired;
 
@@ -29,24 +28,9 @@ public class MemberController {
     @ResponseBody
     public ResponseData register(Member member) {
         memberValidator.validate(member, "member");
-
-        setPasswordAndSalt(member);
-        member.setAdmin(false);
-        member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
-
         memberService.create(member);
 
         return ResponseData.success(member.getId());
-    }
-
-    private Member setPasswordAndSalt(Member member) {
-        String password = member.getPassword();
-        String salt  = SHA256Util.generateSalt();
-        String encryptedPassword = SHA256Util.getEncrypt(password, salt);
-        member.setPasswordSalt(salt);
-        member.setPassword(encryptedPassword);
-
-        return member;
     }
 
     @LoginRequired

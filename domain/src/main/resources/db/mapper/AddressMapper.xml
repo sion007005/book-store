@@ -35,4 +35,10 @@
         WHERE member_id = #{memberId} and deleted = 0;
     </select>
 
+    <select id="findDefaultAddress" resultType="sion.bookstore.domain.member.repository.Address">
+        SELECT id, <include refid="addressColumns" />
+        FROM address
+        WHERE member_id = #{memberId} and default_address = 1 and deleted = 0;
+    </select>
+
 </mapper>

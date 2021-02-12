@@ -42,7 +42,7 @@
             modified_at = #{modifiedAt},
             modified_by = #{modifiedBy},
             deleted = #{deleted}
-        WHERE id = #{id} AND book_id = #{bookId};
+        WHERE id = #{id} AND book_id = #{bookId} AND user_id = #{userId};
     </update>
 
     <select id = "getCartItems"

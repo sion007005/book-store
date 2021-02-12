@@ -26,10 +26,25 @@ public class MemberService {
     private String imagePath;
 
     public Long create(Member member) {
+        setPasswordAndSalt(member);
+        member.setAdmin(false);
+        member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
         setDefaultInfo(member);
+
         Long createdMemberId = memberRepository.create(member);
         addressService.create(member);
+
         return createdMemberId;
+    }
+
+    private Member setPasswordAndSalt(Member member) {
+        String password = member.getPassword();
+        String salt  = SHA256Util.generateSalt();
+        String encryptedPassword = SHA256Util.getEncrypt(password, salt);
+        member.setPasswordSalt(salt);
+        member.setPassword(encryptedPassword);
+
+        return member;
     }
 
     private void setDefaultInfo(Member member) {
@@ -42,9 +57,10 @@ public class MemberService {
 
     public Long update(Member member) {
         Member existingMember = findOneById(UserContext.get().getMemberId());
-        setNotChangedInfo(member, existingMember);
 
+        setNotChangedInfo(member, existingMember);
         compareAndSetNewPassword(member, existingMember);
+
         fileUploadUtil.deleteExistingFile(existingMember.getProfileImgPath());
         member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
 

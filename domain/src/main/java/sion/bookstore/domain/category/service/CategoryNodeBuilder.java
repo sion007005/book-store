@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CategoryNodeBuilder {
+public class  CategoryNodeBuilder {
     private Map<Long, CategoryNode> categoryNodeMap = new HashMap<>();
     private CategoryNode rootNode;
 

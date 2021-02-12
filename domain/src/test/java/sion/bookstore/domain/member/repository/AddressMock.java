@@ -5,7 +5,7 @@ import java.util.Date;
 public class AddressMock {
     public static Address getAddress(String name) {
         Address address = new Address();
-        address.setMemberId(1);
+        address.setMemberId(1L);
         address.setName(name);
         address.setAddressBasic("testbasic");
         address.setAddressDetail("testdetail");
