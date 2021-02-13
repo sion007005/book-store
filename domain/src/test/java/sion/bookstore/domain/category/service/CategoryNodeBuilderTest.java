@@ -26,7 +26,7 @@ public class CategoryNodeBuilderTest {
     public void build() {
         CategorySearchCondition condition = new CategorySearchCondition();
         condition.setSize(1000);
-        List<Category> categories = categoryRepository.findAll(condition);
+        List<Category> categories = categoryRepository.findAllCategoryNode(condition);
 
         CategoryNodeBuilder builder = new CategoryNodeBuilder();
         CategoryNode node = builder.build(categories);

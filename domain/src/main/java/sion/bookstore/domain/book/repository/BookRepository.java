@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface BookRepository {
     Long create(Book book);
-    Book findOne(Long bookId);
+    Book findOneById(Long bookId);
     void update(Book book);
     List<Book> findAll(BookSearchCondition bookSearchCondition);
     Long countAll(BookSearchCondition condition);

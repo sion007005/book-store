@@ -81,7 +81,7 @@ public class ThemaSectionService {
         // TODO CHECK 80번라인 만으로는 author정보 못 받아와서, 아래에서 author 정보를 담은 책으로 새로 받아옴
         List<Book> bookListWithAuthors = new ArrayList<>();
         for (Book book : bookList) {
-            Book bookWithAuthor = bookService.findOne(book.getId());
+            Book bookWithAuthor = bookService.findOneById(book.getId());
             bookListWithAuthors.add(bookWithAuthor);
         }
 

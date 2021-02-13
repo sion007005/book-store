@@ -20,7 +20,7 @@ public class BookDetailController {
 
     @GetMapping("/book/{id}")
     public ModelAndView getBookDetail(@PathVariable Long id) {
-        Book book = bookService.findOne(id);
+        Book book = bookService.findOneById(id);
         List<Category> categoryList = bookCategoryService.findCategoriesByBookId(id);
 
         ModelAndView mav = new ModelAndView("jsonView");

@@ -46,8 +46,8 @@ public class BookService {
         }
     }
 
-    public Book findOne(Long bookId) {
-        Book book = bookRepository.findOne(bookId);
+    public Book findOneById(Long bookId) {
+        Book book = bookRepository.findOneById(bookId);
         List<Author> authors = authorService.findAllByBookId(bookId);
         List<Translator> translators = translatorService.findAllByBookId(bookId);
 

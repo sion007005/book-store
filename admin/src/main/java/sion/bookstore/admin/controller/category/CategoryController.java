@@ -11,11 +11,11 @@ import sion.bookstore.domain.category.service.CategoryService;
 @Controller
 public class CategoryController {
     private final CategoryService categoryService;
-
+    
     @GetMapping("/category/node")
     @ResponseBody
-    public ResponseData getNode() {
-        return ResponseData.success(categoryService.findCategoryNode());
+    public ResponseData findAllCategoryNode() {
+        return ResponseData.success(categoryService.findAllCategoryNode());
     }
 
 }

@@ -39,7 +39,7 @@ public class BookRepositoryTest {
         bookRepository.create(expected);
         Long id = expected.getId();
 
-        Book actual = bookRepository.findOne(id);
+        Book actual = bookRepository.findOneById(id);
 
         assertEquals(expected.getTitle(), actual.getTitle());
     }
@@ -49,11 +49,11 @@ public class BookRepositoryTest {
         Book book = BookMock.getBook("updateTest", "1098765432", "1098765432111");
         bookRepository.create(book);
 
-        Book expected = bookRepository.findOne(book.getId());
+        Book expected = bookRepository.findOneById(book.getId());
         expected.setTitle("updatedTitle");
         bookRepository.update(expected);
 
-        Book actual = bookRepository.findOne(expected.getId());
+        Book actual = bookRepository.findOneById(expected.getId());
 
         log.info("바꾸기 전 책의 현재 제목: {}", expected.getTitle());
         log.info("바꾼 후 책의 현재 제목: {}", actual.getTitle());

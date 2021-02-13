@@ -12,7 +12,7 @@ public interface CategoryRepository {
     Integer create(Category category);
     Category findOne(Long categoryId);
     void update(Category category);
-    List<Category> findAll(CategorySearchCondition categoryCondition);
+    List<Category> findAllCategoryNode(CategorySearchCondition categoryCondition);
     List<Category> findAllByCategoryLevel(int level);
     List<Category> findAllById(Long limitId);
     long countAll(CategorySearchCondition condition);

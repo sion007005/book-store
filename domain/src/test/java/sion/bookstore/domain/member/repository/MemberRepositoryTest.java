@@ -23,7 +23,7 @@ public class MemberRepositoryTest {
     @Test
     public void findOneById() {
         Member expected = MemberMock.getMember("test", "test1@naver.com");
-        memberRepository.create(expected);
+        memberRepository.register(expected);
         Long id = expected.getId();
 
         Member actual = memberRepository.findOneById(id);
@@ -35,7 +35,7 @@ public class MemberRepositoryTest {
     @Test
     public void findOneByEmail() {
         Member expected = MemberMock.getMember("test2", "test2@naver.com");
-        memberRepository.create(expected);
+        memberRepository.register(expected);
         String email = expected.getEmail();
 
         Member actual = memberRepository.findOneByEmail(email);
@@ -49,7 +49,7 @@ public class MemberRepositoryTest {
         String name = "updateTest";
 
         Member member = MemberMock.getMember("test", "updateTest@naver.com");
-        memberRepository.create(member);
+        memberRepository.register(member);
 
         Member expected = memberRepository.findOneById(member.getId());
         expected.setName(name);

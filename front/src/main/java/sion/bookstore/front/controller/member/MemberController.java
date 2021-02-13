@@ -28,7 +28,7 @@ public class MemberController {
     @ResponseBody
     public ResponseData register(Member member) {
         memberValidator.validate(member, "member");
-        memberService.create(member);
+        memberService.register(member);
 
         return ResponseData.success(member.getId());
     }

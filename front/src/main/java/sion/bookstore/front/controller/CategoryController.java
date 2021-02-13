@@ -14,7 +14,7 @@ public class CategoryController {
 
     @GetMapping("/category/node")
     @ResponseBody
-    public ResponseData getNode() {
-        return ResponseData.success(categoryService.findCategoryNode());
+    public ResponseData findAllCategoryNode() {
+        return ResponseData.success(categoryService.findAllCategoryNode());
     }
 }

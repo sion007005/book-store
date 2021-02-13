@@ -20,7 +20,7 @@ public class MainController {
 
     @GetMapping({"/", "/index", "/main"})
     public ModelAndView getMainPage() {
-        CategoryNode categoryNode = categoryService.findCategoryNode();
+        CategoryNode categoryNode = categoryService.findAllCategoryNode();
 
         ThemaSectionSearchCondition condition = new ThemaSectionSearchCondition();
         List<ThemaSection> themaSectionList = themaSectionService.findAllWithBooks(condition);

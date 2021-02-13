@@ -25,13 +25,13 @@ public class MemberService {
     @Value("${profile.image.path}")
     private String imagePath;
 
-    public Long create(Member member) {
+    public Long register(Member member) {
         setPasswordAndSalt(member);
         member.setAdmin(false);
         member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
         setDefaultInfo(member);
 
-        Long createdMemberId = memberRepository.create(member);
+        Long createdMemberId = memberRepository.register(member);
         addressService.create(member);
 
         return createdMemberId;

@@ -60,7 +60,7 @@ public class BookServiceTest {
         List<Book> bookList = new ArrayList<>();
 
         for (Author author : authors) {
-            Book book = bookService.findOne(author.getBookId());
+            Book book = bookService.findOneById(author.getBookId());
             bookList.add(book);
         }
 

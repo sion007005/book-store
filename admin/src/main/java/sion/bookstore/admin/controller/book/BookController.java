@@ -35,7 +35,7 @@ public class BookController {
     @PostMapping("/book/create")
     @ResponseBody
     @AdminOnly
-    public ResponseData create(Book book, Long categoryId) {
+    public ResponseData createAndCategoryMapping(Book book, Long categoryId) {
         bookValidator.validate(book, "book");
         book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
         bookService.createAndCategoryMapping(categoryId, book);
@@ -44,8 +44,8 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public ModelAndView getBookDetail(@PathVariable Long id) {
-        Book book = bookService.findOne(id);
+    public ModelAndView findOneById(@PathVariable Long id) {
+        Book book = bookService.findOneById(id);
         List<Category> categoryList = bookCategoryService.findCategoriesByBookId(id);
 
         ModelAndView mav = new ModelAndView("jsonView");
@@ -57,7 +57,7 @@ public class BookController {
 
     @GetMapping("/book/list")
     @ResponseBody
-    public ResponseData getList(BookSearchCondition searchCondition) {
+    public ResponseData findAll(BookSearchCondition searchCondition) {
         Page<Book> pageBook = bookService.findAll(searchCondition);
         return ResponseData.success(pageBook);
     }

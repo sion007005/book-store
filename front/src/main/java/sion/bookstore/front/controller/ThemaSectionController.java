@@ -19,7 +19,7 @@ public class ThemaSectionController {
 
     @GetMapping("/thema/list")
     @ResponseBody
-    public ResponseData getList() {
+    public ResponseData findAll() {
         ThemaSectionSearchCondition condition = new ThemaSectionSearchCondition();
         List<ThemaSection> themaSectionList = themaSectionService.findAllWithBooks(condition);
 
@@ -28,7 +28,7 @@ public class ThemaSectionController {
 
     @GetMapping("/thema/{id}")
     @ResponseBody
-    public ResponseData getOneThemaSection(@PathVariable Long id) {
+    public ResponseData findOneById(@PathVariable Long id) {
         ThemaSection themaSection = themaSectionService.findOneWithBooks(id);
         return ResponseData.success(themaSection);
     }

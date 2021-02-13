@@ -38,7 +38,7 @@ public class MemberController {
         member.setPassword(encryptedPassword);
         member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
 
-        Long memberId = memberService.create(member);
+        Long memberId = memberService.register(member);
 
         ModelAndView mav = new ModelAndView("jsonView");
         mav.addObject("memberId", memberId);
@@ -47,7 +47,7 @@ public class MemberController {
 
     @GetMapping("/member/{id}")
     @AdminOnly
-    public ModelAndView getMemberDetail(@PathVariable Long id) {
+    public ModelAndView findOneById(@PathVariable Long id) {
         Member member = memberService.findOneById(id);
 
         ModelAndView mav = new ModelAndView("jsonView");
@@ -58,7 +58,7 @@ public class MemberController {
 
     @GetMapping("/member/list")
     @AdminOnly
-    public ModelAndView getMemberList(MemberSearchCondition condition) {
+    public ModelAndView findAll(MemberSearchCondition condition) {
         // CHECK 관리자를 포함한 모든 회원을 불러옴
         Page<Member> memberPage = memberService.findAll(condition);
 

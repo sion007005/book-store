@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface MemberRepository {
-    Long create(Member member);
+    Long register(Member member);
     Member findOneById(Long id);
     Member findOneByEmail(String email);
     Long update(Member member);

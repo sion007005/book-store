@@ -27,7 +27,7 @@ public class CategoryService {
     }
 
     public Page<Category> findPageByCondition(CategorySearchCondition condition) {
-        List<Category> categoryList = categoryRepository.findAll(condition);
+        List<Category> categoryList = categoryRepository.findAllCategoryNode(condition);
         long totalElements = categoryRepository.countAll(condition);
         return new PageImpl<>(categoryList, condition.getPageable(), totalElements);
     }
@@ -67,10 +67,10 @@ public class CategoryService {
         }
     }
 
-    public CategoryNode findCategoryNode() {
+    public CategoryNode findAllCategoryNode() {
         CategorySearchCondition condition = new CategorySearchCondition();
         condition.setSize(1000);
-        List<Category> categories = categoryRepository.findAll(condition);
+        List<Category> categories = categoryRepository.findAllCategoryNode(condition);
 
         CategoryNodeBuilder builder = new CategoryNodeBuilder();
         CategoryNode node = builder.build(categories);

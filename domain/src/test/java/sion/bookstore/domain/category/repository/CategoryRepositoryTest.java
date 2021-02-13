@@ -60,7 +60,7 @@ public class CategoryRepositoryTest {
 
         CategorySearchCondition condition = new CategorySearchCondition();
         condition.setKeyword(keyword);
-        List<Category> actual = categoryRepository.findAll(condition);
+        List<Category> actual = categoryRepository.findAllCategoryNode(condition);
 
         assertEquals(3, actual.size());
     }
@@ -80,7 +80,7 @@ public class CategoryRepositoryTest {
         condition.setSize(expected);
 
         condition.setKeyword(null);
-        List<Category> actual = categoryRepository.findAll(condition);
+        List<Category> actual = categoryRepository.findAllCategoryNode(condition);
 
         assertEquals(expected, actual.size());
     }
