@@ -3,7 +3,6 @@ package sion.bookstore.domain.order.repository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import sion.bookstore.domain.cart.repository.CartItem;
 
 import java.util.Date;
 import java.util.List;
@@ -12,11 +11,11 @@ import java.util.List;
 @Setter
 public class Order {
     private Long id;
-    private Long userId;
-    private List<CartItem> items;
+    private Long memberId;
+    private List<OrderItem> items;
     private Integer totalPrice;
     private String paymentType;
-    private String orderStatus;
+    private OrderStatus orderStatus;
     private String addressBasic;
     private String addressDetail;
     private Integer zipCode;

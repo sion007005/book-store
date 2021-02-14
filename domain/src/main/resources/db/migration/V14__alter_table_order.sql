@@ -1,0 +1,1 @@
+ALTER TABLE `order` modify COLUMN order_status VARCHAR (50) NOT NULL;

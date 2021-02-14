@@ -4,12 +4,12 @@
 
 <mapper namespace="sion.bookstore.domain.order.repository.OrderRepository">
     <sql id="orderColumns">
-        user_id, total_price, payment_type, order_status, address_basic, address_detail, zip_code, phone, message, created_at, created_by, modified_at, modified_by, deleted
+        member_id, total_price, payment_type, order_status, address_basic, address_detail, zip_code, phone, message, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
         INSERT into `order` (<include refid="orderColumns" />)
-        values (#{userId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        values (#{memberId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findOneById" resultType="sion.bookstore.domain.order.repository.Order">
@@ -19,12 +19,12 @@
 
     <select id="findAllByMemberId" resultType="sion.bookstore.domain.order.repository.Order">
         SELECT id, <include refid="orderColumns" />
-        FROM `order` WHERE user_id = #{userId};
+        FROM `order` WHERE member_id = #{memberId};
     </select>
 
     <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
         UPDATE `order` set
-            user_id = #{userId},
+            member_id = #{memberId},
             total_price = #{totalPrice},
             payment_type = #{paymentType},
             order_status = #{orderStatus},

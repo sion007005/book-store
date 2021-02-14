@@ -7,11 +7,14 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class OrderProduct {
+public class OrderItem {
     private Long id;
     private Long orderId;
+    private Long memberId;
     private Long bookId;
     private Integer quantity;
+    private Integer salePrice;
+    private OrderStatus orderStatus;
 
     private Date createdAt;
     private String createdBy;

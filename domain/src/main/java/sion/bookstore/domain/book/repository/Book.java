@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
+import sion.bookstore.domain.BaseAudit;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Book {
+public class Book extends BaseAudit {
     private Long id;
     private String title;
     private String content;
@@ -27,11 +28,5 @@ public class Book {
     private Integer salePrice;
     private String thumbnail;
     private String status;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createdAt;
-    private String createdBy;
-    private Date modifiedAt;
-    private String modifiedBy;
-    private boolean deleted;
     private MultipartFile coverImageFile;
 }

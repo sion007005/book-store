@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sion.bookstore.domain.order.repository.OrderItemRepository">
+    <sql id="orderProductColumns">
+        order_id, member_id, book_id, quantity, salePrice, orderStatus, created_at, created_by, modified_at, modified_by, deleted
+    </sql>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.OrderItem">
+        INSERT into `order_product` (<include refid="orderProductColumns" />)
+        values (#{orderId}, #{memberId}, #{bookId}, #{quantity}, #{salePrice}, #{orderStatus}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+    </insert>
+
+    <select id="findAllByOrderId" resultType="sion.bookstore.domain.order.repository.OrderItem">
+        SELECT id, <include refid="orderProductColumns" />
+        FROM order_product
+        WHERE order_id = #{orderId} and deleted = 0;
+    </select>
+
+    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.OrderItem">
+        UPDATE order_product set
+        order_id = #{orderId},
+        member_id = #{memberId},
+        book_id = #{bookId},
+        quantity = #{quantity},
+        sale_price = #{salePrice},
+        order_status = #{orderStatus},
+        created_at = #{createdAt},
+        created_by = #{createdBy},
+        modified_at = #{modifiedAt},
+        modified_by = #{modifiedBy},
+        deleted = #{deleted}
+        WHERE id = #{id};
+    </update>
+</mapper>

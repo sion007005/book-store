@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,10 +50,10 @@ public class CartController {
     @PostMapping("/item/change")
     @LoginRequired
     public ModelAndView changeQuantity(CartItem cartItem) {
-        Long cartItemId = cartService.changeItemQuantity(cartItem);
+        cartService.changeItemQuantity(cartItem);
 
         ModelAndView mav = new ModelAndView("jsonView");
-        mav.addObject("cartItemId", cartItemId);
+        mav.addObject("cartItemId", cartItem.getId());
 
         return mav;
     }
@@ -60,10 +61,10 @@ public class CartController {
     /**
      * 장바구니 페이지에서 ajax 요청으로 상품 삭제 시 사용하는 메소드
      */
-    @PostMapping("/item/delete")
+    @PostMapping("/item/delete/{cartItemId}")
     @LoginRequired
-    public ModelAndView deleteCartItem(CartItem cartItem) {
-        Long cartItemId = cartService.deleteCartItem(cartItem);
+    public ModelAndView deleteCartItem(@PathVariable Long cartItemId) {
+        cartService.deleteCartItem(cartItemId);
 
         ModelAndView mav = new ModelAndView("jsonView");
         mav.addObject("cartItemId", cartItemId);

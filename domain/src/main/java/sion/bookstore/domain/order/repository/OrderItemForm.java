@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderItemForm {
-    private Long cartItemId;
-    private Integer count;
+    private Long bookId;
+    private Integer quantity;
 }

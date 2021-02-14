@@ -7,8 +7,8 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface OrderProductRepository {
-    void create(OrderProduct product);
-    Long update(OrderProduct product);
-    List<OrderProduct> findAllByOrderId(Long orderId);
+public interface OrderItemRepository {
+    void create(OrderItem product);
+    Long update(OrderItem product);
+    List<OrderItem> findAllByOrderId(Long orderId);
 }

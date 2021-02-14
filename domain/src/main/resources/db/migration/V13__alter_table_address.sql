@@ -1,0 +1,1 @@
+ALTER TABLE address ADD default_address boolean NOT NULL AFTER;

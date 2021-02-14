@@ -19,6 +19,18 @@
         <result column="deleted" property="deleted" />
         <collection property="book" resultMap="bookResultMap"/>
     </resultMap>
+
+    <resultMap id="cartItem2" type="sion.bookstore.domain.cart.repository.CartItem">
+        <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="book_id" property="bookId" />
+        <result column="quantity" property="quantity" />
+        <result column="created_at" property="createdAt" />
+        <result column="created_by" property="createdBy" />
+        <result column="modified_at" property="modifiedAt" />
+        <result column="modified_by" property="modifiedBy" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
     
     <resultMap id="bookResultMap" type="sion.bookstore.domain.book.repository.Book">
         <result column="title" property="title" />
@@ -32,7 +44,7 @@
         values (#{userId}, #{bookId}, #{quantity}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.cart.repository.CartItem">
+    <update id="update" parameterType="sion.bookstore.domain.cart.repository.CartItem">
         UPDATE cart set
             user_id = #{userId},
             book_id = #{bookId},
@@ -62,7 +74,7 @@
         WHERE book_id = #{bookId} and deleted = false;
     </select>
 
-    <select id = "findOneByCartId" parameterType="java.lang.Long" resultMap="cartItem">
+    <select id = "findOneByCartId" parameterType="java.lang.Long" resultMap="cartItem2">
         SELECT id, <include refid="cartColumns" />
         FROM cart
         WHERE id = #{id} and deleted = false;

@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.cart.repository.CartItem;
 import sion.bookstore.domain.cart.repository.CartRepository;
-import sion.bookstore.domain.order.repository.OrderItemForm;
 import sion.bookstore.domain.utils.validator.ValidationException;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +24,7 @@ public class CartService {
             throw new ValidationException("잘못된 요청입니다.");
         }
 
-        CartItem existingItem = findOneByBookId(cart.getBookId());
+        CartItem existingItem = findOneByCartId(cart.getId());
         if (Objects.nonNull(existingItem)) {
             existingItem.setDeleted(true);
             update(existingItem);
@@ -64,37 +62,23 @@ public class CartService {
         }
     }
 
-    public List<CartItem> changeQuantityByItemList(List<OrderItemForm> items) {
-        // 1. 디비 cart 수량 업데이트
-        // 2. 카트 아이템 리스트 반환
-        List<CartItem> itemList = new ArrayList<>();
-        for (OrderItemForm item : items) {
-            CartItem cartItem = findOneByCartId(item.getCartItemId());
-            cartItem.setQuantity(item.getCount());
-            CartItem updatedCartItem = update(cartItem);
-
-            itemList.add(updatedCartItem);
-        }
-
-        return itemList;
-    }
-
-    public Long changeItemQuantity(CartItem item) {
+    public void changeItemQuantity(CartItem item) {
         CartItem cartItem = findOneByCartId(item.getId());
         cartItem.setQuantity(item.getQuantity());
-        CartItem updatedCartItem = update(cartItem);
-
-        return updatedCartItem.getId();
+        update(cartItem);
     }
 
-    public Long deleteCartItem(CartItem item) {
-        item.setDeleted(true);
-        CartItem updatedCartItem = update(item);
+    public void deleteCartItem(Long cartItemId) {
+        CartItem cartItem = findOneByCartId(cartItemId);
+        if (Objects.isNull(cartItem)) {
+            return;
+        }
 
-        return updatedCartItem.getId();
+        cartItem.setDeleted(true);
+        update(cartItem);
     }
 
-    private CartItem update(CartItem cart) {
+    private void update(CartItem cart) {
         if (cart.getUserId() != UserContext.get().getMemberId()) {
             throw new ValidationException("잘못된 요청입니다.");
         }
@@ -104,6 +88,11 @@ public class CartService {
         cart.setModifiedBy(UserContext.get().getUserEmail());
 
         cartRepository.update(cart);
-        return cart;
+    }
+
+    public void removeByItemIds(List<Long> cartItemIds) {
+        for (Long cartItemId : cartItemIds) {
+            deleteCartItem(cartItemId);
+        }
     }
 }

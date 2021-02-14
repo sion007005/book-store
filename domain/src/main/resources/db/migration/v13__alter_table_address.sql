@@ -1,1 +1,0 @@
-alter table address ADD default_address boolean not null;

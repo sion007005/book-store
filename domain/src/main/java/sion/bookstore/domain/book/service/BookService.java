@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
@@ -27,13 +28,7 @@ public class BookService {
     }
 
     public void createAndCategoryMapping(Long categoryId, Book book) {
-        book.setCreatedAt(new Date());
-        // TODO 로그인한 관리자 아이디로 등록하기
-        book.setCreatedBy("tester");
-        book.setModifiedAt(new Date());
-        book.setModifiedBy("tester");
-        book.setDeleted(false);
-
+        BaseAuditor.set(book);
         create(book);
         authorService.create(book);
         translatorService.create(book);

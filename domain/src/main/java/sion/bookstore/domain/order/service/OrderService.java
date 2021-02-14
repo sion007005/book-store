@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.auth.UserContext;
-import sion.bookstore.domain.cart.repository.CartItem;
+import sion.bookstore.domain.book.repository.Book;
+import sion.bookstore.domain.book.service.BookService;
 import sion.bookstore.domain.cart.service.CartService;
 import sion.bookstore.domain.order.repository.Order;
-import sion.bookstore.domain.order.repository.OrderProduct;
+import sion.bookstore.domain.order.repository.OrderItem;
 import sion.bookstore.domain.order.repository.OrderRepository;
+import sion.bookstore.domain.order.repository.OrderStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -18,33 +20,45 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderProductService orderProductService;
+    private final OrderItemService orderItemService;
     private final CartService cartService;
+    private final BookService bookService;
 
-    public Long create(Order order) {
-        // CHECK 'orderStatus 값' : 프론트 단에서, (카드 등) 결제가 완료 되었으면 '결제완료'로 보내고, 아니면 '결제대기'로 보내야 함..!
-        order.setUserId(UserContext.get().getMemberId());
+    public Long create(Order order, List<Long> cartItemIds) {
+        Order createdOrder = createOrder(order);
+        createOrderItems(createdOrder, order.getItems());
+        cartService.removeByItemIds(cartItemIds);
+        return createdOrder.getId();
+    }
+
+    private Order createOrder(Order order) {
+        // TODO
+        //  1. calculateTotalPrice
+        //  2. orderStatus 세팅하기 (결제수단(paymentType)에 따라서)
+
+        order.setTotalPrice(50000);
+        order.setOrderStatus(OrderStatus.ORDER_COMPLETED);
+        order.setMemberId(UserContext.get().getMemberId());
         order.setCreatedAt(new Date());
         order.setCreatedBy(UserContext.get().getUserEmail());
         order.setModifiedAt(new Date());
         order.setModifiedBy(UserContext.get().getUserEmail());
         order.setDeleted(false);
 
-        Long createdOrderId = orderRepository.create(order);
-        mappingOrderProduct(createdOrderId, order.getItems());
-        cartService.removeAllByMemberId(order.getUserId());
-
-        return createdOrderId;
+        orderRepository.create(order);
+        return order;
     }
 
-    private void mappingOrderProduct(Long orderId, List<CartItem> items) {
-        for (CartItem item : items) {
-            OrderProduct product = new OrderProduct();
-            product.setOrderId(orderId);
-            product.setBookId(item.getBookId());
-            product.setQuantity(item.getQuantity());
+    private void createOrderItems(Order createdOrder, List<OrderItem> items) {
+        for (OrderItem item : items) {
+            item.setOrderId(createdOrder.getId());
+            item.setMemberId(UserContext.get().getMemberId());
+            item.setOrderStatus(createdOrder.getOrderStatus());
 
-            orderProductService.create(product);
+            Book book = bookService.findOneById(item.getBookId());
+            item.setSalePrice(book.getSalePrice());
+
+            orderItemService.create(item);
         }
     }
 
@@ -64,7 +78,7 @@ public class OrderService {
     }
 
     /**
-     * 주문 취소 시 order와 order_product 모두 삭제(deleted -> true 변경)
+     * 주문 취소 시 order와 order_item 모두 삭제(deleted -> true 변경)
      * @param orderId
      */
     public void cancel(Long orderId) {
@@ -74,6 +88,6 @@ public class OrderService {
         order.setDeleted(true);
 
         orderRepository.update(order);
-        orderProductService.delete(orderId);
+        orderItemService.delete(orderId);
     }
 }
