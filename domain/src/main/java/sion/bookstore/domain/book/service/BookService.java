@@ -71,7 +71,16 @@ public class BookService {
     }
 
     public Long update(Book book) {
-        // TODO[DONE] 수정한 사람 : 현재 로그인한 관리자 아이디로 등록하기
+        book.setModifiedAt(new Date());
+        book.setModifiedBy(UserContext.get().getUserEmail());
+        book.setDeleted(false);
+
+        bookRepository.update(book);
+
+        return book.getId();
+    }
+
+    public Long updateAll(Book book) {
         book.setModifiedAt(new Date());
         book.setModifiedBy(UserContext.get().getUserEmail());
         book.setDeleted(false);
@@ -83,7 +92,12 @@ public class BookService {
         return book.getId();
     }
 
-    public void changeStockQuantity(Integer quantity) {
+    public void changeStockQuantity(Long bookId, Integer quantity) {
+        Book book = findOneById(bookId);
+        Integer beforeQuantity = book.getStockQuantity();
+        Integer afterQuantity = (beforeQuantity + quantity);
+        book.setStockQuantity(afterQuantity);
 
+        update(book);
     }
 }

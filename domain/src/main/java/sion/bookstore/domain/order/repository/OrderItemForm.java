@@ -8,4 +8,5 @@ import lombok.Setter;
 public class OrderItemForm {
     private Long bookId;
     private Integer quantity;
+    private Integer salePrice;
 }

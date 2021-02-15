@@ -32,17 +32,23 @@ public class OrderService {
 
         paymentService.executePaymentProcess(createdOrder); //결제 create
         changeOrderStatus(createdOrder); //orderStatus 업데이트
-
         createOrderItems(createdOrder, order.getItems());
+        changeStockQuantity(order.getItems(), -1);
         cartService.removeByItemIds(cartItemIds);
 
         return createdOrder.getId();
     }
 
+    private void changeStockQuantity(List<OrderItem> items, Integer signNumber) {
+        for (OrderItem item : items) {
+            bookService.changeStockQuantity(item.getBookId(), item.getQuantity() * signNumber);
+        }
+    }
+
     private void changeOrderStatus(Order order) {
         // TODO paymentType에 따라서 orderstatus값 세팅하고 업데이트
         // 현재는 무통장입금이면 입금대기, 그 외의 결제타입이면 주문완료로 세팅
-        if (order.getPaymentType() == PaymentType.DEPOSIT) {
+        if (order.getPaymentType() == PaymentType.REMITTANCE) {
             order.setOrderStatus(OrderStatus.WAITING_DEPOSIT);
         } else {
             order.setOrderStatus(OrderStatus.ORDER_COMPLETED);
@@ -52,8 +58,6 @@ public class OrderService {
     }
 
     private Order createOrder(Order order) {
-        // TODO
-        //  3. 재고수량 변경
         order.setTotalPrice(calculateTotalPrice(order.getItems()));
         order.setOrderStatus(OrderStatus.ORDER_CREATED);
         order.setMemberId(UserContext.get().getMemberId());
@@ -109,7 +113,6 @@ public class OrderService {
      * @param orderId
      */
     public void cancel(Long orderId) {
-        // TODO 재고수량 변경 
         Order order = findOneById(orderId);
         order.setModifiedAt(new Date());
         order.setModifiedBy(UserContext.get().getUserEmail());
@@ -117,5 +120,6 @@ public class OrderService {
 
         orderRepository.update(order);
         orderItemService.delete(orderId);
+        changeStockQuantity(order.getItems(), 1);
     }
 }

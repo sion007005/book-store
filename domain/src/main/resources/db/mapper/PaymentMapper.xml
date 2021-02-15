@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sion.bookstore.domain.book.repository.BookRepository">
+<mapper namespace="sion.bookstore.domain.payment.repository.PaymentRepository">
     <sql id="paymentColumns">
          member_id, order_id, payment_type, virtual_account, approval_number, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Book">
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.payment.repository.Payment">
         INSERT into payment (<include refid="paymentColumns" />)
         values (#{memberId}, #{orderId}, #{paymentType}, #{virtualAccount}, #{approvalNumber}  ,#{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>

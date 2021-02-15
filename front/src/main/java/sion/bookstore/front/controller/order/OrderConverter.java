@@ -1,8 +1,8 @@
 package sion.bookstore.front.controller.order;
 
 import sion.bookstore.domain.order.repository.Order;
-import sion.bookstore.domain.order.repository.OrderItemForm;
 import sion.bookstore.domain.order.repository.OrderItem;
+import sion.bookstore.domain.order.repository.OrderItemForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,7 @@ public class OrderConverter {
             OrderItem orderItem = new OrderItem();
             orderItem.setBookId(orderItemForm.getBookId());
             orderItem.setQuantity(orderItemForm.getQuantity());
+            orderItem.setSalePrice(orderItemForm.getSalePrice());
 
             orderItems.add(orderItem);
         }

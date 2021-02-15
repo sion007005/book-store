@@ -4,22 +4,22 @@
 
 <mapper namespace="sion.bookstore.domain.order.repository.OrderItemRepository">
     <sql id="orderProductColumns">
-        order_id, member_id, book_id, quantity, salePrice, orderStatus, created_at, created_by, modified_at, modified_by, deleted
+        order_id, member_id, book_id, quantity, sale_price, order_status, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.OrderItem">
-        INSERT into `order_product` (<include refid="orderProductColumns" />)
+        INSERT into `order_item` (<include refid="orderProductColumns" />)
         values (#{orderId}, #{memberId}, #{bookId}, #{quantity}, #{salePrice}, #{orderStatus}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findAllByOrderId" resultType="sion.bookstore.domain.order.repository.OrderItem">
         SELECT id, <include refid="orderProductColumns" />
-        FROM order_product
+        FROM order_item
         WHERE order_id = #{orderId} and deleted = 0;
     </select>
 
     <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.OrderItem">
-        UPDATE order_product set
+        UPDATE order_item set
         order_id = #{orderId},
         member_id = #{memberId},
         book_id = #{bookId},

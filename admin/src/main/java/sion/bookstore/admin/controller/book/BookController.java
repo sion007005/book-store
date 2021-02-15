@@ -72,7 +72,7 @@ public class BookController {
         fileUploadUtil.deleteExistingFile(book.getThumbnail());
         book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
 
-        bookService.update(book);
+        bookService.updateAll(book);
         bookCategoryService.updateNewMapping(book.getId(), newCategoryId);
         authorService.updateNewMapping(book);
         translatorService.updateNewMapping(book);
