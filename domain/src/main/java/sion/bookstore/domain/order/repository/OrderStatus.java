@@ -3,6 +3,7 @@ package sion.bookstore.domain.order.repository;
 public enum OrderStatus {
     // 입금대기/승인대기/승인실패
     // 주문완료/주문취소
+    ORDER_CREATED,
     WAITING_DEPOSIT, /* 입금대기 */
     DEPOSIT_COMPLETED, /* 입금완료 */
     CREDIT_CARD_PAYMENT_COMPLETED, /* 카드 결제 완료 */

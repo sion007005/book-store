@@ -1,27 +1,21 @@
-package sion.bookstore.domain.order.repository;
+package sion.bookstore.domain.payment.repository;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import sion.bookstore.domain.payment.repository.PaymentType;
+import sion.bookstore.domain.BaseAudit;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
-public class Order {
+public class Payment extends BaseAudit {
     private Long id;
     private Long memberId;
-    private List<OrderItem> items;
-    private Integer totalPrice;
+    private Long orderId;
     private PaymentType paymentType;
-    private OrderStatus orderStatus;
-    private String addressBasic;
-    private String addressDetail;
-    private Integer zipCode;
-    private String phone;
-    private String message;
+    private String virtualAccount;
+    private String approvalNumber;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;

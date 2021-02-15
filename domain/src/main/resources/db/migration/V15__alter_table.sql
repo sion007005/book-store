@@ -8,3 +8,5 @@ ALTER TABLE `order_item` modify COLUMN `sale_price` INTEGER NOT NULL AFTER quant
 ALTER TABLE `order_item` modify COLUMN `order_status` VARCHAR (50) NOT NULL AFTER `sale_price`;
 ALTER TABLE `order_item` modify COLUMN `member_id` BIGINT NOT NULL AFTER `order_id`;
 ALTER TABLE `order` CHANGE user_id member_id BIGINT NOT NULL;
+
+ALTER TABLE book ADD stock_quantity INTEGER NOT NULL default 500 AFTER `isbn13`;

@@ -1,4 +1,4 @@
-package sion.bookstore.domain.payment;
+package sion.bookstore.domain.payment.repository;
 
 public enum PaymentType {
     CREDIT_CARD("신용카드"),

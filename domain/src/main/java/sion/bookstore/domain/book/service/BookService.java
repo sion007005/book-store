@@ -82,4 +82,8 @@ public class BookService {
 
         return book.getId();
     }
+
+    public void changeStockQuantity(Integer quantity) {
+
+    }
 }

@@ -31,10 +31,10 @@
         FROM category where id >= #{limitId};
     </select>
 
-    <select id="findAll"
+    <select id="findAllCategoryNode"
             parameterType="sion.bookstore.domain.category.service.CategorySearchCondition"
             resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT id, <include refid="categoryColumns" />)
+        SELECT id, <include refid="categoryColumns" />
         FROM category
         <if test="keyword != null and keyword != ''">
             where `name` like CONCAT('%', #{keyword}, '%')

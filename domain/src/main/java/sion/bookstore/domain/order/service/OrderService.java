@@ -11,6 +11,8 @@ import sion.bookstore.domain.order.repository.Order;
 import sion.bookstore.domain.order.repository.OrderItem;
 import sion.bookstore.domain.order.repository.OrderRepository;
 import sion.bookstore.domain.order.repository.OrderStatus;
+import sion.bookstore.domain.payment.repository.PaymentType;
+import sion.bookstore.domain.payment.service.PaymentService;
 
 import java.util.Date;
 import java.util.List;
@@ -21,23 +23,39 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
+    private final PaymentService paymentService;
     private final CartService cartService;
     private final BookService bookService;
 
     public Long create(Order order, List<Long> cartItemIds) {
         Order createdOrder = createOrder(order);
+
+        paymentService.executePaymentProcess(createdOrder); //결제 create
+        changeOrderStatus(createdOrder); //orderStatus 업데이트
+
         createOrderItems(createdOrder, order.getItems());
         cartService.removeByItemIds(cartItemIds);
+
         return createdOrder.getId();
+    }
+
+    private void changeOrderStatus(Order order) {
+        // TODO paymentType에 따라서 orderstatus값 세팅하고 업데이트
+        // 현재는 무통장입금이면 입금대기, 그 외의 결제타입이면 주문완료로 세팅
+        if (order.getPaymentType() == PaymentType.DEPOSIT) {
+            order.setOrderStatus(OrderStatus.WAITING_DEPOSIT);
+        } else {
+            order.setOrderStatus(OrderStatus.ORDER_COMPLETED);
+        }
+
+        update(order);
     }
 
     private Order createOrder(Order order) {
         // TODO
-        //  1. calculateTotalPrice
-        //  2. orderStatus 세팅하기 (결제수단(paymentType)에 따라서)
-
-        order.setTotalPrice(50000);
-        order.setOrderStatus(OrderStatus.ORDER_COMPLETED);
+        //  3. 재고수량 변경
+        order.setTotalPrice(calculateTotalPrice(order.getItems()));
+        order.setOrderStatus(OrderStatus.ORDER_CREATED);
         order.setMemberId(UserContext.get().getMemberId());
         order.setCreatedAt(new Date());
         order.setCreatedBy(UserContext.get().getUserEmail());
@@ -47,6 +65,15 @@ public class OrderService {
 
         orderRepository.create(order);
         return order;
+    }
+
+    private Integer calculateTotalPrice(List<OrderItem> items) {
+        Integer totalPrice = 0;
+        for (OrderItem item : items) {
+            totalPrice += item.getSalePrice();
+        }
+
+        return totalPrice;
     }
 
     private void createOrderItems(Order createdOrder, List<OrderItem> items) {
@@ -82,6 +109,7 @@ public class OrderService {
      * @param orderId
      */
     public void cancel(Long orderId) {
+        // TODO 재고수량 변경 
         Order order = findOneById(orderId);
         order.setModifiedAt(new Date());
         order.setModifiedBy(UserContext.get().getUserEmail());

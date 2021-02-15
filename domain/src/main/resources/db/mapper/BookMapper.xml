@@ -41,7 +41,7 @@
         values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <select id="findOne" resultType="sion.bookstore.domain.book.repository.Book">
+    <select id="findOneById" resultType="sion.bookstore.domain.book.repository.Book">
         SELECT id, <include refid="bookColumns" />
         FROM book WHERE id = #{id};
     </select>

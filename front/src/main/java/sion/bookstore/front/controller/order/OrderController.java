@@ -15,8 +15,8 @@ import sion.bookstore.domain.member.service.AddressService;
 import sion.bookstore.domain.order.repository.Order;
 import sion.bookstore.domain.order.repository.OrderItem;
 import sion.bookstore.domain.order.service.OrderService;
-import sion.bookstore.domain.payment.PaymentService;
-import sion.bookstore.domain.payment.PaymentType;
+import sion.bookstore.domain.payment.service.PaymentService;
+import sion.bookstore.domain.payment.repository.PaymentType;
 import sion.bookstore.front.login.LoginRequired;
 
 import java.util.List;

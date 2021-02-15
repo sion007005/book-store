@@ -19,6 +19,7 @@ public class Book extends BaseAudit {
     private String content;
     private String isbn10;
     private String isbn13;
+    private Integer stockQuantity;
     private List<Author> authors;
     private List<Translator> translators;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
