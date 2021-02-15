@@ -1,4 +1,4 @@
-package sion.bookstore.domain.book.thema.service;
+package sion.bookstore.domain.book.theme.service;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,6 +8,6 @@ import sion.bookstore.domain.PageCondition;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class ThemaSectionSearchCondition extends PageCondition {
+public class ThemeSectionSearchCondition extends PageCondition {
     private String keyword;
 }

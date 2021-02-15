@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sion.bookstore.domain.book.thema.repository.ThemaSectionRepository">
-    <sql id="themaSectionColumns">
-        order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted
+<mapper namespace="sion.bookstore.domain.book.theme.repository.ThemeSectionRepository">
+    <sql id="themeSectionColumns">
+        order_no, `type`, title, description, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.thema.repository.ThemaSection">
-        INSERT into thema_section (<include refid="themaSectionColumns" />)
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.theme.repository.ThemeSection">
+        INSERT into thema_section (<include refid="themeSectionColumns" />)
         values (#{orderNo}, #{type}, #{title}, #{description}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <select id="findOne" resultType="sion.bookstore.domain.book.thema.repository.ThemaSection">
-        SELECT id, <include refid="themaSectionColumns" />
+    <select id="findOne" resultType="sion.bookstore.domain.book.theme.repository.ThemeSection">
+        SELECT id, <include refid="themeSectionColumns" />
         FROM thema_section WHERE id = #{id} and deleted = false;
     </select>
 
 
-    <update id="update" parameterType="sion.bookstore.domain.book.thema.repository.ThemaSection">
+    <update id="update" parameterType="sion.bookstore.domain.book.theme.repository.ThemeSection">
         UPDATE thema_section set
             order_no = #{orderNo},
-            type = #{type},
+            `type` = #{type},
             title = #{title},
             description = #{description},
             created_at = #{createdAt},
@@ -32,13 +32,13 @@
     </update>
 
     <select id="findAll"
-            parameterType="sion.bookstore.domain.book.thema.service.ThemaSectionSearchCondition"
-            resultType="sion.bookstore.domain.book.thema.repository.ThemaSection">
-        SELECT id, order_no, type, title, description, created_at, created_by, modified_at, modified_by, deleted
+            parameterType="sion.bookstore.domain.book.theme.service.ThemeSectionSearchCondition"
+            resultType="sion.bookstore.domain.book.theme.repository.ThemeSection">
+        SELECT id, order_no, `type`, title, description, created_at, created_by, modified_at, modified_by, deleted
         FROM thema_section
         WHERE deleted = false
         <if test="keyword != null and keyword != ''">
-            and type like CONCAT('%', #{keyword}, '%')
+            and `type` like CONCAT('%', #{keyword}, '%')
         </if>
         order by order_no asc
         limit #{searchStartIndex}, #{size}
@@ -49,7 +49,7 @@
             resultType="long">
         SELECT count(*) FROM book
         <if test="keyword != null and keyword != ''">
-            where type like CONCAT('%', #{keyword}, '%')
+            where `type` like CONCAT('%', #{keyword}, '%')
         </if>
     </select>
 

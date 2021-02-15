@@ -1,4 +1,4 @@
-package sion.bookstore.domain.book.thema.repository;
+package sion.bookstore.domain.book.theme.repository;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ThemaSection extends BaseAudit {
+public class ThemeSection extends BaseAudit {
     private Long id;
     private Integer orderNo;
     private String type;
