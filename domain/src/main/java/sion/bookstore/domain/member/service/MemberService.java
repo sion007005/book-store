@@ -6,13 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.repository.MemberRepository;
 import sion.bookstore.domain.utils.FileUploadUtil;
 import sion.bookstore.domain.utils.SHA256Util;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,7 +29,7 @@ public class MemberService {
         setPasswordAndSalt(member);
         member.setAdmin(false);
         member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
-        setDefaultInfo(member);
+        BaseAuditor.setCreationInfo(member);
 
         Long createdMemberId = memberRepository.register(member);
         addressService.create(member);
@@ -47,18 +47,11 @@ public class MemberService {
         return member;
     }
 
-    private void setDefaultInfo(Member member) {
-        member.setCreatedAt(new Date());
-        member.setCreatedBy(member.getEmail());
-        member.setModifiedAt(new Date());
-        member.setModifiedBy(member.getEmail());
-        member.setDeleted(false);
-    }
-
     public Long update(Member member) {
         Member existingMember = findOneById(UserContext.get().getMemberId());
 
         setNotChangedInfo(member, existingMember);
+        BaseAuditor.setUpdatingInfo(member);
         compareAndSetNewPassword(member, existingMember);
 
         fileUploadUtil.deleteExistingFile(existingMember.getProfileImgPath());
@@ -86,9 +79,6 @@ public class MemberService {
         newMember.setAdmin(existingMember.isAdmin());
         newMember.setCreatedAt(existingMember.getCreatedAt());
         newMember.setCreatedBy(existingMember.getEmail());
-        newMember.setModifiedAt(new Date());
-        newMember.setModifiedBy(UserContext.get().getUserEmail());
-        newMember.setDeleted(false);
     }
 
     @Transactional(readOnly = true)

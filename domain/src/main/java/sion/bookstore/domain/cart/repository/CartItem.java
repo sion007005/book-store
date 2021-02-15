@@ -3,13 +3,14 @@ package sion.bookstore.domain.cart.repository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import sion.bookstore.domain.BaseAudit;
 import sion.bookstore.domain.book.repository.Book;
 
 import java.util.Date;
 
 @Getter
 @Setter
-public class CartItem {
+public class CartItem extends BaseAudit {
     private Long id;
     private Long userId;
     private Long bookId;

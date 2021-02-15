@@ -3,6 +3,7 @@ package sion.bookstore.domain.order.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.service.BookService;
@@ -14,7 +15,6 @@ import sion.bookstore.domain.order.repository.OrderStatus;
 import sion.bookstore.domain.payment.repository.PaymentType;
 import sion.bookstore.domain.payment.service.PaymentService;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -61,11 +61,7 @@ public class OrderService {
         order.setTotalPrice(calculateTotalPrice(order.getItems()));
         order.setOrderStatus(OrderStatus.ORDER_CREATED);
         order.setMemberId(UserContext.get().getMemberId());
-        order.setCreatedAt(new Date());
-        order.setCreatedBy(UserContext.get().getUserEmail());
-        order.setModifiedAt(new Date());
-        order.setModifiedBy(UserContext.get().getUserEmail());
-        order.setDeleted(false);
+        BaseAuditor.setCreationInfo(order);
 
         orderRepository.create(order);
         return order;
@@ -102,9 +98,7 @@ public class OrderService {
     }
 
     public Long update(Order order) {
-        order.setModifiedAt(new Date());
-        order.setModifiedBy(UserContext.get().getUserEmail());
-
+        BaseAuditor.setUpdatingInfo(order);
         return orderRepository.update(order);
     }
 
@@ -114,9 +108,7 @@ public class OrderService {
      */
     public void cancel(Long orderId) {
         Order order = findOneById(orderId);
-        order.setModifiedAt(new Date());
-        order.setModifiedBy(UserContext.get().getUserEmail());
-        order.setDeleted(true);
+        BaseAuditor.setDeletionInfo(order);
 
         orderRepository.update(order);
         orderItemService.delete(orderId);

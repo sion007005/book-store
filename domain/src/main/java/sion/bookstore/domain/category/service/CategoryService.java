@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
 import sion.bookstore.domain.parser.ParsedCategory;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +56,7 @@ public class CategoryService {
             category.setLevel(parsedCategory.getLevel());
             category.setOrder(order);
             category.setLink(parsedCategory.getLink());
-            category.setCreatedAt(new Date());
-            category.setCreatedBy("sion");
-            category.setModifiedAt(new Date());
-            category.setModifiedBy("sion");
-            category.setDeleted(false);
+            BaseAuditor.setCreationInfo(category);
 
             categoryRepository.create(category);
             categoryIdMappingList.put(parsedCategory.getNumber(), category.getId());

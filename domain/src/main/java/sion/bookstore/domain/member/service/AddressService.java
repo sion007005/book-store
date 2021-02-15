@@ -2,12 +2,11 @@ package sion.bookstore.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sion.bookstore.domain.auth.UserContext;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.member.repository.Address;
 import sion.bookstore.domain.member.repository.AddressRepository;
 import sion.bookstore.domain.member.repository.Member;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,12 +15,7 @@ public class AddressService {
     private final AddressRepository addressRepository;
 
     public Long create(Address address) {
-        address.setCreatedAt(new Date());
-        address.setCreatedBy(UserContext.get().getUserEmail());
-        address.setModifiedAt(new Date());
-        address.setModifiedBy(UserContext.get().getUserEmail());
-        address.setDeleted(false);
-
+        BaseAuditor.setCreationInfo(address);
         return addressRepository.create(address);
     }
 
@@ -29,21 +23,14 @@ public class AddressService {
         List<Address> addressList = member.getAddressList();
         for (Address address : addressList) {
             address.setMemberId(member.getId());
-            address.setCreatedAt(new Date());
-            address.setCreatedBy(member.getEmail());
-            address.setModifiedAt(new Date());
-            address.setModifiedBy(member.getEmail());
-            address.setDeleted(false);
+            BaseAuditor.setCreationInfo(address);
 
             addressRepository.create(address);
         }
     }
 
     public Long delete(Address address) {
-        address.setModifiedAt(new Date());
-        address.setModifiedBy(UserContext.get().getUserEmail());
-        address.setDeleted(true);
-
+        BaseAuditor.setDeletionInfo(address);
         return addressRepository.update(address);
     }
 

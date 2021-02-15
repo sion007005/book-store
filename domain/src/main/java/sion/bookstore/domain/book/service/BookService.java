@@ -6,13 +6,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.BaseAuditor;
-import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
 import sion.bookstore.domain.book.repository.Translator;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,7 +26,7 @@ public class BookService {
     }
 
     public void createAndCategoryMapping(Long categoryId, Book book) {
-        BaseAuditor.set(book);
+        BaseAuditor.setCreationInfo(book);
         create(book);
         authorService.create(book);
         translatorService.create(book);
@@ -71,19 +69,14 @@ public class BookService {
     }
 
     public Long update(Book book) {
-        book.setModifiedAt(new Date());
-        book.setModifiedBy(UserContext.get().getUserEmail());
-        book.setDeleted(false);
-
+        BaseAuditor.setUpdatingInfo(book);
         bookRepository.update(book);
 
         return book.getId();
     }
 
     public Long updateAll(Book book) {
-        book.setModifiedAt(new Date());
-        book.setModifiedBy(UserContext.get().getUserEmail());
-        book.setDeleted(false);
+        BaseAuditor.setUpdatingInfo(book);
 
         bookRepository.update(book);
         authorService.update(book);

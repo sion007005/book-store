@@ -3,12 +3,12 @@ package sion.bookstore.domain.cart.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.cart.repository.CartItem;
 import sion.bookstore.domain.cart.repository.CartRepository;
 import sion.bookstore.domain.utils.validator.ValidationException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,11 +31,7 @@ public class CartService {
         }
 
         cart.setUserId(UserContext.get().getMemberId());
-        cart.setCreatedAt(new Date());
-        cart.setCreatedBy(UserContext.get().getUserEmail());
-        cart.setModifiedAt(new Date());
-        cart.setModifiedBy(UserContext.get().getUserEmail());
-        cart.setDeleted(false);
+        BaseAuditor.setCreationInfo(cart);
 
         cartRepository.add(cart);
         return cart.getId();
@@ -57,8 +53,8 @@ public class CartService {
     public void removeAllByMemberId(Long memberId) {
         List<CartItem> cartItems = cartRepository.findAllByMemberId(memberId);
         for (CartItem cartItem : cartItems) {
-            cartItem.setDeleted(true);
-            update(cartItem);
+            BaseAuditor.setDeletionInfo(cartItem);
+            cartRepository.update(cartItem);
         }
     }
 
@@ -74,8 +70,8 @@ public class CartService {
             return;
         }
 
-        cartItem.setDeleted(true);
-        update(cartItem);
+        BaseAuditor.setDeletionInfo(cartItem);
+        cartRepository.update(cartItem);
     }
 
     private void update(CartItem cart) {
@@ -84,8 +80,7 @@ public class CartService {
         }
 
         cart.setUserId(UserContext.get().getMemberId());
-        cart.setModifiedAt(new Date());
-        cart.setModifiedBy(UserContext.get().getUserEmail());
+        BaseAuditor.setUpdatingInfo(cart);
 
         cartRepository.update(cart);
     }

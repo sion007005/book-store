@@ -2,12 +2,13 @@ package sion.bookstore.domain.order.repository;
 
 import lombok.Getter;
 import lombok.Setter;
+import sion.bookstore.domain.BaseAudit;
 
 import java.util.Date;
 
 @Getter
 @Setter
-public class OrderItem {
+public class OrderItem extends BaseAudit {
     private Long id;
     private Long orderId;
     private Long memberId;

@@ -3,6 +3,7 @@ package sion.bookstore.domain.book.thema.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.service.BookService;
 import sion.bookstore.domain.book.thema.repository.ThemaBook;
@@ -11,7 +12,6 @@ import sion.bookstore.domain.book.thema.repository.ThemaSection;
 import sion.bookstore.domain.book.thema.repository.ThemaSectionRepository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,17 +22,9 @@ public class ThemaSectionService {
     private final ThemaBookRepository themaBookRepository;
     private final BookService bookService;
 
-    // TODO[DONE] 아래 두 역할을 다 해줘야 함
-    //  1. 테마 섹션 저장
-    //  2. ThemaBook 매핑
     @Transactional(readOnly = false)
     public Long createAndBookMapping(ThemaSection themaSection) {
-        themaSection.setCreatedAt(new Date());
-        themaSection.setCreatedBy("tester");
-        themaSection.setModifiedAt(new Date());
-        themaSection.setModifiedBy("tester");
-        themaSection.setDeleted(false);
-
+        BaseAuditor.setCreationInfo(themaSection);
         themaSectionRepository.create(themaSection);
         doMappingBooks(themaSection);
 
@@ -43,7 +35,6 @@ public class ThemaSectionService {
         return themaSectionRepository.findOne(id);
     }
 
-    //TODO[DONE] 테마 섹션 한개 + 속한 책들 가져오기
     public ThemaSection findOneWithBooks(Long id) {
         ThemaSection themaSection = themaSectionRepository.findOne(id);
 
@@ -94,27 +85,19 @@ public class ThemaSectionService {
     // 3. 신규 ThemaBook(새로 등록시켜준 책들) 등록
     @Transactional
     public void update(ThemaSection themaSection) {
-        themaSection.setModifiedAt(new Date());
-        themaSection.setModifiedBy("tester");
-        themaSection.setDeleted(false);
+        BaseAuditor.setUpdatingInfo(themaSection);
         themaSectionRepository.update(themaSection);
-
         deleteBooksMappedByThema(themaSection.getId());
-
         doMappingBooks(themaSection);
     }
-    // 데이터를 바꾸는 로직이므로, 공개 범위 고민!
+
     private void doMappingBooks(ThemaSection themaSection) {
         List<Book> bookList = themaSection.getBooks();
         for (Book book : bookList) {
             ThemaBook mapping = new ThemaBook();
             mapping.setThemaSectionId(themaSection.getId());
             mapping.setBookId(book.getId());
-            mapping.setCreatedAt(new Date());
-            mapping.setCreatedBy("sion");
-            mapping.setModifiedAt(new Date());
-            mapping.setModifiedBy("sion");
-            mapping.setDeleted(false);
+            BaseAuditor.setCreationInfo(themaSection);
 
             themaBookRepository.create(mapping);
         }
@@ -126,19 +109,14 @@ public class ThemaSectionService {
         List<ThemaBook> themaBookMappingList = themaBookRepository.findThemaBooksByThemaSectionId(condition);
 
         for (ThemaBook themaBook : themaBookMappingList) {
-            themaBook.setModifiedAt(new Date());
-            themaBook.setModifiedBy("tester");
-            themaBook.setDeleted(true);
-
+            BaseAuditor.setDeletionInfo(themaBook);
             themaBookRepository.update(themaBook);
         }
     }
 
     public void delete(Long id) {
         ThemaSection themaSection = themaSectionRepository.findOne(id);
-        themaSection.setModifiedAt(new Date());
-        themaSection.setModifiedBy("tester");
-        themaSection.setDeleted(true);
+        BaseAuditor.setDeletionInfo(themaSection);
         themaSectionRepository.update(themaSection);
         // TODO CHECK 굳이 끊어줄 필요가 없나? 지난 테마를 불러올 수도 있으니까..?
         deleteBooksMappedByThema(id);

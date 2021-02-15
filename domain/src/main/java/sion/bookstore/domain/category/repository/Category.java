@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import sion.bookstore.domain.BaseAudit;
 
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class Category {
+public class Category extends BaseAudit {
     private Long id;
     private Long parentId;
     private String name;

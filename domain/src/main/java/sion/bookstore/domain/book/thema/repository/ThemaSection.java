@@ -3,6 +3,7 @@ package sion.bookstore.domain.book.thema.repository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import sion.bookstore.domain.BaseAudit;
 import sion.bookstore.domain.book.repository.Book;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ThemaSection {
+public class ThemaSection extends BaseAudit {
     private Long id;
     private Integer orderNo;
     private String type;

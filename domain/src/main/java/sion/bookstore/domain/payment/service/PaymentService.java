@@ -23,7 +23,7 @@ public class PaymentService {
     }
 
     public List<PaymentType> findPaymentTypes() {
-        return Arrays.asList(PaymentType.CREDIT_CARD, PaymentType.DEPOSIT, PaymentType.NAVER_PAY);
+        return Arrays.asList(PaymentType.CREDIT_CARD, PaymentType.REMITTANCE, PaymentType.NAVER_PAY);
     }
 
     public void executePaymentProcess(Order order) {
@@ -33,7 +33,7 @@ public class PaymentService {
         payment.setMemberId(order.getMemberId());
         payment.setOrderId(order.getId());
         payment.setPaymentType(order.getPaymentType());
-        BaseAuditor.set(payment);
+        BaseAuditor.setCreationInfo(payment);
 
         create(payment);
     }
