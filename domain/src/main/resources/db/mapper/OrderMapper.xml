@@ -7,6 +7,25 @@
         member_id, total_price, payment_type, order_status, address_basic, address_detail, zip_code, phone, message, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
+    <resultMap id="order" type="sion.bookstore.domain.order.repository.Order">
+        <result column="id" property="id" />
+        <result column="member_id" property="memberId" />
+        <result column="total_price" property="totalPrice" />
+        <result column="payment_type" property="paymentType" />
+        <result column="order_status" property="orderStatus" />
+        <result column="address_basic" property="addressBasic" />
+        <result column="address_detail" property="addressDetail" />
+        <result column="zip_code" property="zipCode" />
+        <result column="phone" property="phone" />
+        <result column="message" property="message" />
+        <result column="created_at" property="createdAt" />
+        <result column="created_by" property="createdBy" />
+        <result column="modified_at" property="modifiedAt" />
+        <result column="modified_by" property="modifiedBy" />
+        <result column="deleted" property="deleted" />
+        <collection property="items" column = "id"  select="getOrderItemList" javaType="java.util.List" ofType="sion.bookstore.domain.order.repository.OrderItem"></collection>
+    </resultMap>
+
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
         INSERT into `order` (<include refid="orderColumns" />)
         values (#{memberId}, #{totalPrice}, #{paymentType},#{orderStatus}, #{addressBasic}, #{addressDetail}, #{zipCode},  #{phone}, #{message}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
@@ -14,7 +33,7 @@
 
     <select id="findOneById" resultType="sion.bookstore.domain.order.repository.Order">
         SELECT id, <include refid="orderColumns" />
-        FROM `order` WHERE id = #{id}
+        FROM `order` o WHERE id = #{id}
     </select>
 
     <select id="findAllByMemberId" resultType="sion.bookstore.domain.order.repository.Order">

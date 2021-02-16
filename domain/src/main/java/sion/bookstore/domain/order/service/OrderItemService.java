@@ -20,6 +20,11 @@ public class OrderItemService {
         orderItemRepository.create(orderItem);
     }
 
+    public List<OrderItem> findAllByOrderId(Long orderId) {
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrderId(orderId);
+        return orderItemList;
+    }
+
     public Long update(OrderItem orderItem) {
         BaseAuditor.setUpdatingInfo(orderItem);
         return orderItemRepository.update(orderItem);

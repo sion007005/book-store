@@ -75,7 +75,7 @@ public class OrderService {
     private Integer calculateTotalPrice(List<OrderItem> items) {
         Integer totalPrice = 0;
         for (OrderItem item : items) {
-            totalPrice += item.getSalePrice();
+            totalPrice += (item.getSalePrice() * item.getQuantity());
         }
 
         return totalPrice;
@@ -115,8 +115,15 @@ public class OrderService {
         Order order = findOneById(orderId);
         BaseAuditor.setDeletionInfo(order);
 
+        //본인의 주문만 취소할 수 있도록 해야 함
+        if (order.getMemberId() != UserContext.get().getMemberId()) {
+            throw new IllegalRequestException("잘못된 요청입니다.");
+        }
+
+        List<OrderItem> orderItemList = orderItemService.findAllByOrderId(orderId);
+        changeStockQuantity(orderItemList, 1);
         orderRepository.update(order);
         orderItemService.delete(orderId);
-        changeStockQuantity(order.getItems(), 1);
+        mailService.send(mailUtil.getOrderCancellationMail(order));
     }
 }
