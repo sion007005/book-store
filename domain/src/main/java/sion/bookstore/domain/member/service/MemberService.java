@@ -31,10 +31,10 @@ public class MemberService {
         member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
         BaseAuditor.setCreationInfo(member);
 
-        Long createdMemberId = memberRepository.register(member);
+        memberRepository.register(member);
         addressService.create(member);
 
-        return createdMemberId;
+        return member.getId();
     }
 
     private Member setPasswordAndSalt(Member member) {

@@ -3,13 +3,20 @@ package sion.bookstore.domain;
 import sion.bookstore.domain.auth.UserContext;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class BaseAuditor {
     public static void setCreationInfo(BaseAudit baseAudit) {
+        String memberEmail = UserContext.get().getUserEmail();
+
+        if (Objects.isNull(memberEmail)) {
+            memberEmail = baseAudit.getEmail();
+        }
+
         baseAudit.setCreatedAt(new Date());
-        baseAudit.setCreatedBy(UserContext.get().getUserEmail());
+        baseAudit.setCreatedBy(memberEmail);
         baseAudit.setModifiedAt(new Date());
-        baseAudit.setModifiedBy(UserContext.get().getUserEmail());
+        baseAudit.setModifiedBy(memberEmail);
         baseAudit.setDeleted(false);
     }
 

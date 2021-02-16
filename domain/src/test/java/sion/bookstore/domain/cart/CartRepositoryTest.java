@@ -28,7 +28,7 @@ public class CartRepositoryTest {
     @Test
     public void 장바구니_상품추가() {
         CartItem cartItem = new CartItem();
-        cartItem.setUserId(1L);
+        cartItem.setMemberId(1L);
         cartItem.setBookId(800L);
         cartItem.setQuantity(1);
         cartItem.setCreatedAt(new Date());

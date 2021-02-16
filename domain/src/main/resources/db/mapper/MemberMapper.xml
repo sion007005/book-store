@@ -7,9 +7,9 @@
         `name`, email, password, password_salt, phone, profile_img_path, `admin`, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Member">
+    <insert id="register" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Member">
         INSERT into member (<include refid="memberColumns" />)
-        values (#{name}, #{email}, #{password},#{passwordSalt}, #{phone}, #{profileImgPath}, #{admin}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        values (#{name}, #{email}, #{password}, #{passwordSalt}, #{phone}, #{profileImgPath}, #{admin}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findOneById" resultType="sion.bookstore.domain.member.repository.Member">

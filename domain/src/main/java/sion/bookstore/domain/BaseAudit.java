@@ -9,6 +9,9 @@ import java.util.Date;
 @Getter
 @Setter
 public class BaseAudit {
+    private String email;
+    private Long memberId;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
     private String createdBy;

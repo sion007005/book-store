@@ -25,6 +25,9 @@ public class AddressService {
             address.setMemberId(member.getId());
             BaseAuditor.setCreationInfo(address);
 
+            //TODO 더 깔끔하게 만들 방법을 다시 생각해보기
+            address.setCreatedBy(member.getEmail());
+            address.setModifiedBy(member.getEmail());
             addressRepository.create(address);
         }
     }

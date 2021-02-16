@@ -20,7 +20,8 @@ public class CartService {
 
     public Long add(CartItem cart) {
         //TODO validation check
-        if (cart.getUserId() != UserContext.get().getMemberId()) {
+        if (cart.getMemberId() != UserContext.get().getMemberId()) {
+            cart.setMemberId(UserContext.get().getMemberId());
             throw new ValidationException("잘못된 요청입니다.");
         }
 
@@ -30,7 +31,6 @@ public class CartService {
             update(existingItem);
         }
 
-        cart.setUserId(UserContext.get().getMemberId());
         BaseAuditor.setCreationInfo(cart);
 
         cartRepository.add(cart);
@@ -75,11 +75,11 @@ public class CartService {
     }
 
     private void update(CartItem cart) {
-        if (cart.getUserId() != UserContext.get().getMemberId()) {
+        if (cart.getMemberId() != UserContext.get().getMemberId()) {
             throw new ValidationException("잘못된 요청입니다.");
         }
 
-        cart.setUserId(UserContext.get().getMemberId());
+        cart.setMemberId(UserContext.get().getMemberId());
         BaseAuditor.setUpdatingInfo(cart);
 
         cartRepository.update(cart);

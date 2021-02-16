@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 public class CartItem extends BaseAudit {
     private Long id;
-    private Long userId;
+    private Long memberId;
     private Long bookId;
     private Integer quantity;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

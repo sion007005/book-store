@@ -8,12 +8,14 @@ import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.service.BookService;
 import sion.bookstore.domain.cart.service.CartService;
+import sion.bookstore.domain.email.MailService;
 import sion.bookstore.domain.order.repository.Order;
 import sion.bookstore.domain.order.repository.OrderItem;
 import sion.bookstore.domain.order.repository.OrderRepository;
 import sion.bookstore.domain.order.repository.OrderStatus;
 import sion.bookstore.domain.payment.repository.PaymentType;
 import sion.bookstore.domain.payment.service.PaymentService;
+import sion.bookstore.domain.utils.MailUtil;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class OrderService {
     private final PaymentService paymentService;
     private final CartService cartService;
     private final BookService bookService;
+    private final MailUtil mailUtil;
+    private final MailService mailService;
 
     public Long create(Order order, List<Long> cartItemIds) {
         Order createdOrder = createOrder(order);
@@ -36,6 +40,7 @@ public class OrderService {
         changeStockQuantity(order.getItems(), -1);
         cartService.removeByItemIds(cartItemIds);
 
+        mailService.send(mailUtil.getOrderCompletionMail(order));
         return createdOrder.getId();
     }
 
