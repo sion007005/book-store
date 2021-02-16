@@ -1,0 +1,1 @@
+alter table cart change user_id member_id BIGINT NOT NULL;
