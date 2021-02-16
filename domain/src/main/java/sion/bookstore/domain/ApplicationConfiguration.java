@@ -14,13 +14,13 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 import java.time.Duration;
 
+@EnableAsync
 @Configuration
 @ComponentScan(basePackages = {"sion.bookstore"})
 @PropertySource("classpath:/application-domain.properties")
@@ -72,10 +72,5 @@ public class ApplicationConfiguration {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
-    public JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
     }
 }
