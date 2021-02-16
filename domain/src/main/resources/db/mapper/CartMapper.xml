@@ -74,7 +74,7 @@
         WHERE book_id = #{bookId} and deleted = false;
     </select>
 
-    <select id = "findOneByCartId" parameterType="java.lang.Long" resultMap="cartItem2">
+    <select id = "findOneByCartId" parameterType="java.lang.Long" resultMap="cartItem">
         SELECT id, <include refid="cartColumns" />
         FROM cart
         WHERE id = #{id} and deleted = false;
