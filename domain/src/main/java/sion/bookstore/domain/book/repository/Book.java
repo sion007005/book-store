@@ -1,5 +1,6 @@
 package sion.bookstore.domain.book.repository;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import sion.bookstore.domain.BaseAudit;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,9 +20,16 @@ public class Book extends BaseAudit {
     private String isbn10;
     private String isbn13;
     private Integer stockQuantity;
-    private List<Author> authors;
-    private List<Translator> translators;
+
+    private String author1;
+    private String author2;
+    private String author3;
+    private String translator1;
+    private String translator2;
+    private String translator3;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date publishedAt;
     private String publisher;
     private Integer price;

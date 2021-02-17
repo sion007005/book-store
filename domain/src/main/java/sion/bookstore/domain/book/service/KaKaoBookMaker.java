@@ -3,11 +3,13 @@ package sion.bookstore.domain.book.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sion.bookstore.domain.book.repository.*;
+import sion.bookstore.domain.BaseAuditor;
+import sion.bookstore.domain.book.repository.Book;
+import sion.bookstore.domain.book.repository.KakaoBook;
+import sion.bookstore.domain.book.repository.KakaoBookApiRepository;
 import sion.bookstore.domain.parser.ParsedBook;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,11 +50,7 @@ public class KaKaoBookMaker {
         book.setIsbn10(parsedBook.getIsbn10());
         book.setIsbn13(parsedBook.getIsbn13());
         book.setThumbnail(uploadImageFile(parsedBook));
-        book.setCreatedAt(new Date());
-        book.setCreatedBy("sion");
-        book.setModifiedAt(new Date());
-        book.setModifiedBy("sion");
-        book.setDeleted(false);
+        BaseAuditor.setCreationInfo(book);
 
         book.setTitle(kakaoBookDocument.getTitle());
         book.setContent(kakaoBookDocument.getContents());
@@ -72,42 +70,66 @@ public class KaKaoBookMaker {
     }
 
     private void addAuthor(Book book, KakaoBook.Document kakaoBookDocument) {
-        List<Author> authorList = new ArrayList<>();
+//        List<Author> authorList = new ArrayList<>();
         String[] authors = kakaoBookDocument.getAuthors();
 
-        for (String name : authors) {
-            Author author = new Author();
-            author.setName(name);
-            author.setBookId(book.getId());
-            author.setCreatedAt(new Date());
-            author.setCreatedBy("sion");
-            author.setModifiedAt(new Date());
-            author.setModifiedBy("sion");
-            author.setDeleted(false);
-
-            authorList.add(author);
+        if (Objects.nonNull(authors[0])) {
+            book.setAuthor1(authors[0]);
         }
 
-        book.setAuthors(authorList);
+        if (Objects.nonNull(authors[1])) {
+            book.setAuthor2(authors[1]);
+        }
+
+        if (Objects.nonNull(authors[2])) {
+            book.setAuthor3(authors[2]);
+        }
+//
+//        for (String name : authors) {
+//            Author author = new Author();
+//            author.setName(name);
+//            author.setBookId(book.getId());
+//            author.setCreatedAt(new Date());
+//            author.setCreatedBy("sion");
+//            author.setModifiedAt(new Date());
+//            author.setModifiedBy("sion");
+//            author.setDeleted(false);
+//
+//            authorList.add(author);
+//        }
+
+//        book.setAuthors(authorList);
     }
 
     private void addTranslator(Book book, KakaoBook.Document kakaoBookDocument) {
-        List<Translator> translatorList = new ArrayList<>();
+//        List<Translator> translatorList = new ArrayList<>();
         String[] translators = kakaoBookDocument.getTranslators();
 
-        for (String name : translators) {
-            Translator translator = new Translator();
-            translator.setName(name);
-            translator.setBookId(book.getId());
-            translator.setCreatedAt(new Date());
-            translator.setCreatedBy("sion");
-            translator.setModifiedAt(new Date());
-            translator.setModifiedBy("sion");
-            translator.setDeleted(false);
-
-            translatorList.add(translator);
+        if (Objects.nonNull(translators[0])) {
+            book.setTranslator1(translators[0]);
         }
 
-        book.setTranslators(translatorList);
+        if (Objects.nonNull(translators[1])) {
+            book.setTranslator2(translators[1]);
+        }
+
+        if (Objects.nonNull(translators[2])) {
+            book.setTranslator3(translators[2]);
+        }
+
+//        for (String name : translators) {
+//            Translator translator = new Translator();
+//            translator.setName(name);
+//            translator.setBookId(book.getId());
+//            translator.setCreatedAt(new Date());
+//            translator.setCreatedBy("sion");
+//            translator.setModifiedAt(new Date());
+//            translator.setModifiedBy("sion");
+//            translator.setDeleted(false);
+//
+//            translatorList.add(translator);
+//        }
+//
+//        book.setTranslators(translatorList);
     }
 }

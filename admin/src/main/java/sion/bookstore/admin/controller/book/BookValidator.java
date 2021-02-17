@@ -2,16 +2,14 @@ package sion.bookstore.admin.controller.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.repository.Translator;
 import sion.bookstore.domain.utils.validator.EngKorStringValidator;
 import sion.bookstore.domain.utils.validator.HasValueValidator;
 import sion.bookstore.domain.utils.validator.NumberValidator;
 import sion.bookstore.domain.utils.validator.Validator;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Component
@@ -26,18 +24,36 @@ public class BookValidator implements Validator<Book> {
         hasValueValidator.validate(book.getTitle(), "title");
         hasValueValidator.validate(book.getContent(), "content");
         hasValueValidator.validate(book.getPublisher(), "publisher");
+        hasValueValidator.validate(book.getAuthor1(), "author1");
+        hasValueValidator.validate(book.getTranslator1(), "translator1");
+
         numberValidator.validate(String.valueOf(book.getPrice()), "price");
         numberValidator.validate(String.valueOf(book.getSalePrice()), "salePrice");
 
-        List<Author> authors = book.getAuthors();
-        for (Author author : authors) {
-            engKorStringValidator.validate(author.getName(), "author");
+        if (Objects.nonNull(book.getAuthor2())) {
+            hasValueValidator.validate(book.getAuthor2(), "author2");
         }
 
-        List<Translator> translators = book.getTranslators();
-        for (Translator translator : translators) {
-            engKorStringValidator.validate(translator.getName(), "translator");
+        if (Objects.nonNull(book.getAuthor3())) {
+            hasValueValidator.validate(book.getAuthor3(), "author3");
         }
+
+        if (Objects.nonNull(book.getTranslator2())) {
+            hasValueValidator.validate(book.getTranslator2(), "getTranslator2");
+        }
+
+        if (Objects.nonNull(book.getTranslator3())) {
+            hasValueValidator.validate(book.getTranslator3(), "getTranslator3");
+        }
+//        List<Author> authors = book.getAuthors();
+//        for (Author author : authors) {
+//            engKorStringValidator.validate(author.getName(), "author");
+//        }
+
+//        List<Translator> translators = book.getTranslators();
+//        for (Translator translator : translators) {
+//            engKorStringValidator.validate(translator.getName(), "translator");
+//        }
 
         isbnValidator.validate(Arrays.asList(book.getIsbn10(), book.getIsbn13()), "isbn number");
 

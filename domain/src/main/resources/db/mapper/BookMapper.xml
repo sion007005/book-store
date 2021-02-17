@@ -4,7 +4,7 @@
 
 <mapper namespace="sion.bookstore.domain.book.repository.BookRepository">
     <sql id="bookColumns">
-        title, content, isbn10, isbn13, stock_quantity, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
+        title, content, isbn10, isbn13, stock_quantity, author1, author2, author3, translator1, translator2, translator3, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <resultMap id="book" type="sion.bookstore.domain.book.repository.Book">
@@ -13,6 +13,12 @@
         <result column="content" property="content" />
         <result column="isbn10" property="isbn10" />
         <result column="isbn13" property="isbn13" />
+        <result column="author1" property="author1" />
+        <result column="author2" property="author2" />
+        <result column="author3" property="author3" />
+        <result column="translator1" property="translator1" />
+        <result column="translator2" property="translator2" />
+        <result column="translator3" property="translator3" />
         <result column="stock_quantity" property="stockQuantity" />
         <result column="published_at" property="publishedAt" />
         <result column="publisher" property="publisher" />
@@ -25,8 +31,8 @@
         <result column="modified_at" property="modifiedAt" />
         <result column="modified_by" property="modifiedBy" />
         <result column="deleted" property="deleted" />
-        <collection property="authors" column = "id"  select="getAuthorList" javaType="java.util.List" ofType="sion.bookstore.domain.book.repository.Author"></collection>
-        <collection property="translators" column = "id"  select="getTranslatorList" javaType="java.util.List" ofType="sion.bookstore.domain.book.repository.Translator"></collection>
+<!--        <collection property="authors" column = "id"  select="getAuthorList" javaType="java.util.List" ofType="sion.bookstore.domain.book.repository.Author"></collection>-->
+<!--        <collection property="translators" column = "id"  select="getTranslatorList" javaType="java.util.List" ofType="sion.bookstore.domain.book.repository.Translator"></collection>-->
     </resultMap>
 
     <select id="getAuthorList" resultType="sion.bookstore.domain.book.repository.Author">
@@ -39,7 +45,7 @@
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Book">
         INSERT into book (<include refid="bookColumns" />)
-        values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{stockQuantity},#{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{stockQuantity}, #{author1}, #{author2}, #{author3}, #{translator1}, #{translator2}, #{translator3}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findOneById" resultType="sion.bookstore.domain.book.repository.Book">
@@ -54,6 +60,12 @@
             isbn10 = #{isbn10},
             isbn13 = #{isbn13},
             stock_quantity = #{stockQuantity},
+            author1 = #{author1},
+            author2 = #{author2},
+            author3 = #{author3},
+            translator1 = #{translator1},
+            translator2 = #{translator2},
+            translator3 = #{translator3},
             published_at = #{publishedAt},
             publisher = #{publisher},
             price = #{price},
@@ -73,11 +85,9 @@
             resultMap = "book">
             <!-- TODO * 없애기[DONE], join 표준 쿼리로 쓰기[DONE], where절에 속한 것들은 다 indexing 할 것![DONE] -->
             <!-- TODO[DONE] 버그 지금 상태면 공동저자가 있는 책을 검색하면 두 개의 로우가 나옴-->
-            SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.published_at, b.publisher, b.price, b.sale_price, b.thumbnail, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
+            SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.stock_quantity, b.author1, b.author2, b.author3, b.translator1, b.translator2, b.translator3, b.published_at, b.publisher, b.price, b.sale_price, b.thumbnail, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
             FROM book b
-            INNER JOIN author a ON b.id = a.book_id
             INNER JOIN book_category bc ON bc.book_id = b.id
-		    LEFT OUTER JOIN translator t ON b.id = t.book_id
 		    WHERE 1=1
 
             <if test="categoryId != null and categoryId != ''">

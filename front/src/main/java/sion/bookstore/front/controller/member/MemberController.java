@@ -6,11 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import sion.bookstore.domain.auth.User;
 import sion.bookstore.domain.auth.UserContext;
+import sion.bookstore.domain.member.repository.Address;
 import sion.bookstore.domain.member.repository.Member;
+import sion.bookstore.domain.member.service.AddressService;
 import sion.bookstore.domain.member.service.MemberService;
-import sion.bookstore.domain.utils.FileUploadUtil;
 import sion.bookstore.front.ResponseData;
 import sion.bookstore.front.login.LoginRequired;
 
@@ -18,8 +20,8 @@ import sion.bookstore.front.login.LoginRequired;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final FileUploadUtil fileUploadUtil;
     private final MemberValidator memberValidator;
+    private final AddressService addressService;
 
     @Value("${profile.image.path}")
     private String imagePath;
@@ -46,11 +48,16 @@ public class MemberController {
     @GetMapping("/my-info")
     @ResponseBody
     @LoginRequired
-    public ResponseData getMyInfo() {
+    public ModelAndView getMyInfo() {
         User user = UserContext.get();
         Member member = memberService.findOneById(user.getMemberId());
+        Address defaultAddress = addressService.findDefaultAddress(UserContext.get().getMemberId());
 
-        return ResponseData.success(member);
+        ModelAndView mav = new ModelAndView("jsonView");
+        mav.addObject("member", member);
+        mav.addObject("defaultAddress", defaultAddress);
+
+        return mav;
     }
 
 

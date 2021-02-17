@@ -4,12 +4,12 @@
 
 <mapper namespace="sion.bookstore.domain.member.repository.AddressRepository">
     <sql id="addressColumns">
-        member_id, `name`, address_basic, address_detail, zip_code, created_at, created_by, modified_at, modified_by, deleted
+        member_id, `name`, address_basic, address_detail, zip_code, created_at, created_by, modified_at, modified_by, deleted, default_address
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Address">
         INSERT into address (<include refid="addressColumns" />)
-        values (#{memberId}, #{name}, #{addressBasic}, #{addressDetail},#{zipCode}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        values (#{memberId}, #{name}, #{addressBasic}, #{addressDetail}, #{zipCode}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted}, #{defaultAddress})
     </insert>
 
     <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.member.repository.Address">

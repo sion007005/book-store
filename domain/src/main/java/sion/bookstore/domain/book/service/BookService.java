@@ -6,10 +6,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.BaseAuditor;
-import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
-import sion.bookstore.domain.book.repository.Translator;
 
 import java.util.List;
 
@@ -28,8 +26,8 @@ public class BookService {
     public void createAndCategoryMapping(Long categoryId, Book book) {
         BaseAuditor.setCreationInfo(book);
         create(book);
-        authorService.create(book);
-        translatorService.create(book);
+//        authorService.create(book);
+//        translatorService.create(book);
         bookCategoryService.create(categoryId, book.getId());
     }
 
@@ -41,11 +39,11 @@ public class BookService {
 
     public Book findOneById(Long bookId) {
         Book book = bookRepository.findOneById(bookId);
-        List<Author> authors = authorService.findAllByBookId(bookId);
-        List<Translator> translators = translatorService.findAllByBookId(bookId);
-
-        book.setAuthors(authors);
-        book.setTranslators(translators);
+//        List<Author> authors = authorService.findAllByBookId(bookId);
+//        List<Translator> translators = translatorService.findAllByBookId(bookId);
+//
+//        book.setAuthors(authors);
+//        book.setTranslators(translators);
 
         return book;
     }
@@ -79,8 +77,8 @@ public class BookService {
         BaseAuditor.setUpdatingInfo(book);
 
         bookRepository.update(book);
-        authorService.update(book);
-        translatorService.update(book);
+//        authorService.update(book);
+//        translatorService.update(book);
 
         return book.getId();
     }

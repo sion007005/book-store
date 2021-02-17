@@ -57,9 +57,12 @@ public class BookController {
 
     @GetMapping("/book/list")
     @ResponseBody
-    public ResponseData findAll(BookSearchCondition searchCondition) {
+    public ModelAndView findAll(BookSearchCondition searchCondition) {
         Page<Book> pageBook = bookService.findAll(searchCondition);
-        return ResponseData.success(pageBook);
+
+        ModelAndView mav = new ModelAndView("jsonView");
+        mav.addObject("pageBook", pageBook);
+        return mav;
     }
 
     @PostMapping("/book/update")
@@ -74,8 +77,8 @@ public class BookController {
 
         bookService.updateAll(book);
         bookCategoryService.updateNewMapping(book.getId(), newCategoryId);
-        authorService.updateNewMapping(book);
-        translatorService.updateNewMapping(book);
+//        authorService.updateNewMapping(book);
+//        translatorService.updateNewMapping(book);
 
         return ResponseData.success(book.getId());
     }
