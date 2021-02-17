@@ -16,9 +16,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
+    private final CartValidator cartValidator;
 
     public Long add(CartItem cart) {
-        //TODO validation check
+        //TODO CHECK validation
+        cartValidator.validate(cart, "Cart");
         cart.setMemberId(UserContext.get().getMemberId());
 
         CartItem existingItem = findOneByBookId(cart.getBookId());

@@ -9,10 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import sion.bookstore.domain.ApplicationConfiguration;
-import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
-import sion.bookstore.domain.book.repository.Translator;
 import sion.bookstore.domain.book.service.BookSearchCondition;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
@@ -78,15 +76,15 @@ public class BookRepositoryTest {
             log.info("출판년도: {}", book.getPublishedAt());
             log.info("가격: {}", book.getSalePrice());
 
-            List<Author> authors = book.getAuthors();
-            for (Author author : authors) {
-                log.info("book.author: {}", author.getName());
-            }
-
-            List<Translator> trnaslators = book.getTranslators();
-            for (Translator trnaslator : trnaslators) {
-                log.info("book.translator: {}", trnaslator.getName());
-            }
+//            List<Author> authors = book.getAuthors();
+//            for (Author author : authors) {
+//                log.info("book.author: {}", author.getName());
+//            }
+//
+//            List<Translator> trnaslators = book.getTranslators();
+//            for (Translator trnaslator : trnaslators) {
+//                log.info("book.translator: {}", trnaslator.getName());
+//            }
         }
     }
 

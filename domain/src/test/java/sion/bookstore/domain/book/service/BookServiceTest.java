@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import sion.bookstore.domain.ApplicationConfiguration;
-import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
 
@@ -56,13 +55,13 @@ public class BookServiceTest {
         AuthorSearchCondition condition = new AuthorSearchCondition();
         condition.setName("정홍");
 
-        List<Author> authors = authorService.findAllByName(condition);
+//        List<Author> authors = authorService.findAllByName(condition);
         List<Book> bookList = new ArrayList<>();
 
-        for (Author author : authors) {
-            Book book = bookService.findOneById(author.getBookId());
-            bookList.add(book);
-        }
+//        for (Author author : authors) {
+//            Book book = bookService.findOneById(author.getBookId());
+//            bookList.add(book);
+//        }
 
         for (Book book : bookList) {
             log.info("책 이름: {}", book.getTitle());
