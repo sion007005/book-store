@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import sion.bookstore.domain.auth.UserContext;
-import sion.bookstore.domain.cart.service.CartService;
 import sion.bookstore.domain.member.repository.Address;
 import sion.bookstore.domain.member.service.AddressService;
 import sion.bookstore.domain.order.repository.Order;
-import sion.bookstore.domain.order.repository.OrderItem;
+import sion.bookstore.domain.order.repository.OrderItemForm;
 import sion.bookstore.domain.order.service.OrderService;
-import sion.bookstore.domain.payment.service.PaymentService;
 import sion.bookstore.domain.payment.repository.PaymentType;
+import sion.bookstore.domain.payment.service.PaymentService;
 import sion.bookstore.front.login.LoginRequired;
 
 import java.util.List;
@@ -25,9 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    private final CartService cartService;
     private final AddressService addressService;
     private final PaymentService paymentService;
+    private final OrderConverter orderConverter;
 
     @PostMapping("/order/page")
     @LoginRequired
@@ -38,7 +37,7 @@ public class OrderController {
             throw new IllegalOperationException("잘못된 요청입니다.");
         }
 
-        List<OrderItem> orderItems = OrderConverter.convertToOrderItem(cartItemForms);
+        List<OrderItemForm> orderItems = orderConverter.convertToOrderItemForm(cartItemForms);
         Address defaultAddress = addressService.findDefaultAddress(UserContext.get().getMemberId());
         List<PaymentType> paymentTypes = paymentService.findPaymentTypes();
 
@@ -52,7 +51,7 @@ public class OrderController {
     @PostMapping("/order/create")
     @LoginRequired
     public ModelAndView create(@ModelAttribute OrderForm orderForm) {
-        Order order = OrderConverter.convertToOrder(orderForm);
+        Order order = orderConverter.convertToOrder(orderForm);
         Long createdOrderId = orderService.create(order, orderForm.getCartItemIds());
 
         ModelAndView mav = new ModelAndView("jsonView");

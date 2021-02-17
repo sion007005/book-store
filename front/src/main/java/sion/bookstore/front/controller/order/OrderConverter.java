@@ -1,5 +1,9 @@
 package sion.bookstore.front.controller.order;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import sion.bookstore.domain.book.repository.Book;
+import sion.bookstore.domain.book.service.BookService;
 import sion.bookstore.domain.order.repository.Order;
 import sion.bookstore.domain.order.repository.OrderItem;
 import sion.bookstore.domain.order.repository.OrderItemForm;
@@ -7,19 +11,27 @@ import sion.bookstore.domain.order.repository.OrderItemForm;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class OrderConverter {
-    public static List<OrderItem> convertToOrderItem(List<CartForm.CartItemForm> cartItemForms) {
-        List<OrderItem> orderItemList = new ArrayList<>();
+    private final BookService bookService;
+
+    public List<OrderItemForm> convertToOrderItemForm(List<CartForm.CartItemForm> cartItemForms) {
+        List<OrderItemForm> orderItemList = new ArrayList<>();
         for (CartForm.CartItemForm cartItemForm : cartItemForms) {
-            OrderItem orderItem = new OrderItem();
+            OrderItemForm orderItem = new OrderItemForm();
+
             orderItem.setBookId(cartItemForm.getBookId());
             orderItem.setQuantity(cartItemForm.getQuantity());
+            orderItem.setSalePrice(getSalePrice(cartItemForm.getBookId()));
+
             orderItemList.add(orderItem);
         }
+
         return orderItemList;
     }
 
-    public static Order convertToOrder(OrderForm orderForm) {
+    public Order convertToOrder(OrderForm orderForm) {
         Order order = new Order();
 
         List<OrderItem> orderItems = new ArrayList<>();
@@ -28,7 +40,7 @@ public class OrderConverter {
             OrderItem orderItem = new OrderItem();
             orderItem.setBookId(orderItemForm.getBookId());
             orderItem.setQuantity(orderItemForm.getQuantity());
-            orderItem.setSalePrice(orderItemForm.getSalePrice());
+            orderItem.setSalePrice(getSalePrice(orderItemForm.getBookId()));
 
             orderItems.add(orderItem);
         }
@@ -42,5 +54,10 @@ public class OrderConverter {
         order.setMessage(orderForm.getMessage());
 
         return order;
+    }
+
+    private Integer getSalePrice(Long bookId) {
+        Book book = bookService.findOneById(bookId);
+        return book.getSalePrice();
     }
 }
