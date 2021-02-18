@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.BookRepository;
+import sion.bookstore.domain.order.service.IllegalRequestException;
 
 import java.util.List;
 
@@ -87,8 +88,12 @@ public class BookService {
         Book book = findOneById(bookId);
         Integer beforeQuantity = book.getStockQuantity();
         Integer afterQuantity = (beforeQuantity + quantity);
-        book.setStockQuantity(afterQuantity);
 
+        if (afterQuantity < 0) {
+            throw new IllegalRequestException("재고가 부족합니다.");
+        }
+
+        book.setStockQuantity(afterQuantity);
         update(book);
     }
 }

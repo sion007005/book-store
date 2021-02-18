@@ -62,6 +62,8 @@ public class OrderController {
     @GetMapping("/order/list")
     @LoginRequired
     public ModelAndView getMyOrderList() {
+        // TODO 주문내역페이지
+        // 결제정보, 주문한 책 정보들(가격은 주문할 당시의 가격이어야 함)
         List<Order> orderList = orderService.findAllByMemberId(UserContext.get().getMemberId());
 
         ModelAndView mav = new ModelAndView("jsonView");

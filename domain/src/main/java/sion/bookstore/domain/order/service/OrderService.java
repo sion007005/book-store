@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.BaseAuditor;
 import sion.bookstore.domain.auth.UserContext;
-import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.book.service.BookService;
 import sion.bookstore.domain.cart.service.CartService;
 import sion.bookstore.domain.email.MailService;
 import sion.bookstore.domain.order.repository.Order;
@@ -27,31 +25,24 @@ public class OrderService {
     private final OrderItemService orderItemService;
     private final PaymentService paymentService;
     private final CartService cartService;
-    private final BookService bookService;
+    private final StockService stockService;
     private final MailUtil mailUtil;
     private final MailService mailService;
 
     public Long create(Order order, List<Long> cartItemIds) {
         Order createdOrder = createOrder(order);
 
+        stockService.changeStockQuantity(order.getItems(), StockService.MINUS_SIGN_NUMBER);
         paymentService.executePaymentProcess(createdOrder); //결제 create
         changeOrderStatus(createdOrder); //orderStatus 업데이트
         createOrderItems(createdOrder, order.getItems());
-        changeStockQuantity(order.getItems(), -1);
         cartService.removeByItemIds(cartItemIds);
 
         mailService.send(mailUtil.getOrderCompletionMail(order));
         return createdOrder.getId();
     }
 
-    private void changeStockQuantity(List<OrderItem> items, Integer signNumber) {
-        for (OrderItem item : items) {
-            bookService.changeStockQuantity(item.getBookId(), item.getQuantity() * signNumber);
-        }
-    }
-
     private void changeOrderStatus(Order order) {
-        // TODO paymentType에 따라서 orderstatus값 세팅하고 업데이트
         // 현재는 무통장입금이면 입금대기, 그 외의 결제타입이면 주문완료로 세팅
         if (order.getPaymentType() == PaymentType.REMITTANCE) {
             order.setOrderStatus(OrderStatus.WAITING_DEPOSIT);
@@ -87,9 +78,6 @@ public class OrderService {
             item.setMemberId(UserContext.get().getMemberId());
             item.setOrderStatus(createdOrder.getOrderStatus());
 
-            Book book = bookService.findOneById(item.getBookId());
-            item.setSalePrice(book.getSalePrice());
-
             orderItemService.create(item);
         }
     }
@@ -121,7 +109,7 @@ public class OrderService {
         }
 
         List<OrderItem> orderItemList = orderItemService.findAllByOrderId(orderId);
-        changeStockQuantity(orderItemList, 1);
+        stockService.changeStockQuantity(orderItemList, StockService.PLUS_SIGN_NUMBER);
         orderRepository.update(order);
         orderItemService.delete(orderId);
         mailService.send(mailUtil.getOrderCancellationMail(order));
