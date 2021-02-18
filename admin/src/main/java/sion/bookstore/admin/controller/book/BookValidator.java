@@ -24,26 +24,28 @@ public class BookValidator implements Validator<Book> {
         hasValueValidator.validate(book.getTitle(), "title");
         hasValueValidator.validate(book.getContent(), "content");
         hasValueValidator.validate(book.getPublisher(), "publisher");
-        hasValueValidator.validate(book.getAuthor1(), "author1");
-        hasValueValidator.validate(book.getTranslator1(), "translator1");
-
+        engKorStringValidator.validate(book.getAuthor1(), "author1");
         numberValidator.validate(String.valueOf(book.getPrice()), "price");
         numberValidator.validate(String.valueOf(book.getSalePrice()), "salePrice");
 
         if (Objects.nonNull(book.getAuthor2())) {
-            hasValueValidator.validate(book.getAuthor2(), "author2");
+            engKorStringValidator.validate(book.getAuthor2(), "author2");
         }
 
         if (Objects.nonNull(book.getAuthor3())) {
-            hasValueValidator.validate(book.getAuthor3(), "author3");
+            engKorStringValidator.validate(book.getAuthor3(), "author3");
+        }
+
+        if (Objects.nonNull(book.getTranslator1())) {
+            engKorStringValidator.validate(book.getTranslator1(), "getTranslator1");
         }
 
         if (Objects.nonNull(book.getTranslator2())) {
-            hasValueValidator.validate(book.getTranslator2(), "getTranslator2");
+            engKorStringValidator.validate(book.getTranslator2(), "getTranslator2");
         }
 
         if (Objects.nonNull(book.getTranslator3())) {
-            hasValueValidator.validate(book.getTranslator3(), "getTranslator3");
+            engKorStringValidator.validate(book.getTranslator3(), "getTranslator3");
         }
 //        List<Author> authors = book.getAuthors();
 //        for (Author author : authors) {

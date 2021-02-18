@@ -19,7 +19,6 @@ public class CartService {
     private final CartValidator cartValidator;
 
     public Long add(CartItem cart) {
-        //TODO CHECK validation
         cartValidator.validate(cart, "Cart");
         cart.setMemberId(UserContext.get().getMemberId());
 
