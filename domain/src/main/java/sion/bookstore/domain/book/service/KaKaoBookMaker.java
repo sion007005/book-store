@@ -49,7 +49,7 @@ public class KaKaoBookMaker {
         Book book = new Book();
         book.setIsbn10(parsedBook.getIsbn10());
         book.setIsbn13(parsedBook.getIsbn13());
-        book.setThumbnail(uploadImageFile(parsedBook));
+        book.setCoverImagePath(uploadImageFile(parsedBook));
         BaseAuditor.setCreationInfo(book);
 
         book.setTitle(kakaoBookDocument.getTitle());

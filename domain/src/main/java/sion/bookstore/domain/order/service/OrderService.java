@@ -54,9 +54,9 @@ public class OrderService {
     }
 
     private Order createOrder(Order order) {
+        order.setMemberId(UserContext.get().getMemberId());
         order.setTotalPrice(calculateTotalPrice(order.getItems()));
         order.setOrderStatus(OrderStatus.ORDER_CREATED);
-        order.setMemberId(UserContext.get().getMemberId());
         BaseAuditor.setCreationInfo(order);
 
         orderRepository.create(order);
@@ -75,7 +75,7 @@ public class OrderService {
     private void createOrderItems(Order createdOrder, List<OrderItem> items) {
         for (OrderItem item : items) {
             item.setOrderId(createdOrder.getId());
-            item.setMemberId(UserContext.get().getMemberId());
+            item.setMemberId(createdOrder.getMemberId());
             item.setOrderStatus(createdOrder.getOrderStatus());
 
             orderItemService.create(item);

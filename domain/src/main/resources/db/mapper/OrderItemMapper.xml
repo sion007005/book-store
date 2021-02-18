@@ -4,12 +4,12 @@
 
 <mapper namespace="sion.bookstore.domain.order.repository.OrderItemRepository">
     <sql id="orderProductColumns">
-        order_id, member_id, book_id, quantity, sale_price, order_status, created_at, created_by, modified_at, modified_by, deleted
+        order_id, member_id, book_id, book_title, cover_image_path, quantity, sale_price, order_status, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.OrderItem">
         INSERT into `order_item` (<include refid="orderProductColumns" />)
-        values (#{orderId}, #{memberId}, #{bookId}, #{quantity}, #{salePrice}, #{orderStatus}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        values (#{orderId}, #{memberId}, #{bookId}, #{bookTitle}, #{coverImagePath}, #{quantity}, #{salePrice}, #{orderStatus}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findAllByOrderId" resultType="sion.bookstore.domain.order.repository.OrderItem">
@@ -23,6 +23,8 @@
         order_id = #{orderId},
         member_id = #{memberId},
         book_id = #{bookId},
+        book_title = #{bookTitle},
+        cover_image_path = #{coverImagePath},
         quantity = #{quantity},
         sale_price = #{salePrice},
         order_status = #{orderStatus},

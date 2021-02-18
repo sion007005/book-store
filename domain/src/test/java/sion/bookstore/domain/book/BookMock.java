@@ -15,7 +15,7 @@ public class BookMock {
         book.setPublisher("좋은출판사");
         book.setPrice(13000);
         book.setSalePrice(12000);
-        book.setThumbnail("/imgage/img");
+        book.setCoverImagePath("/imgage/img");
         book.setStatus("판매");
         book.setCreatedAt(new Date());
         book.setCreatedBy("시온");

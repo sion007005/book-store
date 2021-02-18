@@ -13,6 +13,8 @@ public class OrderItem extends BaseAudit {
     private Long orderId;
     private Long memberId;
     private Long bookId;
+    private String bookTitle;
+    private String coverImagePath;
     private Integer quantity;
     private Integer salePrice;
     private OrderStatus orderStatus;

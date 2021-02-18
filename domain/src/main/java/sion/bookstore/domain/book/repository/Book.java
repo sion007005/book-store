@@ -34,7 +34,7 @@ public class Book extends BaseAudit {
     private String publisher;
     private Integer price;
     private Integer salePrice;
-    private String thumbnail;
+    private String coverImagePath;
     private String status;
     private MultipartFile coverImageFile;
 }

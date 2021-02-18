@@ -4,7 +4,7 @@
 
 <mapper namespace="sion.bookstore.domain.book.repository.BookRepository">
     <sql id="bookColumns">
-        title, content, isbn10, isbn13, stock_quantity, author1, author2, author3, translator1, translator2, translator3, published_at, publisher, price, sale_price, thumbnail, status, created_at, created_by, modified_at, modified_by, deleted
+        title, content, isbn10, isbn13, stock_quantity, author1, author2, author3, translator1, translator2, translator3, published_at, publisher, price, sale_price, cover_image_path, status, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <resultMap id="book" type="sion.bookstore.domain.book.repository.Book">
@@ -24,7 +24,7 @@
         <result column="publisher" property="publisher" />
         <result column="price" property="price" />
         <result column="sale_price" property="salePrice" />
-        <result column="thumbnail" property="thumbnail" />
+        <result column="cover_image_path" property="coverImagePath" />
         <result column="status" property="status" />
         <result column="created_at" property="createdAt" />
         <result column="created_by" property="createdBy" />
@@ -45,7 +45,7 @@
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.repository.Book">
         INSERT into book (<include refid="bookColumns" />)
-        values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{stockQuantity}, #{author1}, #{author2}, #{author3}, #{translator1}, #{translator2}, #{translator3}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{thumbnail}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        values (#{title}, #{content}, #{isbn10}, #{isbn13}, #{stockQuantity}, #{author1}, #{author2}, #{author3}, #{translator1}, #{translator2}, #{translator3}, #{publishedAt}, #{publisher}, #{price}, #{salePrice}, #{coverImagePath}, #{status}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
     <select id="findOneById" resultType="sion.bookstore.domain.book.repository.Book">
@@ -70,7 +70,7 @@
             publisher = #{publisher},
             price = #{price},
             sale_price = #{salePrice},
-            thumbnail = #{thumbnail},
+            cover_image_path = #{coverImagePath},
             status = #{status},
             created_at = #{createdAt},
             created_by = #{createdBy},
@@ -85,7 +85,7 @@
             resultMap = "book">
             <!-- TODO * 없애기[DONE], join 표준 쿼리로 쓰기[DONE], where절에 속한 것들은 다 indexing 할 것![DONE] -->
             <!-- TODO[DONE] 버그 지금 상태면 공동저자가 있는 책을 검색하면 두 개의 로우가 나옴-->
-            SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.stock_quantity, b.author1, b.author2, b.author3, b.translator1, b.translator2, b.translator3, b.published_at, b.publisher, b.price, b.sale_price, b.thumbnail, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
+            SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.stock_quantity, b.author1, b.author2, b.author3, b.translator1, b.translator2, b.translator3, b.published_at, b.publisher, b.price, b.sale_price, b.cover_image_path, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
             FROM book b
             INNER JOIN book_category bc ON bc.book_id = b.id
 		    WHERE 1=1

@@ -37,7 +37,7 @@ public class BookController {
     @AdminOnly
     public ResponseData createAndCategoryMapping(Book book, Long categoryId) {
         bookValidator.validate(book, "book");
-        book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
+        book.setCoverImagePath(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
         bookService.createAndCategoryMapping(categoryId, book);
 
         return ResponseData.success(book.getId());
@@ -72,8 +72,8 @@ public class BookController {
         bookValidator.validate(book, "book");
 
         // update form view에서 기존의 이미지 thumbnail값을 hidden으로 보내줘야 함
-        fileUploadUtil.deleteExistingFile(book.getThumbnail());
-        book.setThumbnail(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
+        fileUploadUtil.deleteExistingFile(book.getCoverImagePath());
+        book.setCoverImagePath(fileUploadUtil.uploadFile(book.getCoverImageFile(), imagePath));
 
         bookService.updateAll(book);
         bookCategoryService.updateNewMapping(book.getId(), newCategoryId);

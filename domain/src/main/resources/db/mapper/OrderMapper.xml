@@ -33,7 +33,7 @@
 
     <select id="findOneById" resultType="sion.bookstore.domain.order.repository.Order">
         SELECT id, <include refid="orderColumns" />
-        FROM `order` o WHERE id = #{id}
+        FROM `order` WHERE id = #{id}
     </select>
 
     <select id="findAllByMemberId" resultType="sion.bookstore.domain.order.repository.Order">

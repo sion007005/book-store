@@ -12,7 +12,9 @@ import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.member.repository.Address;
 import sion.bookstore.domain.member.service.AddressService;
 import sion.bookstore.domain.order.repository.Order;
+import sion.bookstore.domain.order.repository.OrderItem;
 import sion.bookstore.domain.order.repository.OrderItemForm;
+import sion.bookstore.domain.order.service.OrderItemService;
 import sion.bookstore.domain.order.service.OrderService;
 import sion.bookstore.domain.payment.repository.PaymentType;
 import sion.bookstore.domain.payment.service.PaymentService;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final OrderItemService orderItemService;
     private final AddressService addressService;
     private final PaymentService paymentService;
     private final OrderConverter orderConverter;
@@ -62,9 +65,12 @@ public class OrderController {
     @GetMapping("/order/list")
     @LoginRequired
     public ModelAndView getMyOrderList() {
-        // TODO 주문내역페이지
         // 결제정보, 주문한 책 정보들(가격은 주문할 당시의 가격이어야 함)
         List<Order> orderList = orderService.findAllByMemberId(UserContext.get().getMemberId());
+        for (Order order : orderList) {
+            List<OrderItem> items = orderItemService.findAllByOrderId(order.getId());
+            order.setItems(items);
+        }
 
         ModelAndView mav = new ModelAndView("jsonView");
         mav.addObject("orderList", orderList);

@@ -39,6 +39,8 @@ public class OrderConverter {
         for (OrderItemForm orderItemForm : orderItemForms) {
             OrderItem orderItem = new OrderItem();
             orderItem.setBookId(orderItemForm.getBookId());
+            orderItem.setBookTitle(orderItemForm.getTitle());
+            orderItem.setCoverImagePath(orderItemForm.getCoverImagePath());
             orderItem.setQuantity(orderItemForm.getQuantity());
             orderItem.setSalePrice(getSalePrice(orderItemForm.getBookId()));
 
@@ -66,6 +68,6 @@ public class OrderConverter {
 
         orderItem.setSalePrice(book.getSalePrice());
         orderItem.setTitle(book.getTitle());
-        orderItem.setCoverImagePath(book.getThumbnail());
+        orderItem.setCoverImagePath(book.getCoverImagePath());
     }
 }
