@@ -2,11 +2,15 @@ package sion.bookstore.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.book.repository.Translator;
+import sion.bookstore.domain.book.repository.TranslatorRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TranslatorService {
-//    private final TranslatorRepository translatorRepository;
+    private final TranslatorRepository translatorRepository;
 //
 //    public Long create(Translator translator) {
 //        return translatorRepository.create(translator);
@@ -58,8 +62,8 @@ public class TranslatorService {
 //        }
 //    }
 //
-//    public List<Translator> findAllByBookId(Long bookId) {
-//        return translatorRepository.findAllByBookId(bookId);
-//    }
+    public List<Translator> findAllByBookId(Long bookId) {
+        return translatorRepository.findAllByBookId(bookId);
+    }
 
 }

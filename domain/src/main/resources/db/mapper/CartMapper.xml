@@ -36,7 +36,7 @@
         <result column="title" property="title" />
         <result column="price" property="price" />
         <result column="sale_price" property="salePrice" />
-        <result column="thumbnail" property="thumbnail" />
+        <result column="cover_image_path" property="coverImagePath" />
     </resultMap>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.cart.repository.CartItem">
@@ -61,7 +61,7 @@
             parameterType = "java.lang.Long"
             resultMap = "cartItem">
         SELECT c.id, c.member_id, c.book_id, c.quantity, c.created_at, c.created_by, c.modified_at, c.modified_by, c.deleted,
-               b.title, b.price, b.sale_price, b.thumbnail
+               b.title, b.price, b.sale_price, b.cover_image_path
         FROM cart c
         INNER JOIN book b ON c.book_id = b.id
         WHERE c.member_id = #{memberId}

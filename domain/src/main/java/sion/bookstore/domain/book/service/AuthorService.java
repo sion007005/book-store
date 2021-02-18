@@ -2,11 +2,15 @@ package sion.bookstore.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sion.bookstore.domain.book.repository.Author;
+import sion.bookstore.domain.book.repository.AuthorRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
-//    private final AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 //
 //    public Long create(Author author) {
 //        return authorRepository.create(author);
@@ -60,10 +64,10 @@ public class AuthorService {
 //        }
 //    }
 //
-//    public List<Author> findAllByBookId(Long bookId) {
-//        return authorRepository.findAllByBookId(bookId);
-//    }
-//
+    public List<Author> findAllByBookId(Long bookId) {
+        return authorRepository.findAllByBookId(bookId);
+    }
+
 //    public List<Author> findAllByName(AuthorSearchCondition condition) {
 //        return authorRepository.findAllByName(condition);
 //    }
