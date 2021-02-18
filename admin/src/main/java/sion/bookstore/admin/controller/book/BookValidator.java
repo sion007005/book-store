@@ -3,10 +3,7 @@ package sion.bookstore.admin.controller.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sion.bookstore.domain.book.repository.Book;
-import sion.bookstore.domain.utils.validator.EngKorStringValidator;
-import sion.bookstore.domain.utils.validator.HasValueValidator;
-import sion.bookstore.domain.utils.validator.NumberValidator;
-import sion.bookstore.domain.utils.validator.Validator;
+import sion.bookstore.domain.utils.validator.*;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -27,6 +24,7 @@ public class BookValidator implements Validator<Book> {
         engKorStringValidator.validate(book.getAuthor1(), "author1");
         numberValidator.validate(String.valueOf(book.getPrice()), "price");
         numberValidator.validate(String.valueOf(book.getSalePrice()), "salePrice");
+        isbnValidator.validate(Arrays.asList(book.getIsbn10(), book.getIsbn13()), "isbn number");
 
         if (Objects.nonNull(book.getAuthor2())) {
             engKorStringValidator.validate(book.getAuthor2(), "author2");
@@ -57,7 +55,6 @@ public class BookValidator implements Validator<Book> {
 //            engKorStringValidator.validate(translator.getName(), "translator");
 //        }
 
-        isbnValidator.validate(Arrays.asList(book.getIsbn10(), book.getIsbn13()), "isbn number");
 
 
     }
