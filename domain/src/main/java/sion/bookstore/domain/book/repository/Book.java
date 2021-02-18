@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 import sion.bookstore.domain.BaseAudit;
+import sion.bookstore.domain.book.service.SaleStatus;
 
 import java.util.Date;
 
@@ -35,6 +36,6 @@ public class Book extends BaseAudit {
     private Integer price;
     private Integer salePrice;
     private String coverImagePath;
-    private String status;
+    private SaleStatus status;
     private MultipartFile coverImageFile;
 }

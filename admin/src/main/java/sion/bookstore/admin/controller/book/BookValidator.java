@@ -60,7 +60,5 @@ public class BookValidator implements Validator<Book> {
         isbnValidator.validate(Arrays.asList(book.getIsbn10(), book.getIsbn13()), "isbn number");
 
 
-
-        //TODO 판매상태
     }
 }
