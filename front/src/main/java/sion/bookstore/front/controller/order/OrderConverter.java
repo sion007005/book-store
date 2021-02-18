@@ -23,7 +23,7 @@ public class OrderConverter {
 
             orderItem.setBookId(cartItemForm.getBookId());
             orderItem.setQuantity(cartItemForm.getQuantity());
-            orderItem.setSalePrice(getSalePrice(cartItemForm.getBookId()));
+            setPriceAndAdditionalInfo(cartItemForm.getBookId(), orderItem);
 
             orderItemList.add(orderItem);
         }
@@ -59,5 +59,13 @@ public class OrderConverter {
     private Integer getSalePrice(Long bookId) {
         Book book = bookService.findOneById(bookId);
         return book.getSalePrice();
+    }
+
+    private void setPriceAndAdditionalInfo(Long bookId, OrderItemForm orderItem) {
+        Book book = bookService.findOneById(bookId);
+
+        orderItem.setSalePrice(book.getSalePrice());
+        orderItem.setTitle(book.getTitle());
+        orderItem.setCoverImagePath(book.getThumbnail());
     }
 }

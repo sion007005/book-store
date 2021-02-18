@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class OrderItemForm {
     private Long bookId;
+    private String title;
+    private String coverImagePath;
     private Integer quantity;
     private Integer salePrice;
 }
