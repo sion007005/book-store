@@ -7,6 +7,8 @@ import sion.bookstore.domain.utils.validator.HasValueValidator;
 import sion.bookstore.domain.utils.validator.NumberValidator;
 import sion.bookstore.domain.utils.validator.Validator;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Component
 public class ThemeSectionValidator implements Validator<ThemeSection> {
@@ -18,5 +20,9 @@ public class ThemeSectionValidator implements Validator<ThemeSection> {
         numberValidator.validate(String.valueOf(themeSection.getOrderNo()), "order number");
         hasValueValidator.validate(themeSection.getTitle(), "title");
         hasValueValidator.validate(themeSection.getType(), "type");
+
+        if (Objects.nonNull(themeSection.getDescription())) {
+            hasValueValidator.validate(themeSection.getDescription(), "description");
+        }
     }
 }
