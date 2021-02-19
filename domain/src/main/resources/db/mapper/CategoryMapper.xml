@@ -12,26 +12,38 @@
         values (#{parentId}, #{name}, #{level}, #{order}, #{link}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <select id="findOne" resultType="sion.bookstore.domain.category.repository.Category">
+    <select id="findOneById" resultType="sion.bookstore.domain.category.repository.Category">
         SELECT id, <include refid="categoryColumns" />
         FROM category WHERE id = #{id};
+    </select>
+
+    <select id="findOneWithSameOrder"
+            parameterType="sion.bookstore.domain.category.repository.Category"
+            resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT id, <include refid="categoryColumns" />
+        FROM category
+        WHERE parent_id = #{parentId} and `order` = #{order}
     </select>
 
     <select id="findAllByCategoryLevel"
             parameterType="int"
             resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT  id, <include refid="categoryColumns" />)
+        SELECT  id, <include refid="categoryColumns" />
         FROM category where level = #{level};
     </select>
 
-    <select id="findAllById"
-            parameterType="java.lang.Long"
+    <select id="findOthersWithSameLevel"
+            parameterType="sion.bookstore.domain.category.repository.CategorySearchRange"
             resultType="sion.bookstore.domain.category.repository.Category">
-        SELECT id, <include refid="categoryColumns" />)
-        FROM category where id >= #{limitId};
+        SELECT id, <include refid="categoryColumns" />
+        FROM category where parent_id = #{parentId} and `order` >= #{start}
+        <if test="end != null">
+            and #{end} > `order`
+        </if>
+        order by `order` asc;
     </select>
 
-    <select id="findAllCategoryNode"
+    <select id="findAllCategories"
             parameterType="sion.bookstore.domain.category.service.CategorySearchCondition"
             resultType="sion.bookstore.domain.category.repository.Category">
         SELECT id, <include refid="categoryColumns" />
@@ -52,7 +64,7 @@
         </if>
     </select>
 
-    <update id="update" parameterType="sion.bookstore.domain.category.repository.Category">
+    <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.category.repository.Category">
         UPDATE category set
             parent_id = #{parentId},
             `name` = #{name},

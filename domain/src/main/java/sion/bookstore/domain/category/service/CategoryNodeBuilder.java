@@ -14,7 +14,6 @@ public class  CategoryNodeBuilder {
     public CategoryNode build(List<Category> categories) {
         for (Category category : categories) {
             CategoryNode parent = findParent(category);
-//              CategoryNode node = new CategoryNode(category, parent);
             CategoryNode node = new CategoryNode(category);
 
             if (Objects.nonNull(parent)) {

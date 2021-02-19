@@ -6,8 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 import sion.bookstore.domain.BaseAudit;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @ToString
@@ -19,9 +17,4 @@ public class Category extends BaseAudit {
     private Integer level;
     private Integer order;
     private String link;
-    private Date createdAt;
-    private String createdBy;
-    private Date modifiedAt;
-    private String modifiedBy;
-    private boolean deleted;
 }

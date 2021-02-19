@@ -1,6 +1,7 @@
 package sion.bookstore.domain.book;
 
 import sion.bookstore.domain.book.repository.Book;
+import sion.bookstore.domain.book.service.SaleStatus;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class BookMock {
         book.setPrice(13000);
         book.setSalePrice(12000);
         book.setCoverImagePath("/imgage/img");
-        book.setStatus("판매");
+        book.setStatus(SaleStatus.IN_STOCK);
         book.setCreatedAt(new Date());
         book.setCreatedBy("시온");
         book.setModifiedAt(new Date());

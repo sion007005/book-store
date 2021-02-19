@@ -29,7 +29,7 @@ public class CategoryRepositoryTest {
         categoryRepository.create(expected);
         Long id = expected.getId();
 
-        Category actual = categoryRepository.findOne(id);
+        Category actual = categoryRepository.findOneById(id);
 
         assertEquals(expected.getName(), actual.getName());
     }
@@ -41,11 +41,11 @@ public class CategoryRepositoryTest {
         Category category = CategoryMock.getCategory("updateTest", 1L, 1);
         categoryRepository.create(category);
 
-        Category expected = categoryRepository.findOne(category.getId());
+        Category expected = categoryRepository.findOneById(category.getId());
         expected.setName(name);
         categoryRepository.update(expected);
 
-        Category actual = categoryRepository.findOne(expected.getId());
+        Category actual = categoryRepository.findOneById(expected.getId());
 
         assertEquals(expected, actual);
     }
@@ -60,7 +60,7 @@ public class CategoryRepositoryTest {
 
         CategorySearchCondition condition = new CategorySearchCondition();
         condition.setKeyword(keyword);
-        List<Category> actual = categoryRepository.findAllCategoryNode(condition);
+        List<Category> actual = categoryRepository.findAllCategories(condition);
 
         assertEquals(3, actual.size());
     }
@@ -80,7 +80,7 @@ public class CategoryRepositoryTest {
         condition.setSize(expected);
 
         condition.setKeyword(null);
-        List<Category> actual = categoryRepository.findAllCategoryNode(condition);
+        List<Category> actual = categoryRepository.findAllCategories(condition);
 
         assertEquals(expected, actual.size());
     }
@@ -110,16 +110,6 @@ public class CategoryRepositoryTest {
         List<Category> categoryList = categoryRepository.findAllByCategoryLevel(3);
         categoryList.forEach(category -> {
             log.info("category level name: {} {}", category.getLevel(), category.getName());
-        });
-    }
-
-    @Test
-    public void findAllById() {
-        Long limitId = 264L;
-        List<Category> categoryList = categoryRepository.findAllById(limitId);
-
-        categoryList.forEach(category -> {
-            log.info("category level id name: {} {}, {}", category.getLevel(), category.getId(), category.getName());
         });
     }
 }

@@ -15,7 +15,6 @@ public class CategoryNode {
     private String name;
     private Integer level;
     private Integer order;
-//    private CategoryNode parent;
     private Long parentId;
     private List<CategoryNode> children = new ArrayList<>();
 
@@ -24,7 +23,6 @@ public class CategoryNode {
         this.name = category.getName();
         this.level = category.getLevel();
         this.order = category.getOrder();
-//        this.parent = parent;
         this.parentId = category.getParentId();
     }
     public boolean getHasChild() {

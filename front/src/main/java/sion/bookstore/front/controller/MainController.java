@@ -20,13 +20,13 @@ public class MainController {
 
     @GetMapping({"/", "/index", "/main"})
     public ModelAndView getMainPage() {
-        CategoryNode categoryNode = categoryService.findAllCategoryNode();
+        CategoryNode categoryNode = categoryService.findAllCategoryNodes();
 
         ThemeSectionSearchCondition condition = new ThemeSectionSearchCondition();
         List<ThemeSection> themeSectionList = themeSectionService.findAllWithBooks(condition);
 
         ModelAndView mav = new ModelAndView("jsonView");
-        mav.addObject("themaSectionList", themeSectionList);
+        mav.addObject("themeSectionList", themeSectionList);
         mav.addObject("categoryNode", categoryNode);
 
         return mav;

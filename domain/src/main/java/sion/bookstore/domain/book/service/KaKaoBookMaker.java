@@ -60,7 +60,7 @@ public class KaKaoBookMaker {
         book.setPublisher(kakaoBookDocument.getPublisher());
         book.setPrice(kakaoBookDocument.getPrice());
         book.setSalePrice(kakaoBookDocument.getSale_price());
-        book.setStatus(kakaoBookDocument.getStatus());
+        book.setStatus(SaleStatus.IN_STOCK);
 
         return book;
     }

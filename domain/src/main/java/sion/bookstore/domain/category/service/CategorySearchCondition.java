@@ -10,4 +10,6 @@ import sion.bookstore.domain.PageCondition;
 @EqualsAndHashCode
 public class CategorySearchCondition extends PageCondition {
     private String keyword;
+//    private Long limitId;
+    private Integer order;
 }

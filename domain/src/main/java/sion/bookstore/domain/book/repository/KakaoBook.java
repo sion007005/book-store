@@ -2,6 +2,7 @@ package sion.bookstore.domain.book.repository;
 
 import lombok.Getter;
 import lombok.Setter;
+import sion.bookstore.domain.book.service.SaleStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,6 @@ public class KakaoBook {
         private Integer price;
         private Integer sale_price;
         private String thumbnail;
-        private String status;
+        private SaleStatus status;
     }
 }

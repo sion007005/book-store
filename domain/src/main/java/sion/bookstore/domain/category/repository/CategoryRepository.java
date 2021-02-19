@@ -9,11 +9,12 @@ import java.util.List;
 @Mapper
 @Repository
 public interface CategoryRepository {
-    Integer create(Category category);
-    Category findOne(Long categoryId);
-    void update(Category category);
-    List<Category> findAllCategoryNode(CategorySearchCondition categoryCondition);
+    Long create(Category category);
+    Long update(Category category);
+    Long countAll(CategorySearchCondition condition);
+    Category findOneById(Long categoryId);
+    Category findOneWithSameOrder(Category category);
+    List<Category> findAllCategories(CategorySearchCondition categoryCondition);
     List<Category> findAllByCategoryLevel(int level);
-    List<Category> findAllById(Long limitId);
-    long countAll(CategorySearchCondition condition);
+    List<Category> findOthersWithSameLevel(CategorySearchRange categorySearchRange);
 }
