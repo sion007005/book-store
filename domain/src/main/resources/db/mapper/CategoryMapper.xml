@@ -25,6 +25,11 @@
         WHERE parent_id = #{parentId} and `order` = #{order}
     </select>
 
+    <select id ="findAllByParentId" resultType="sion.bookstore.domain.category.repository.Category">
+        SELECT id, <include refid="categoryColumns" />
+        FROM category WHERE parent_id = #{parentId};
+    </select>
+
     <select id="findAllByCategoryLevel"
             parameterType="int"
             resultType="sion.bookstore.domain.category.repository.Category">

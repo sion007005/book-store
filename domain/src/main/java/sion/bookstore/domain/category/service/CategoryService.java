@@ -5,12 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import sion.bookstore.domain.BaseAuditor;
+import sion.bookstore.domain.PageCondition;
 import sion.bookstore.domain.category.repository.Category;
 import sion.bookstore.domain.category.repository.CategoryRepository;
-import sion.bookstore.domain.category.repository.CategorySearchRange;
 import sion.bookstore.domain.parser.ParsedCategory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +25,16 @@ public class CategoryService {
 
         Category existingCategory = categoryRepository.findOneWithSameOrder(category);
         if (Objects.nonNull(existingCategory)) {
-            CategorySearchRange range = new CategorySearchRange(category.getParentId(), category.getOrder());
-            changeNextOrders(range);
+            List<Category> categories = findAllByParentId(category.getParentId());
+            categories.add(category.getOrder() - 1, category);
+
+            for (int i = category.getOrder(); i < categories.size(); i++) {
+                Category one = categories.get(i);
+                Integer beforeOrder = one.getOrder();
+                one.setOrder(++beforeOrder);
+                BaseAuditor.setUpdatingInfo(one);
+                update(one);
+            }
         }
 
         BaseAuditor.setCreationInfo(category);
@@ -32,13 +43,17 @@ public class CategoryService {
         return category.getId();
     }
 
+    private List<Category> findAllByParentId(Long parentId) {
+        List<Category> categories = categoryRepository.findAllByParentId(parentId);
+        return categories;
+    }
+
     public Long update(Category category) {
         // TODO category validator
         Category existingCategory = categoryRepository.findOneById(category.getId());
 
         if (!existingCategory.getOrder().equals(category.getOrder())) {
-            CategorySearchRange range = new CategorySearchRange(category.getParentId(), existingCategory.getOrder(), category.getOrder());
-            changeNextOrders(range);
+            updateOtherOrders(category);
         }
 
         category.setCreatedAt(existingCategory.getCreatedAt());
@@ -49,25 +64,20 @@ public class CategoryService {
         return category.getId();
     }
 
-    private void changeNextOrders(CategorySearchRange range) {
-        if (!range.needPlusOrder()) {
-            range.setStart(range.getStart() + 1);
-            range.setEnd(range.getEnd() + 1);
-        }
+    private void updateOtherOrders(Category category) {
+        List<Category> categories = findAllByParentId(category.getParentId());
+        categories.add(category.getOrder() - 1, category);
 
-        List<Category> categories = findOthersWithSameLevel(range);
+        for (int i = 0; i < categories.size(); i++) {
+            Category one = categories.get(i);
 
-        for (Category category : categories) {
-            Integer existingOrder = category.getOrder();
-
-            if (range.needPlusOrder()) {
-                category.setOrder(++existingOrder);
-            } else {
-                category.setOrder(--existingOrder);
+            if (one.getId().equals(category.getId())) {
+                continue;
             }
 
-            BaseAuditor.setUpdatingInfo(category);
-            categoryRepository.update(category);
+            one.setOrder(i + 1);
+            BaseAuditor.setUpdatingInfo(one);
+            categoryRepository.update(one);
         }
     }
 
@@ -116,17 +126,12 @@ public class CategoryService {
 
     public CategoryNode findAllCategoryNodes() {
         CategorySearchCondition condition = new CategorySearchCondition();
-        condition.setSize(1000);
+        condition.setSize(PageCondition.GET_ALL);
         List<Category> categories = categoryRepository.findAllCategories(condition);
 
         CategoryNodeBuilder builder = new CategoryNodeBuilder();
         CategoryNode node = builder.build(categories);
 
         return node;
-    }
-
-    private List<Category> findOthersWithSameLevel(CategorySearchRange form) {
-        List<Category> categories = categoryRepository.findOthersWithSameLevel(form);
-        return categories;
     }
 }

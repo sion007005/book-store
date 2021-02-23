@@ -14,6 +14,7 @@ public interface CategoryRepository {
     Long countAll(CategorySearchCondition condition);
     Category findOneById(Long categoryId);
     Category findOneWithSameOrder(Category category);
+    List<Category> findAllByParentId(Long parentId);
     List<Category> findAllCategories(CategorySearchCondition categoryCondition);
     List<Category> findAllByCategoryLevel(int level);
     List<Category> findOthersWithSameLevel(CategorySearchRange categorySearchRange);
