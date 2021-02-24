@@ -22,12 +22,13 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AddressService addressService;
     private final FileUploadUtil fileUploadUtil;
+    private final MemberValidator memberValidator;
     @Value("${profile.image.path}")
     private String imagePath;
 
     public Long register(Member member) {
+        memberValidator.validate(member, "member");
         setPasswordAndSalt(member);
-        member.setAdmin(false);
         member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
         BaseAuditor.setCreationInfo(member);
 
@@ -48,8 +49,9 @@ public class MemberService {
     }
 
     public Long update(Member member) {
-        Member existingMember = findOneById(UserContext.get().getMemberId());
+        memberValidator.validate(member, "member");
 
+        Member existingMember = findOneById(UserContext.get().getMemberId());
         setNotChangedInfo(member, existingMember);
         BaseAuditor.setUpdatingInfo(member);
         compareAndSetNewPassword(member, existingMember);

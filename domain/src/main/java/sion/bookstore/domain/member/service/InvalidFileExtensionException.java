@@ -1,4 +1,4 @@
-package sion.bookstore.front.controller.member;
+package sion.bookstore.domain.member.service;
 
 public class InvalidFileExtensionException extends RuntimeException {
     public InvalidFileExtensionException(Throwable e) {

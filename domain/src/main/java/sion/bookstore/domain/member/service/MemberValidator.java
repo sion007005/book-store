@@ -1,14 +1,12 @@
-package sion.bookstore.front.controller.member;
+package sion.bookstore.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import sion.bookstore.domain.DomainConstants;
 import sion.bookstore.domain.member.repository.Member;
-import sion.bookstore.domain.member.service.InvalidFileExtensionException;
 import sion.bookstore.domain.utils.validator.*;
-import sion.bookstore.front.FrontConstants;
-import sion.bookstore.front.controller.order.IllegalOperationException;
 
 @RequiredArgsConstructor
 @Component
@@ -47,7 +45,7 @@ public class MemberValidator implements Validator<Member> {
     }
 
     private void validateFileSize(MultipartFile file){
-        if (file.getSize() >= FrontConstants.MAXIMUM_FILE_SIZE_ALLOWED) {
+        if (file.getSize() >= DomainConstants.MAXIMUM_FILE_SIZE_ALLOWED) {
             throw new IllegalOperationException("File size cannot be greater than 8 Mb");
         }
     }

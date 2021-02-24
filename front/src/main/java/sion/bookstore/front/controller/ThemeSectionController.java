@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class ThemaSectionController {
+public class ThemeSectionController {
     private final ThemeSectionService themeSectionService;
 
     @GetMapping("/thema/list")

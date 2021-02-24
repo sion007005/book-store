@@ -14,14 +14,12 @@ import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.service.MemberSearchCondition;
 import sion.bookstore.domain.member.service.MemberService;
 import sion.bookstore.domain.utils.FileUploadUtil;
-import sion.bookstore.domain.utils.SHA256Util;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
     private final FileUploadUtil fileUploadUtil;
-//    private final MemberValidator memberValidator;
 
     @Value("${profile.image.path}")
     private String imagePath;
@@ -29,15 +27,7 @@ public class MemberController {
     @PostMapping("/member/register")
     @ResponseBody
     public ModelAndView register(Member member) {
-//        memberValidator.validate(member, "member");
-
-        String password = member.getPassword();
-        String salt  = SHA256Util.generateSalt();
-        String encryptedPassword = SHA256Util.getEncrypt(password, salt);
-        member.setPasswordSalt(salt);
-        member.setPassword(encryptedPassword);
-        member.setProfileImgPath(fileUploadUtil.uploadFile(member.getProfileImageFile(), imagePath));
-
+        member.setAdmin(true);
         Long memberId = memberService.register(member);
 
         ModelAndView mav = new ModelAndView("jsonView");

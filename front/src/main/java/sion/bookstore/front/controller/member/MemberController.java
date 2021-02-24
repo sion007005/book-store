@@ -20,7 +20,6 @@ import sion.bookstore.front.login.LoginRequired;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final MemberValidator memberValidator;
     private final AddressService addressService;
 
     @Value("${profile.image.path}")
@@ -29,7 +28,7 @@ public class MemberController {
     @PostMapping("/member/register")
     @ResponseBody
     public ResponseData register(Member member) {
-        memberValidator.validate(member, "member");
+        member.setAdmin(false);
         memberService.register(member);
 
         return ResponseData.success(member.getId());
@@ -39,7 +38,6 @@ public class MemberController {
     @PostMapping("/member/update")
     @ResponseBody
     public ResponseData update(Member member) {
-        memberValidator.validate(member, "member");
         memberService.update(member);
 
         return ResponseData.success(member.getId());
