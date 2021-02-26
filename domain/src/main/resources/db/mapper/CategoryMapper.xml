@@ -25,9 +25,15 @@
         WHERE parent_id = #{parentId} and `order` = #{order}
     </select>
 
-    <select id ="findAllByParentId" resultType="sion.bookstore.domain.category.repository.Category">
+    <select id ="findAllWithSameParentId"
+            parameterType="sion.bookstore.domain.category.repository.Category"
+            resultType="sion.bookstore.domain.category.repository.Category">
         SELECT id, <include refid="categoryColumns" />
-        FROM category WHERE parent_id = #{parentId};
+        FROM category WHERE parent_id = #{parentId}
+        <if test="id != null">
+            and id != #{id}
+        </if>
+        ORDER BY `order`
     </select>
 
     <select id="findAllByCategoryLevel"

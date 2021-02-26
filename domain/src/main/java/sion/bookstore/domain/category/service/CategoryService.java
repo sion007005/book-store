@@ -25,15 +25,11 @@ public class CategoryService {
 
         Category existingCategory = categoryRepository.findOneWithSameOrder(category);
         if (Objects.nonNull(existingCategory)) {
-            List<Category> categories = findAllByParentId(category.getParentId());
+            List<Category> categories = findAllWithSameParentId(category);
             categories.add(category.getOrder() - 1, category);
 
             for (int i = category.getOrder(); i < categories.size(); i++) {
-                Category one = categories.get(i);
-                Integer beforeOrder = one.getOrder();
-                one.setOrder(++beforeOrder);
-                BaseAuditor.setUpdatingInfo(one);
-                update(one);
+                updateOtherOrders(category);
             }
         }
 
@@ -43,8 +39,8 @@ public class CategoryService {
         return category.getId();
     }
 
-    private List<Category> findAllByParentId(Long parentId) {
-        List<Category> categories = categoryRepository.findAllByParentId(parentId);
+    private List<Category> findAllWithSameParentId(Category category) {
+        List<Category> categories = categoryRepository.findAllWithSameParentId(category);
         return categories;
     }
 
@@ -65,17 +61,17 @@ public class CategoryService {
     }
 
     private void updateOtherOrders(Category category) {
-        List<Category> categories = findAllByParentId(category.getParentId());
+        List<Category> categories = findAllWithSameParentId(category);
         categories.add(category.getOrder() - 1, category);
+        int order = 1;
 
-        for (int i = 0; i < categories.size(); i++) {
-            Category one = categories.get(i);
-
-            if (one.getId().equals(category.getId())) {
+        for (Category one : categories) {
+            if (one.getOrder().equals(order)) {
+                order++;
                 continue;
             }
 
-            one.setOrder(i + 1);
+            one.setOrder(order++);
             BaseAuditor.setUpdatingInfo(one);
             categoryRepository.update(one);
         }
