@@ -8,21 +8,30 @@ import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.Translator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MigrationService {
+public class BookMigrationService {
     private final BookService bookService;
     private final AuthorService authorService;
     private final TranslatorService translatorService;
 
-    public void migrate() {
+    public Page<Book> getBookPage(int size, int page) {
         BookSearchCondition condition = new BookSearchCondition();
-        condition.setSize(3000);
+        condition.setSize(size);
+        condition.setPage(page);
 
         Page<Book> bookList = bookService.findAll(condition);
+
+        return bookList;
+    }
+
+    public List<Book> setAuthorAndTranslator(Page<Book> bookList) {
+        List<Book> changedBookList = new ArrayList<>();
+
         for (Book book : bookList) {
             List<Author> authors = authorService.findAllByBookId(book.getId());
             book.setAuthor1(authors.get(0).getName());
@@ -37,7 +46,7 @@ public class MigrationService {
 
             List<Translator> translators = translatorService.findAllByBookId(book.getId());
             if (translators.size() == 0) {
-                bookService.update(book);
+                changedBookList.add(book);
                 continue;
             }
 
@@ -51,6 +60,14 @@ public class MigrationService {
                 book.setTranslator3(translators.get(2).getName());
             }
 
+            changedBookList.add(book);
+        }
+
+        return changedBookList;
+    }
+
+    public void updateBookList(List<Book> bookList) {
+        for (Book book : bookList) {
             bookService.update(book);
         }
     }

@@ -31,12 +31,12 @@ public class ThemeSectionService {
         return themeSection.getId();
     }
 
-    public ThemeSection findOne(Long id) {
-        return themeSectionRepository.findOne(id);
+    public ThemeSection findOneById(Long id) {
+        return themeSectionRepository.findOneById(id);
     }
 
     public ThemeSection findOneWithBooks(Long id) {
-        ThemeSection themeSection = themeSectionRepository.findOne(id);
+        ThemeSection themeSection = themeSectionRepository.findOneById(id);
 
         if (Objects.nonNull(themeSection)) {
             List<Book> bookList = getBookListBySectionId(id);
@@ -50,11 +50,8 @@ public class ThemeSectionService {
         return themeSectionRepository.findAll(themeSectionSearchCondition);
     }
 
-    //TODO[DONE]
-    // condition 안에는 아무 조건이 들어있지 않아야 함
     public List<ThemeSection> findAllWithBooks(ThemeSectionSearchCondition condition) {
         List<ThemeSection> themeSectionList = themeSectionRepository.findAll(condition);
-
         for (ThemeSection themeSection : themeSectionList) {
             List<Book> bookList = getBookListBySectionId(themeSection.getId());
             themeSection.setBooks(bookList);
@@ -65,7 +62,7 @@ public class ThemeSectionService {
 
     private List<Book> getBookListBySectionId(Long id) {
         ThemeBookSearchCondition condition = new ThemeBookSearchCondition();
-        condition.setThemaSectionId(id);
+        condition.setThemeSectionId(id);
         // TODO[DONE] join 쿼리 이용해서 for문 돌지않게끔 하기
         List<Book> bookList = themeBookRepository.findBooksByThemeSectionId(condition);
 
@@ -85,9 +82,13 @@ public class ThemeSectionService {
     // 3. 신규 ThemaBook(새로 등록시켜준 책들) 등록
     @Transactional
     public void update(ThemeSection themeSection) {
+        ThemeSection existing = themeSectionRepository.findOneById(themeSection.getId());
+        themeSection.setCreatedAt(existing.getCreatedAt());
+        themeSection.setCreatedBy(existing.getCreatedBy());
         BaseAuditor.setUpdatingInfo(themeSection);
+
         themeSectionRepository.update(themeSection);
-        deleteBooksMappedByThema(themeSection.getId());
+        deleteBooksMappedByTheme(themeSection.getId());
         doMappingBooks(themeSection);
     }
 
@@ -95,17 +96,17 @@ public class ThemeSectionService {
         List<Book> bookList = themeSection.getBooks();
         for (Book book : bookList) {
             ThemeBook mapping = new ThemeBook();
-            mapping.setThemaSectionId(themeSection.getId());
+            mapping.setThemeSectionId(themeSection.getId());
             mapping.setBookId(book.getId());
-            BaseAuditor.setCreationInfo(themeSection);
+            BaseAuditor.setCreationInfo(mapping);
 
             themeBookRepository.create(mapping);
         }
     }
 
-    private void deleteBooksMappedByThema(Long themaSectionId) {
+    private void deleteBooksMappedByTheme(Long themaSectionId) {
         ThemeBookSearchCondition condition = new ThemeBookSearchCondition();
-        condition.setThemaSectionId(themaSectionId);
+        condition.setThemeSectionId(themaSectionId);
         List<ThemeBook> themeBookMappingList = themeBookRepository.findThemeBooksByThemeSectionId(condition);
 
         for (ThemeBook themeBook : themeBookMappingList) {
@@ -115,11 +116,11 @@ public class ThemeSectionService {
     }
 
     public void delete(Long id) {
-        ThemeSection themeSection = themeSectionRepository.findOne(id);
+        ThemeSection themeSection = themeSectionRepository.findOneById(id);
         BaseAuditor.setDeletionInfo(themeSection);
         themeSectionRepository.update(themeSection);
         // TODO CHECK 굳이 끊어줄 필요가 없나? 지난 테마를 불러올 수도 있으니까..?
-        deleteBooksMappedByThema(id);
+        deleteBooksMappedByTheme(id);
     }
 
 }

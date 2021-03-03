@@ -3,26 +3,29 @@
 
 <mapper namespace="sion.bookstore.domain.book.theme.repository.ThemeSectionRepository">
     <sql id="themeSectionColumns">
-        order_no, `type`, title, description, created_at, created_by, modified_at, modified_by, deleted
+        order_no, `type`, title, description, displayStartDate, displayEndDate, onDisplay, created_at, created_by, modified_at, modified_by, deleted
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.book.theme.repository.ThemeSection">
-        INSERT into thema_section (<include refid="themeSectionColumns" />)
-        values (#{orderNo}, #{type}, #{title}, #{description}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
+        INSERT into theme_section (<include refid="themeSectionColumns" />)
+        values (#{orderNo}, #{type}, #{title}, #{description}, #{displayStartDate}, #{displayEndDate}, #{onDisplay}, #{createdAt}, #{createdBy}, #{modifiedAt}, #{modifiedBy}, #{deleted})
     </insert>
 
-    <select id="findOne" resultType="sion.bookstore.domain.book.theme.repository.ThemeSection">
+    <select id="findOneById" resultType="sion.bookstore.domain.book.theme.repository.ThemeSection">
         SELECT id, <include refid="themeSectionColumns" />
-        FROM thema_section WHERE id = #{id} and deleted = false;
+        FROM theme_section WHERE id = #{id} and deleted = false;
     </select>
 
 
     <update id="update" parameterType="sion.bookstore.domain.book.theme.repository.ThemeSection">
-        UPDATE thema_section set
+        UPDATE theme_section set
             order_no = #{orderNo},
             `type` = #{type},
             title = #{title},
             description = #{description},
+            displayStartDate = #{displayStartDate},
+            displayEndDate = #{displayEndDate},
+            onDisplay = #{onDisplay},
             created_at = #{createdAt},
             created_by = #{createdBy},
             modified_at = #{modifiedAt},
@@ -34,9 +37,10 @@
     <select id="findAll"
             parameterType="sion.bookstore.domain.book.theme.service.ThemeSectionSearchCondition"
             resultType="sion.bookstore.domain.book.theme.repository.ThemeSection">
-        SELECT id, order_no, `type`, title, description, created_at, created_by, modified_at, modified_by, deleted
-        FROM thema_section
-        WHERE deleted = false
+        SELECT id, <include refid="themeSectionColumns" />
+        FROM theme_section
+        WHERE onDisplay = true AND deleted = false
+        AND displayEndDate > now()
         <if test="keyword != null and keyword != ''">
             and `type` like CONCAT('%', #{keyword}, '%')
         </if>

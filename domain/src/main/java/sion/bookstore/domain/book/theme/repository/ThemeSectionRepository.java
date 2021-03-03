@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ThemeSectionRepository {
     Long create(ThemeSection themeSection);
-    ThemeSection findOne(Long themeSectionId);
+    ThemeSection findOneById(Long themeSectionId);
     void update(ThemeSection themeSection);
     List<ThemeSection> findAll(ThemeSectionSearchCondition themeSectionSearchCondition);
     Long countAll(ThemeSectionSearchCondition themeSectionSearchCondition);

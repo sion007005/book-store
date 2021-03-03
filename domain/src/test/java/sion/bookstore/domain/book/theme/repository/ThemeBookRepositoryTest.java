@@ -26,7 +26,7 @@ public class ThemeBookRepositoryTest {
     @Test
     public void test() {
         ThemeBook themeBook = new ThemeBook();
-        themeBook.setThemaSectionId(1L);
+        themeBook.setThemeSectionId(1L);
         themeBook.setBookId(2L);
         themeBook.setCreatedAt(new Date());
         themeBook.setCreatedBy("sion");
@@ -37,7 +37,7 @@ public class ThemeBookRepositoryTest {
         themeBookRepository.create(themeBook);
 
         ThemeBookSearchCondition condition = new ThemeBookSearchCondition();
-        condition.setThemaSectionId(1L);
+        condition.setThemeSectionId(1L);
 
         List<ThemeBook> books = themeBookRepository.findThemeBooksByThemeSectionId(condition);
 

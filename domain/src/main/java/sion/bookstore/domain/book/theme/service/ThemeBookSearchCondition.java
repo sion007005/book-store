@@ -9,5 +9,5 @@ import sion.bookstore.domain.PageCondition;
 @Setter
 @EqualsAndHashCode
 public class ThemeBookSearchCondition extends PageCondition {
-    private Long themaSectionId;
+    private Long themeSectionId;
 }

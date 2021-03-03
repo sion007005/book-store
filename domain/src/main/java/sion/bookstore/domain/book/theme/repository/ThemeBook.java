@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 public class ThemeBook extends BaseAudit {
     private Long id;
-    private Long themaSectionId;
+    private Long themeSectionId;
     private Long bookId;
     private Date createdAt;
     private String createdBy;

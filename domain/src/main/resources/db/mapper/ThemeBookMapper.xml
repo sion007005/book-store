@@ -23,7 +23,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findThemaBooksByThemaSectionId"
+    <select id="findThemeBooksByThemeSectionId"
             parameterType="sion.bookstore.domain.book.theme.service.ThemeBookSearchCondition"
             resultType="sion.bookstore.domain.book.theme.repository.ThemeBook">
         SELECT id, <include refid="themeBookColumns" />
@@ -40,10 +40,10 @@
         limit #{searchStartIndex}, #{size}
     </select>
 
-    <select id="findBooksByThemaSectionId"
+    <select id="findBooksByThemeSectionId"
             parameterType="sion.bookstore.domain.book.theme.service.ThemeBookSearchCondition"
             resultType="sion.bookstore.domain.book.repository.Book">
-        SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.published_at, b.publisher, b.price, b.sale_price, b.thumbnail, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
+        SELECT b.id, b.title, b.content, b.isbn10, b.isbn13, b.published_at, b.publisher, b.price, b.sale_price, b.cover_image_path, b.status, b.created_at, b.created_by, b.modified_at, b.modified_by, b.deleted
         FROM book b
         INNER JOIN theme_book tb ON tb.book_id = b.id
 

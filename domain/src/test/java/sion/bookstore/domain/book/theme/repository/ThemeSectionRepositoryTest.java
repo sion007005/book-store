@@ -37,7 +37,7 @@ public class ThemeSectionRepositoryTest {
         themeSection.setDeleted(false);
 
         themeSectionRepository.create(themeSection);
-        ThemeSection actual = themeSectionRepository.findOne(themeSection.getId());
+        ThemeSection actual = themeSectionRepository.findOneById(themeSection.getId());
 
         log.info("저장한 테마 이름 : {}", themeSection.getTitle());
         assertEquals(themeSection.getOrderNo(), actual.getOrderNo());
