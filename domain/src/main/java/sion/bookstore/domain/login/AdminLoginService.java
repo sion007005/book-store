@@ -18,7 +18,7 @@ public class AdminLoginService implements LoginService {
         Member member = memberService.findOneByEmail(email);
 
         if (Objects.isNull(member) || !member.isAdmin()) {
-            throw new AuthenticationException("가입되지 않은 않았거나 관리자 권한이 없습니다.");
+            throw new AuthenticationException("가입되지 않았거나 관리자 권한이 없습니다.");
         }
 
         comparePassword(member, inputPassword);
