@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  */
 @RequiredArgsConstructor
 @Component
-public class EngKorStringValidator {
+public class EngKorStringValidator implements Validator<String> {
     private final HasValueValidator hasValueValidator;
 
     public void validate(String content, String nameType) {

@@ -9,12 +9,11 @@ import java.util.Objects;
  * 값을 가지고 있다고 판단한다. (특수문자를 포함한 모든 문자값)
  */
 @Component
-public class HasValueValidator {
-    public boolean validate(String content, String type) {
+public class HasValueValidator implements Validator<String> {
+    public void validate(String content, String type) {
         if (Objects.isNull(content)) {
             throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
         }
-
         if (content.equals("") || content.equals(" ")) {
             throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
         }
@@ -22,7 +21,5 @@ public class HasValueValidator {
         if (content.startsWith(" ")) {
             throw new ValidationException(type +": 입력된 값이 없거나 올바르지 않음(공백주의)");
         }
-
-        return true;
     }
 }

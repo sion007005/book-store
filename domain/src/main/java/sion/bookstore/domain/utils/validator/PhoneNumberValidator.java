@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 public class PhoneNumberValidator implements Validator<String> {
     private final HasValueValidator hasValueValidator;
     private final ExcludeSpecialCharacter excludeSpecialCharacter;
-    private final StringLengthValidator stringLengthValidator;
 
     @Override
     public void validate(String phoneNumber, String type) {
