@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import sion.bookstore.admin.AdminConstants;
 import sion.bookstore.admin.ResponseData;
 import sion.bookstore.domain.login.LoginService;
+import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.utils.CookieUtils;
 
 import javax.servlet.http.Cookie;
@@ -23,16 +24,18 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseData login(String email, String inputPassword, HttpServletResponse response) {
-        String encryptedSid = adminLoginService.checkLoginMember(email, inputPassword);
+        Member authenticatedMember = adminLoginService.checkMemberAndPassword(email, inputPassword);
 
-        Cookie cookie = getCookie(encryptedSid);
+        Cookie cookie = getCookie(authenticatedMember);
         response.addCookie(cookie);
 
         return ResponseData.success("success");
     }
 
-    private Cookie getCookie(String encryptedSid) {
-        Cookie cookie = new Cookie(CookieUtils.makeCookieName(findActiveProfile(), AdminConstants.COOKIE_SID), encryptedSid);
+    private Cookie getCookie(Member member) {
+        String encryptedCookieValue = adminLoginService.getEncryptedCookieValue(member);
+
+        Cookie cookie = new Cookie(CookieUtils.makeCookieName(findActiveProfile(), AdminConstants.COOKIE_KEY), encryptedCookieValue);
         cookie.setPath("/");
         cookie.setMaxAge(-1);
 

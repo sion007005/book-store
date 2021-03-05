@@ -14,7 +14,7 @@ import java.util.Objects;
 public class GeneralLoginService implements LoginService {
     private final MemberService memberService;
 
-    public String checkLoginMember(String email, String inputPassword) {
+    public Member checkMemberAndPassword(String email, String inputPassword) {
         Member member = memberService.findOneByEmail(email);
 
         if (Objects.isNull(member)) {
@@ -22,7 +22,7 @@ public class GeneralLoginService implements LoginService {
         }
 
         comparePassword(member, inputPassword);
-        String encryptedSid = getEncryptedSid(member.getId());
-        return encryptedSid;
+
+        return member;
     }
 }

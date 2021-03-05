@@ -5,7 +5,9 @@ import sion.bookstore.domain.utils.AES256Util;
 import sion.bookstore.domain.utils.SHA256Util;
 
 public interface LoginService {
-     String checkLoginMember(String email, String inputPassword);
+    String COOKIE_VALUE_SEPERATOR = ":-:";
+
+    Member checkMemberAndPassword(String email, String inputPassword);
 
     default void comparePassword(Member member, String inputPassword) {
         String encryptedPassword = SHA256Util.getEncrypt(inputPassword, member.getPasswordSalt());
@@ -15,10 +17,12 @@ public interface LoginService {
         }
     }
 
-    default String getEncryptedSid(Long memberId) {
+    default String getEncryptedCookieValue(Member member) {
         try {
             AES256Util encryptUtil = new AES256Util();
-            return encryptUtil.encrypt(String.valueOf(memberId));
+            String cookieValue = member.getEmail() + COOKIE_VALUE_SEPERATOR + member.getId() + COOKIE_VALUE_SEPERATOR + member.getPasswordSalt();
+
+            return encryptUtil.encrypt(cookieValue);
         } catch (Exception e) {
             throw new AuthenticationException(e.getMessage(), e);
         }

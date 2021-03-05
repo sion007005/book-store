@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import sion.bookstore.admin.AdminConstants;
 import sion.bookstore.admin.AdminOnly;
 import sion.bookstore.admin.AdminUser;
 import sion.bookstore.domain.auth.User;
 import sion.bookstore.domain.auth.UserContext;
 import sion.bookstore.domain.login.AuthenticationException;
+import sion.bookstore.domain.login.LoginService;
 import sion.bookstore.domain.member.repository.Member;
 import sion.bookstore.domain.member.service.MemberService;
 import sion.bookstore.domain.utils.AES256Util;
@@ -40,9 +42,9 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     }
 
     private void userSetting(HttpServletRequest request) {
-        String encryptedSid = CookieUtils.getValue(request, "sid");
+        String encryptedValue = CookieUtils.getValue(request, AdminConstants.COOKIE_KEY);
 
-        if (Objects.isNull(encryptedSid) || encryptedSid.equals("")) {
+        if (Objects.isNull(encryptedValue) || encryptedValue.equals("")) {
             log.info("Unauthenticated User Setting");
             UserContext.set(AdminUser.unauthenticatedUser(request.getRemoteAddr()));
             return;
@@ -50,8 +52,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
         try {
             AES256Util encryptUtil = new AES256Util();
-            String decryptedSid = encryptUtil.decrypt(encryptedSid);
-            Long memberId = NumberUtils.parseLong(decryptedSid);
+            String decryptedValue = encryptUtil.decrypt(encryptedValue);
+            Long memberId = getMemberId(decryptedValue);
 
             Member member = memberService.findOneById(memberId);
             User user = AdminUser.authenticatedUser(member, request.getRemoteAddr());
@@ -60,6 +62,13 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             log.debug(e.getMessage(), e);
             throw new AuthenticationException(e.getMessage(), e);
         }
+    }
+
+    private Long getMemberId(String decryptedValue) {
+        String[] splitValues = decryptedValue.split(LoginService.COOKIE_VALUE_SEPERATOR);
+        Long memberId = NumberUtils.parseLong(splitValues[1]);
+
+        return memberId;
     }
 
     private void loginCheck(Object handler) {
