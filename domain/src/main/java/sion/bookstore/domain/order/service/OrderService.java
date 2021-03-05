@@ -21,6 +21,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class OrderService {
+    private final OrderValidator orderValidator;
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final PaymentService paymentService;
@@ -30,6 +31,7 @@ public class OrderService {
     private final MailService mailService;
 
     public Long create(Order order, List<Long> cartItemIds) {
+        orderValidator.validate(order, "Order");
         Order createdOrder = createOrder(order);
 
         stockService.changeStockQuantity(order.getItems(), StockService.MINUS_SIGN_NUMBER);
@@ -45,7 +47,7 @@ public class OrderService {
     private void changeOrderStatus(Order order) {
         // 현재는 무통장입금이면 입금대기, 그 외의 결제타입이면 주문완료로 세팅
         if (order.getPaymentType() == PaymentType.REMITTANCE) {
-            order.setOrderStatus(OrderStatus.WAITING_DEPOSIT);
+            order.setOrderStatus(OrderStatus.WAITING_REMITTANCE);
         } else {
             order.setOrderStatus(OrderStatus.ORDER_COMPLETED);
         }
