@@ -25,7 +25,7 @@ import java.util.Objects;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LoginInterceptor extends HandlerInterceptorAdapter {
+public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     private final MemberService memberService;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
