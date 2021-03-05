@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import sion.bookstore.domain.auth.UserContext;
+import sion.bookstore.domain.cart.repository.CartItem;
+import sion.bookstore.domain.cart.service.CartService;
 import sion.bookstore.domain.member.repository.Address;
 import sion.bookstore.domain.member.service.AddressService;
 import sion.bookstore.domain.order.repository.Order;
@@ -21,6 +23,7 @@ import sion.bookstore.domain.payment.service.PaymentService;
 import sion.bookstore.front.login.LoginRequired;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class OrderController {
     private final AddressService addressService;
     private final PaymentService paymentService;
     private final OrderConverter orderConverter;
+    private final CartService cartService;
 
     @PostMapping("/order/page")
     @LoginRequired
@@ -37,9 +41,10 @@ public class OrderController {
         List<CartForm.CartItemForm> cartItemForms = cartForm.getCartItemForms();
 
         if (CollectionUtils.isEmpty(cartItemForms)) {
-            throw new IllegalOperationException("잘못된 요청입니다.");
+            throw new IllegalOperationException("주문 할 상품이 없습니다.");
         }
 
+        checkOrderTypeAndAddCart(cartItemForms);
         List<OrderItemForm> orderItems = orderConverter.convertToOrderItemForm(cartItemForms);
         Address defaultAddress = addressService.findDefaultAddress(UserContext.get().getMemberId());
         List<PaymentType> paymentTypes = paymentService.findPaymentTypes();
@@ -49,6 +54,26 @@ public class OrderController {
         mav.addObject("defaultAddress", defaultAddress);
         mav.addObject("paymentTypes", paymentTypes);
         return mav;
+    }
+
+    /**
+     * 장바구니가 아닌 상품 상세페이지에서 바로 주문하기를 선택할 경우,
+     * 해당 상품을 장바구니에 추가 후 주문을 생성한다.
+     * @param cartItemForms
+     */
+    private void checkOrderTypeAndAddCart(List<CartForm.CartItemForm> cartItemForms) {
+        CartForm.CartItemForm cartItemForm = cartItemForms.get(0);
+
+        if (Objects.nonNull(cartItemForm.getCartItemId())) {
+            return;
+        }
+
+        CartItem cartItem = new CartItem();
+        cartItem.setBookId(cartItemForm.getBookId());
+        cartItem.setQuantity(cartItemForm.getQuantity());
+        cartService.add(cartItem);
+
+        cartItemForm.setCartItemId(cartItem.getId());
     }
 
     @PostMapping("/order/create")
