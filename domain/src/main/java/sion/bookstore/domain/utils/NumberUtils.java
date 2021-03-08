@@ -1,8 +1,8 @@
 package sion.bookstore.domain.utils;
 
-import org.springframework.data.web.PageableDefault;
-
 public class NumberUtils {
+    private NumberUtils() {}
+
     public static Integer parseInt(String value) {
         try {
             return Integer.parseInt(value);

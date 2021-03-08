@@ -10,7 +10,7 @@ import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
-public class AES256Util {
+public final class AES256Util {
     private String iv;
     private Key keySpec;
 
@@ -22,7 +22,7 @@ public class AES256Util {
      * @throws UnsupportedEncodingException
      *             키값의 길이가 16이하일 경우 발생
      */
-    final static String key = "LiveInThisBeautifulMoments";
+    final static String key = "LiveInThisBeautifulMoment";
 
     public AES256Util() throws UnsupportedEncodingException {
         this.iv = key.substring(0, 16);

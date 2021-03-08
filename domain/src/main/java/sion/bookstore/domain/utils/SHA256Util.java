@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 public class SHA256Util {
+    private SHA256Util() {}
+
     /**
      * SHA-256 암호화 함
      * @param source 원본

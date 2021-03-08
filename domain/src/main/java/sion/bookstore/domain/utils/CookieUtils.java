@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class CookieUtils {
+    private CookieUtils() {
+    }
+
     public static String getValue(HttpServletRequest request, String name) {
         Cookie[] list = request.getCookies();
 

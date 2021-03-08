@@ -1,6 +1,7 @@
 package sion.bookstore.domain.utils;
 
 public class RandomOut {
+    private RandomOut() {}
 
     public static String getRandomStr(int size) {
         if(size > 0) {

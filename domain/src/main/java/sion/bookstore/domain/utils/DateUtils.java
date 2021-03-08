@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 
 @Slf4j
 public class DateUtils {
+    private DateUtils() {}
+
     public static java.util.Date getSimpleDate(String date) {
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date created = null;

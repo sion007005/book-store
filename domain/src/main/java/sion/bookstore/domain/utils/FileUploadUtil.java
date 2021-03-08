@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Component
 public class FileUploadUtil {
+    private FileUploadUtil() {}
 
     /**
      * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
