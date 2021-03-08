@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class PlusNumberValidator implements Validator<Integer> {
+public class PositiveIntegerValidator implements Validator<Integer> {
     private final HasValueValidator hasValueValidator;
 
     @Override
