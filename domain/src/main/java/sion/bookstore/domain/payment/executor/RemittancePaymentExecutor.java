@@ -3,7 +3,7 @@ package sion.bookstore.domain.payment.executor;
 import sion.bookstore.domain.order.repository.Order;
 import sion.bookstore.domain.payment.repository.Payment;
 
-public class DepositPaymentExecutor implements PaymentExecutor {
+public class RemittancePaymentExecutor implements PaymentExecutor {
     @Override
     public Payment executeAndMakePayment(Order order) {
         // 가상계좌를 받아와서 결제 테이블에 세팅

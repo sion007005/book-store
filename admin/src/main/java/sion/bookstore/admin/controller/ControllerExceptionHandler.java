@@ -10,7 +10,6 @@ import sion.bookstore.admin.ResponseData;
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
     @ResponseBody
     @ExceptionHandler({Exception.class})
     public final ResponseData exception(Exception ex, WebRequest request) {

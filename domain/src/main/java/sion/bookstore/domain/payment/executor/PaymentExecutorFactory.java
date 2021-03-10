@@ -8,7 +8,7 @@ import java.util.Map;
 public class PaymentExecutorFactory {
     private final static Map<PaymentType, PaymentExecutor> executors = new HashMap<>();
     static {
-        executors.put(PaymentType.REMITTANCE, new DepositPaymentExecutor());
+        executors.put(PaymentType.REMITTANCE, new RemittancePaymentExecutor());
         executors.put(PaymentType.CREDIT_CARD, new CreditPaymentExecutor());
         executors.put(PaymentType.NAVER_PAY, new NaverPaymentExecutor());
         executors.put(PaymentType.KAKAO_PAY, new KakaoPaymentExecutor());

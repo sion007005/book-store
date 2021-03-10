@@ -1,4 +1,4 @@
-package sion.bookstore.domain.book.service;
+package sion.bookstore.domain.book.migration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import sion.bookstore.domain.book.repository.Author;
 import sion.bookstore.domain.book.repository.Book;
 import sion.bookstore.domain.book.repository.Translator;
+import sion.bookstore.domain.book.service.AuthorService;
+import sion.bookstore.domain.book.service.BookSearchCondition;
+import sion.bookstore.domain.book.service.BookService;
+import sion.bookstore.domain.book.service.TranslatorService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +23,7 @@ public class BookMigrationService {
     private final AuthorService authorService;
     private final TranslatorService translatorService;
 
-    public Page<Book> getBookPage(int size, int page) {
-        BookSearchCondition condition = new BookSearchCondition();
-        condition.setSize(size);
-        condition.setPage(page);
-
+    public Page<Book> getBookPage(BookSearchCondition condition) {
         Page<Book> bookList = bookService.findAll(condition);
 
         return bookList;

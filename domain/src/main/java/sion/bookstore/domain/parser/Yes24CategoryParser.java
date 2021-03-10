@@ -8,8 +8,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,24 +67,5 @@ public class Yes24CategoryParser {
 //        saveToFile(level, categoryName, categoryLink, categoryNumber, parentCategoryNumber);
 
         return categoryNumber;
-    }
-
-    public void saveToFile(int level, String name, String link, String number, String parentNumber) {
-        File file = new File("D:/test/level2list.txt");
-        FileWriter writer = null;
-
-        try {
-            writer = new FileWriter(file, true);
-            writer.write(level + "&" + name + "&" + link + "&" + number + "&" + parentNumber + "\n");
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        } finally {
-            try {
-                if(writer != null) writer.close();
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

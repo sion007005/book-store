@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import sion.bookstore.admin.interceptor.LoginInterceptor;
+import sion.bookstore.admin.interceptor.AuthenticationInterceptor;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 @Order(0)
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-	private final LoginInterceptor loginInterceptor;
+	private final AuthenticationInterceptor authenticationInterceptor;
 
 	private final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
@@ -39,7 +39,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login");
+		registry.addInterceptor(authenticationInterceptor).addPathPatterns("/**").excludePathPatterns("/login");
 //		registry.addInterceptor(webRequestUserTrackingInterceptor).addPathPatterns("/**").excludePathPatterns("/");
 //		registry.addInterceptor(serviceMaintenanceInterceptor).addPathPatterns("/**").excludePathPatterns("/service/**","/static/**");
 	}

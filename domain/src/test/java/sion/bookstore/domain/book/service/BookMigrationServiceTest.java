@@ -9,18 +9,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import sion.bookstore.domain.ApplicationConfiguration;
+import sion.bookstore.domain.book.migration.BookMigrationService;
+import sion.bookstore.domain.book.migration.MigrationRunnable;
 
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={ApplicationConfiguration.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @WebAppConfiguration
-public class MigrationServiceTest {
+public class BookMigrationServiceTest {
     @Autowired
-    MigrationService migrationService;
+    BookMigrationService bookMigrationService;
 
     @Test
     public void test() {
-        migrationService.migrate();
+//        for (int i = 1; i <= 4; i++) {
+            Runnable r = new MigrationRunnable(1, 600, bookMigrationService);
+            Thread thread = new Thread(r);
+            thread.start();
+//        }
     }
 }

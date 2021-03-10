@@ -11,7 +11,7 @@ import sion.bookstore.domain.order.repository.Order;
 @Component
 public class MailUtil {
     private final MemberService memberService;
-
+    
     public Mail getOrderCompletionMail(Order order) {
         Member member = memberService.findOneById(order.getMemberId());
 

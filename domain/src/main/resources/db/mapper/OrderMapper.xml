@@ -36,9 +36,12 @@
         FROM `order` WHERE id = #{id}
     </select>
 
-    <select id="findAllByMemberId" resultType="sion.bookstore.domain.order.repository.Order">
+    <select id="findAllByMemberId"
+            resultType="sion.bookstore.domain.order.repository.Order"
+            parameterType="sion.bookstore.domain.order.service.OrderSearchCondition">
         SELECT id, <include refid="orderColumns" />
-        FROM `order` WHERE member_id = #{memberId};
+        FROM `order` WHERE member_id = #{memberId}
+        limit #{searchStartIndex}, #{size}
     </select>
 
     <update id="update" useGeneratedKeys="true" keyProperty="id" parameterType="sion.bookstore.domain.order.repository.Order">
@@ -59,4 +62,11 @@
             deleted = #{deleted}
         WHERE id = #{id};
     </update>
+
+    <select id="countAll" resultType="long">
+    SELECT count(*)
+    FROM(SELECT id, <include refid="orderColumns" />
+        FROM `order` WHERE member_id = #{memberId})
+    count
+    </select>
 </mapper>

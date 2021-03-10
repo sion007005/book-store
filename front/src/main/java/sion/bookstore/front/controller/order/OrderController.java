@@ -1,6 +1,7 @@
 package sion.bookstore.front.controller.order;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,7 +92,7 @@ public class OrderController {
     @LoginRequired
     public ModelAndView getMyOrderList() {
         // 결제정보, 주문한 책 정보들(가격은 주문할 당시의 가격이어야 함)
-        List<Order> orderList = orderService.findAllByMemberId(UserContext.get().getMemberId());
+        Page<Order> orderList = orderService.findAllByMemberId(UserContext.get().getMemberId());
         for (Order order : orderList) {
             List<OrderItem> items = orderItemService.findAllByOrderId(order.getId());
             order.setItems(items);

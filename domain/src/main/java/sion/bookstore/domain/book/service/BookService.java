@@ -1,6 +1,7 @@
 package sion.bookstore.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import sion.bookstore.domain.order.service.IllegalRequestException;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookService {
@@ -59,8 +61,8 @@ public class BookService {
 //        BookCategorySearchCondition condition = new BookCategorySearchCondition();
 //        condition.setCategoryId(찾을 카테고리 아이디 번호);
 //        condition.setPage(현재 페이지);
-
         List<Book> bookList = bookRepository.findAll(condition);
+        log.info("findAll 실행 search start from:{}, {}", condition.getSearchStartIndex(), condition.getSize());
         Long totalCount = bookRepository.countAll(condition);
         Page<Book> bookPage = new PageImpl<>(bookList, condition.getPageable(), totalCount);
 
