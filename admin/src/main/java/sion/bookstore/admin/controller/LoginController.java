@@ -13,7 +13,6 @@ import sion.bookstore.domain.utils.CookieUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,25 +34,10 @@ public class LoginController {
     private Cookie getCookie(Member member) {
         String encryptedCookieValue = adminLoginService.getEncryptedCookieValue(member);
 
-        Cookie cookie = new Cookie(CookieUtils.makeCookieName(findActiveProfile(), AdminConstants.COOKIE_KEY), encryptedCookieValue);
+        Cookie cookie = new Cookie(CookieUtils.makeCookieName(CookieUtils.findActiveProfile(), AdminConstants.COOKIE_KEY), encryptedCookieValue);
         cookie.setPath("/");
         cookie.setMaxAge(-1);
 
         return cookie;
-    }
-
-
-    private String findActiveProfile() {
-        if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
-                env -> (env.equalsIgnoreCase("local")))) {
-            return "local";
-        }
-
-        if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
-                env -> (env.equalsIgnoreCase("dev")) )) {
-            return "dev";
-        }
-
-        return "";
     }
 }
