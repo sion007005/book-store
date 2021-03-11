@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import sion.bookstore.admin.AdminConstants;
 import sion.bookstore.admin.AdminUser;
 import sion.bookstore.domain.auth.UserContext;
 
@@ -27,7 +28,7 @@ public class LogoutController {
 
         String returnUrl= request.getParameter("returnUrl");
         if (Objects.isNull(returnUrl)) {
-            returnUrl = "localhost:9091/main";
+            returnUrl = AdminConstants.REDIRECT_MAIN_PAGE;
         }
 
         ModelAndView mav = new ModelAndView("jsonView");
