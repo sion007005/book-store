@@ -10,6 +10,7 @@ import sion.bookstore.domain.auth.UserContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,8 +25,11 @@ public class LogoutController {
         UserContext.set(AdminUser.unauthenticatedUser(request.getLocalAddr()));
         response.addCookie(cookie);
 
-        //TODO
-        String returnUrl = "localhost:9091/main";
+        String returnUrl= request.getParameter("returnUrl");
+        if (Objects.isNull(returnUrl)) {
+            returnUrl = "localhost:9091/main";
+        }
+
         ModelAndView mav = new ModelAndView("jsonView");
         mav.addObject("returnUrl", returnUrl);
         return mav;
