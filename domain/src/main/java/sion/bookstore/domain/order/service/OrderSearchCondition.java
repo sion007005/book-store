@@ -7,4 +7,5 @@ import sion.bookstore.domain.PageCondition;
 @Getter
 @Setter
 public class OrderSearchCondition extends PageCondition {
+    Long memberId;
 }
